@@ -1,11 +1,18 @@
 import React from 'react'
 import { Section } from '@/components/section/section'
+import { Category } from '@/types'
 
-export const BookmarkList = () => {
+
+type BookmarksProp =  {
+  categories: Category[]
+}
+
+export const BookmarkList = ({categories}:BookmarksProp) => {
   return (
     <div>
-        <Section />
-        <Section />
+       {
+        categories.map((cat:Category) => <Section key={cat._id} category={cat}/>)
+       }
     </div>
   )
 }
