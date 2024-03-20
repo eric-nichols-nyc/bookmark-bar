@@ -79,7 +79,7 @@ export const BookmarkForm = ({ categories, bookmarktags }: FormProps) => {
     <form className="flex flex-col" action={onSubmitAction}>
       <h1 className="mb-2 text-xl font-semibold">👋 Add a new bookmark</h1>
       <Input name="url" placeholder="https://www.example.com" />
-      {fieldErrors?.url && <p className="text-red-500">{fieldErrors.url}</p>}
+      {fieldErrors?.url && <p className="text-red-500 text-sm">{fieldErrors.url}</p>}
       <div className="flex">
         <div className="flex flex-col gap-2">
           <div className="w-[200px] bg-slate-100">
@@ -95,13 +95,13 @@ export const BookmarkForm = ({ categories, bookmarktags }: FormProps) => {
                 ))}
               </SelectContent>
             </Select>
-            {fieldErrors?.category && <p className="text-red-500">{fieldErrors.category}</p>}
+            {fieldErrors?.category && <p className="text-red-500 text-sm">{fieldErrors.category}</p>}
           </div>
         </div>
         <div className="w-[300px] bg-slate-100">
           <MultiSelect placeholder="Add tags" onChange={onTagsChange}>
-            {categories.map((opt) => (
-              <MultiSelectOption key={opt._id} label={opt.category} value={opt.category} />
+            {bookmarktags.map((opt) => (
+              <MultiSelectOption key={opt._id} label={opt.name} value={opt.name} />
             ))}
           </MultiSelect>
         </div>

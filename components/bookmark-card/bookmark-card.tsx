@@ -15,8 +15,8 @@ export const BookmarkCard = ({ url, title, description, image, tags }: BookmarkD
 const {setToggle} = useToggleForm((state) => ({setToggle: state.setToggle} ));
 
   return (
-    <div onClick={()=> setToggle(true)}key={title} className="flex flex-col items-center justify-center text-center cursor-pointer drop-shadow-md border p-2">
-      <div className="mb-4 flex size-10 items-center justify-center rounded-full p-1.5 text-blue-700 bg-primary-900 lg:size-12">
+    <div onClick={()=> setToggle(true)}key={title} className="flex flex-col cursor-pointer drop-shadow-md border">
+      <div className="relative flex h-[120px] w-full mb-4">
       <Image
             src={image || "/images/placeholder.webp"}
             alt="Photo by Drew Beamer"
@@ -25,8 +25,8 @@ const {setToggle} = useToggleForm((state) => ({setToggle: state.setToggle} ));
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           />
       </div>
-      <h3 className="mb-2 text-xl font-bold ">{title}</h3>
-      <p className="text-gray-500">{description}</p>
+      <h3 className="mb-2 text-sm font-bold ">{title}</h3>
+      <p className="text-sm text-gray-500">{description}</p>
     </div>
   )
 }

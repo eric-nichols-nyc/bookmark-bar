@@ -29,6 +29,6 @@ export type FieldErrors<T extends object> = {
   };
   
   export type Tag = {
-    id: string;
+    _id: string;
     name: string;
   };
