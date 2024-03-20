@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import { MultiSelect, MultiSelectBadge, MultiSelectOption } from './multi-select';
+import { MultiSelectBadge, MultiSelectOption } from './multi-select';
 it('should render a button with the provided label', () => {
     render(<MultiSelectBadge label="Test Label"/>);
     const button = screen.getByRole('button');

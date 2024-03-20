@@ -32,7 +32,7 @@ export const BookmarkForm = () => {
   }
 
   const onSubmitAction = () => {
-    console.log("submit action called")
+    console.log("submit action called", tags)
   }
 
   return (

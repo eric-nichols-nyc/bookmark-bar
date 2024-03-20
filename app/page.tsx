@@ -1,6 +1,6 @@
 import { Metadata } from "next"
 import { BookmarkList } from "@/components/bookmark-list/bookmark-list"
-import { BookmarkForm } from "@/components/BookmarkForm/bookmark-form"
+import { BookmarkForm } from "@/components/bookmark-form/bookmark-form"
 
 export const metadata: Metadata = {
   title: "Next.js Enterprise Boilerplate",
