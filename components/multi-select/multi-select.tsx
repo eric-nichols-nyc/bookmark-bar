@@ -1,6 +1,6 @@
 "use client"
 import { createContext, useContext, useEffect, useState } from "react"
-import { Option } from "components/BookmarkForm/bookmark-form"
+import { Option } from "@/components/bookmark-form/bookmark-form"
 
 type MultiSelectProps = {
   children: React.ReactNode
@@ -25,6 +25,7 @@ export const MultiSelectContext = createContext(defaultContext)
 export const useSelectContext = () => useContext(MultiSelectContext)
 
 const MultiSelect = ({ placeholder, label, onChange, children }: MultiSelectProps) => {
+  console.log(label)
   const [selected, setSelectedItems] = useState<string[]>([])
   const [filtered, setFilteredItems] = useState<string[]>([])
   const [showOptions, setShowOptions] = useState(false)
@@ -45,7 +46,7 @@ const MultiSelect = ({ placeholder, label, onChange, children }: MultiSelectProp
     setFilteredItems((prev) => prev.filter((item) => item !== val))
   }
 
-  const setFiltered = (s:string) => {}
+  const setFiltered = (s:string) => {console.log(s)}
   return (
     <MultiSelectContext.Provider
       value={{ visible: showOptions, selected, addSelected, removeSelected, setFiltered, filtered }}
