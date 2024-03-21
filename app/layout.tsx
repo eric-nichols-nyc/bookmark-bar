@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import EditDrawer from "@/components/edit-drawer/edit-drawer";
 import { Navbar } from "@/components/navbar/navbar";
 
 
@@ -25,7 +24,6 @@ export default function RootLayout({
     <body>
       <Navbar />
       <main>{children}</main>
-      <EditDrawer />
     </body>
   </html>
   );

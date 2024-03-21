@@ -129,6 +129,7 @@ export const deleteBookmark = async (id: string) => {
     await Bookmark.findByIdAndDelete(id);
     // revalidate path
     revalidatePath('/')
+    return {success: 'Bookmark was deleted'}
   }
   catch (error: any) {
     console.error(`Error: ${error.message}`);

@@ -15,6 +15,7 @@ export type FieldErrors<T extends object> = {
   };
 
   export type BookmarkData = {
+    _id?: string;
     url: string;
     title: string;
     description?: string;

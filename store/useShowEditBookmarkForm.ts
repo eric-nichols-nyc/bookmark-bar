@@ -5,7 +5,7 @@ type ToggleForm = {
     setToggle: (show: boolean) => void;
 };
 
-export const useToggleForm = create<ToggleForm>((set) => ({
+export const useShowEditBookmarkForm = create<ToggleForm>((set) => ({
     show: false,
     setToggle: (show:boolean) => set({ show }),
 }));

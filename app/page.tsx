@@ -2,6 +2,7 @@ import { Metadata } from "next"
 import { getBookmarkTags } from "@/actions/bookmarks/bookmark-actions";
 import { getCategories } from "@/actions/categories/category-actions";
 import { BookmarkForm } from "@/components/bookmark-form/bookmark-form"
+import { EditDrawer } from "@/components/bookmark-form/edit-form";
 import { BookmarkList } from "@/components/bookmark-list/bookmark-list"
 
 export const metadata: Metadata = {
@@ -9,6 +10,12 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
   },
+  icons: [
+    {
+      url: "/images/logo.svg",
+      href: "/images/logo.svg",
+    },
+  ],
   openGraph: {
     url: "https://next-enterprise.vercel.app/",
     images: [
@@ -45,6 +52,7 @@ export default async function Web() {
         <div className="mx-auto max-w-screen-lg px-4 py-8 sm:py-16 lg:px-6">
           <BookmarkForm categories={categories} bookmarktags={tags}/>
           <BookmarkList categories={categories} />
+          <EditDrawer />
         </div>
       </section>
   )

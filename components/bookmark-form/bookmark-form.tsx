@@ -17,7 +17,6 @@ export const BookmarkForm = ({ categories, bookmarktags }: FormProps) => {
   const [tags, setTags] = useState<string[] | undefined>()
   // add to tags to send to db
   const onTagsChange = (selected: string[]) => {
-    console.log("tag to add in form", selected)
     setTags(selected)
   }
 
@@ -78,7 +77,7 @@ export const BookmarkForm = ({ categories, bookmarktags }: FormProps) => {
   return (
     <form className="flex flex-col" action={onSubmitAction}>
       <h1 className="mb-2 text-xl font-semibold">👋 Add a new bookmark</h1>
-      <Input name="url" placeholder="https://www.example.com" />
+      <Input name="url" placeholder="https://www.example.com" className="mb-2"/>
       {fieldErrors?.url && <p className="text-sm text-red-500">{fieldErrors.url}</p>}
       <div className="flex">
         <div className="flex flex-col gap-2">

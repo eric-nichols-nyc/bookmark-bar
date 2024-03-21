@@ -1,13 +1,13 @@
 import Image from "next/image"
 import React from "react"
-import { useToggleForm } from "@/store/useToggleForm"
 import { BookmarkData } from "@/types"
+import BookmarkCardDropdown from "./bookmark-card-dropdown"
+import { Badge } from "../badge/badge"
 
-export const BookmarkCard = ({ url, title, description, image, tags }: BookmarkData) => {
-  const { setToggle } = useToggleForm((state) => ({ setToggle: state.setToggle }))
+export const BookmarkCard = ({ _id, url, title, description, image, tags }: BookmarkData) => {
 
   return (
-    <div onClick={() => setToggle(true)} key={title} className="flex cursor-pointer flex-col border drop-shadow-md">
+    <div key={title} className="relative flex cursor-pointer flex-col border drop-shadow-md overflow-hidden">
       <div className="relative mb-4 flex h-[120px] w-full">
         <Image
           src={image || "/images/placeholder.webp"}
@@ -17,18 +17,23 @@ export const BookmarkCard = ({ url, title, description, image, tags }: BookmarkD
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
         />
       </div>
-      <h3 className="mb-2 text-sm font-bold ">
-        <a href={url} rel="noreferrer" target="_blank">
-          {title}
-        </a>
-      </h3>
-      <p className="text-sm text-gray-500">{description}</p>
-      <div className="flex flex-wrap gap-1 p-2">
-        {tags?.map((tag) => (
-          <span key={tag} className="rounded-md bg-gray-100 p-1 text-xs">
-            {tag}
-          </span>
-        ))}
+      <div className="px-3">
+        <h3 className="mb-2 text-sm font-bold ">
+          <a className="hover:underline" href={url} rel="noreferrer" target="_blank">
+            {title}
+          </a>
+        </h3>
+        <p className="text-sm text-gray-500">{description}</p>
+        <div className="flex flex-wrap gap-2 p-2">
+          {tags?.map((tag) => (
+            <Badge key={tag} className="bg-gray-100">
+              {tag}
+            </Badge>
+          ))}
+        </div>
+      </div>
+      <div className="absolute top-2 right-2">
+        <BookmarkCardDropdown _id={_id}/>
       </div>
     </div>
   )
