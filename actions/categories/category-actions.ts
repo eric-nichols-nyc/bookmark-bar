@@ -7,12 +7,12 @@ import { addCategorySchema } from "./schemas";
 // return all bookmarks
 export const getCategories = async () => {
     try {
-        await connectDB()
+        const conn =  await connectDB()
         const bookmarks = await Category.find();
         return JSON.parse(JSON.stringify(bookmarks));
     } catch (error: any) {
-        console.error(`Error: ${error.message}`)
-        process.exit(1)
+        console.error(`Error poop: ${error.message}`)
+        throw new Error(error.message)
     }
 }
 

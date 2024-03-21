@@ -7,6 +7,6 @@ export const connectDB = async () => {
     return conn
   } catch (error:any) {
     console.error(`You are not connected: ${error.message}`)
+    return {message: `You are not connected: ${error.message}`}
   }
 }
-

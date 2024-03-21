@@ -22,8 +22,13 @@ export const metadata: Metadata = {
 }
 
 async function fetchCategories(){
-  const categories = await getCategories();
-  return categories;
+  try{
+    const categories = await getCategories();
+    return categories;
+  }catch(e){
+    console.log('error with categories')
+  }
+
 }
 
 
@@ -36,13 +41,11 @@ export default async function Web() {
   const categories = await fetchCategories();
   const tags = await getTags();
   return (
-    <>
       <section className="bg-white">
         <div className="mx-auto max-w-screen-lg px-4 py-8 sm:py-16 lg:px-6">
           <BookmarkForm categories={categories} bookmarktags={tags}/>
           <BookmarkList categories={categories} />
         </div>
       </section>
-    </>
   )
 }

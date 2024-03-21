@@ -24,7 +24,7 @@ export const MultiSelectContext = createContext(defaultContext)
 
 export const useSelectContext = () => useContext(MultiSelectContext)
 
-const MultiSelect = ({ placeholder, label, onChange, children }: MultiSelectProps) => {
+const MultiSelect = ({ placeholder, onChange, children }: MultiSelectProps) => {
   const [selected, setSelectedItems] = useState<string[]>([])
   const [filtered, setFilteredItems] = useState<string[]>([])
   const [showOptions, setShowOptions] = useState(false)
@@ -51,11 +51,11 @@ const MultiSelect = ({ placeholder, label, onChange, children }: MultiSelectProp
       value={{ visible: showOptions, selected, addSelected, removeSelected, setFiltered, filtered }}
     >
       <div className="relative w-full rounded-lg border shadow-sm">
-        <div className="grid-cols flex flex-wrap gap-2 p-2">
+        <div className="grid-cols flex flex-wrap gap-2">
           {selected?.map((option) => <MultiSelectBadge key={option} label={option} />)}
           <div>
             <input
-              className="border"
+              className="border p-1 text-sm"
               type="text"
               placeholder={placeholder}
               onFocus={() => setShowOptions(true)}

@@ -5,7 +5,7 @@ import { addBookmarkSchema } from "@/actions/bookmarks/schemas"
 import { Input } from "@/components/input/input"
 import { MultiSelect, MultiSelectOption } from "@/components/multi-select/multi-select"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/select/select"
-import { BookmarkData, BookmarkError, Category, FieldErrors, Option, Tag } from "@/types"
+import { BookmarkData, BookmarkError, Category, FieldErrors, Tag } from "@/types"
 
 type FormProps = {
   categories: Category[]
@@ -22,7 +22,6 @@ export const BookmarkForm = ({ categories, bookmarktags }: FormProps) => {
   }
 
   const onSubmitAction = async (data: FormData) => {
-    console.log("submit action called", data.get("url"), data.get("category"))
     const url = data.get("url") as string
     const category = data.get("category")
     // 1. validate url and category
@@ -36,11 +35,12 @@ export const BookmarkForm = ({ categories, bookmarktags }: FormProps) => {
     }
     // 1. get url and send to opengraph
     try {
-      const response = handleFetchOpengraph(url as string) as any
+      const response = await handleFetchOpengraph(url as string) as any
+      console.log(response)
       //2. load image title and description
       // of image is returned upload to cloudinary
-      if (!response) {
-        alert("no result was found")
+      if (response.message) {
+        alert(response.message)
         return
       }
       if (response.image) {
@@ -53,7 +53,7 @@ export const BookmarkForm = ({ categories, bookmarktags }: FormProps) => {
           return error.message
         }
       } else {
-        console.log("no image response found")
+        console.log("no image was found")
       }
 
       if (response.title) {
@@ -79,7 +79,7 @@ export const BookmarkForm = ({ categories, bookmarktags }: FormProps) => {
     <form className="flex flex-col" action={onSubmitAction}>
       <h1 className="mb-2 text-xl font-semibold">👋 Add a new bookmark</h1>
       <Input name="url" placeholder="https://www.example.com" />
-      {fieldErrors?.url && <p className="text-red-500 text-sm">{fieldErrors.url}</p>}
+      {fieldErrors?.url && <p className="text-sm text-red-500">{fieldErrors.url}</p>}
       <div className="flex">
         <div className="flex flex-col gap-2">
           <div className="w-[200px] bg-slate-100">
@@ -95,7 +95,7 @@ export const BookmarkForm = ({ categories, bookmarktags }: FormProps) => {
                 ))}
               </SelectContent>
             </Select>
-            {fieldErrors?.category && <p className="text-red-500 text-sm">{fieldErrors.category}</p>}
+            {fieldErrors?.category && <p className="text-sm text-red-500">{fieldErrors.category}</p>}
           </div>
         </div>
         <div className="w-[300px] bg-slate-100">
@@ -106,9 +106,11 @@ export const BookmarkForm = ({ categories, bookmarktags }: FormProps) => {
           </MultiSelect>
         </div>
       </div>
-      <button type="submit" className="border">
-        Add bookmark
-      </button>
+      <div className="flex items-center justify-center w-full m-1 p-2">
+        <button type="submit" className="m-2 border p-2 w-[220px] text-sm">
+          Add bookmark
+        </button>
+      </div>
     </form>
   )
 }

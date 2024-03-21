@@ -4,9 +4,9 @@ import { fetch } from "fetch-opengraph";
 import { revalidatePath } from "next/cache";
 import { connectDB } from "@/lib/db";
 import { Tag } from "@/models/tag-model";
+import { BookmarkData } from "@/types";
 import { addBookmarkSchema } from "./schemas";
 import { Bookmark } from "../../models/bookmark-model";
-import { BookmarkData } from "@/types";
 
 
 
@@ -19,6 +19,7 @@ export const getBookmarks = async () => {
     return JSON.parse(JSON.stringify(bookmarks));
   } catch (error: any) {
     console.error(`Error: ${error.message}`)
+    return {message: error.message}
   }
 }
 
@@ -65,6 +66,7 @@ export const handleFetchOpengraph = async (url: string) => {
     return data;
   } catch (error: any) {
     console.error(`OOPS!!! Error: ${error.message}`);
+    return {message: 'There was a error fetching the data'}
   }
 };
 

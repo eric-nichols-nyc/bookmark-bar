@@ -1,5 +1,6 @@
 "use client"
 
+import { FolderIcon } from "lucide-react"
 import { useEffect, useState } from "react"
 import { getBookmarksByCategory } from "@/actions/bookmarks/bookmark-actions"
 import { BookmarkData, Category } from "@/types"
@@ -14,7 +15,6 @@ export const Section = ({category}:SectionProps) => {
   const [items, setItems] = useState([])
 
   useEffect(() => {
-    console.log('items = ', items)
     async function fetchItems() {
       const data = await getBookmarksByCategory(category.category)
      setItems(data)
@@ -26,7 +26,7 @@ export const Section = ({category}:SectionProps) => {
 
   return (
     <div className="">
-      <div onClick={() => setOpen(!open)}  className="p-2 border cursor-pointer bg-slate-100 font-bold">{category.category}</div>
+      <div onClick={() => setOpen(!open)}  className="flex gap-2 p-2 border cursor-pointer bg-slate-100 font-bold"><FolderIcon /><span>{category.category}</span></div>
       {open && (
         <div className="pb-2">
           <div className="justify-center space-y-8 md:grid md:grid-cols-2 md:gap-2 md:space-y-0 lg:grid-cols-4">
