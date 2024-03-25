@@ -3,12 +3,11 @@ import { v2 as cloudinary } from "cloudinary";
 import { fetch } from "fetch-opengraph";
 import { revalidatePath } from "next/cache";
 import { connectDB } from "@/lib/db";
+import { Category } from "@/models/category-model";
 import { Tag } from "@/models/tag-model";
 import { BookmarkData } from "@/types";
 import { addBookmarkSchema } from "./schemas";
 import { Bookmark } from "../../models/bookmark-model";
-
-
 
 // // return all bookmarks
 export const getBookmarks = async () => {
@@ -46,11 +45,12 @@ export const updateBookmarks = async () => {
   }
 }
 
-export const getBookmarksByCategory = async (category: string = "general") => {
+export const getBookmarksByCategory = async (id: string) => {
   try {
-    const conn = await connectDB()
+    await connectDB();
+    const category = await Category.findById(id);
     const bookmarks = await Bookmark.find({
-      category: category,
+      category: category.category,
     }).sort({ createdAt: -1 });
   
 //     // return JSON.parse(JSON.stringify(bookmarks));

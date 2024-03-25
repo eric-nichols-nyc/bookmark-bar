@@ -1,3 +1,4 @@
+"use client"
 import { DotsHorizontalIcon } from "@radix-ui/react-icons"
 import React from "react"
 import { deleteBookmark } from "@/actions/bookmarks/bookmark-actions"
@@ -9,7 +10,6 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { useShowEditBookmarkForm } from "@/store/useShowEditBookmarkForm"
-import { Button } from "../button/button"
 
 type BookmarkActionsProp ={
     _id: string | undefined,
@@ -33,9 +33,9 @@ export const BookmarkCardDropdown = ({_id}:BookmarkActionsProp) => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger>
-        <Button variant="secondary" className="relative ml-1 size-9 rounded-full border border-white bg-black">
-          <DotsHorizontalIcon color="white" className="absolute top-2 size-4" />
-        </Button>
+        <div className="relative flex items-center justify-center ml-1 size-9 rounded-full border border-white bg-black">
+          <DotsHorizontalIcon color="white" className="size-4" />
+        </div>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuItem

@@ -1,6 +1,7 @@
 import type { Metadata } from "next"
-import "./globals.css"
+import { EditDrawer } from "@/components/bookmark-form/edit-form"
 import { Navbar } from "@/components/navbar/navbar"
+import { ServerForm } from "@/components/server-form/server-form"
 import { Sidebar } from "@/components/sidebar/sidebar"
 
 export const metadata: Metadata = {
@@ -14,19 +15,23 @@ export const metadata: Metadata = {
   ],
 }
 
-export default function RootLayout({
+export default function BookmarkLayout({
   children,
 }: Readonly<{
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en">
-      <body>
-        <Navbar />
-        <main className="flex w-full">
-            <div className="w-full">{children}</div>
-        </main>
-      </body>
-    </html>
+    <div className="flex">
+      <div className="border">
+        <Sidebar />
+      </div>
+      <div>
+        <div>
+          <ServerForm />
+        </div>
+        <div>{children}</div>
+        <EditDrawer />
+      </div>
+    </div>
   )
 }

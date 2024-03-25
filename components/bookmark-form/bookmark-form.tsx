@@ -6,6 +6,7 @@ import { Input } from "@/components/input/input"
 import { MultiSelect, MultiSelectOption } from "@/components/multi-select/multi-select"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/select/select"
 import { BookmarkData, BookmarkError, Category, FieldErrors, Tag } from "@/types"
+import { Test } from "../test/test"
 
 type FormProps = {
   categories: Category[]
@@ -81,7 +82,7 @@ export const BookmarkForm = ({ categories, bookmarktags }: FormProps) => {
       {fieldErrors?.url && <p className="text-sm text-red-500">{fieldErrors.url}</p>}
       <div className="flex">
         <div className="flex flex-col gap-2">
-          <div className="w-[200px] bg-slate-100">
+          <div className="w-[200px] bg-slate-100 mr-2">
             <Select name="category" onValueChange={(value: string) => console.log(value)}>
               <SelectTrigger>
                 <SelectValue placeholder="category" />
@@ -97,12 +98,18 @@ export const BookmarkForm = ({ categories, bookmarktags }: FormProps) => {
             {fieldErrors?.category && <p className="text-sm text-red-500">{fieldErrors.category}</p>}
           </div>
         </div>
-        <div className="w-[300px] bg-slate-100">
-          <MultiSelect placeholder="Add tags" onChange={onTagsChange}>
+        <div className="w-[300px]">
+          <MultiSelect 
+            placeholder="Add tags" 
+            onChange={onTagsChange}
+          >
             {bookmarktags.map((opt) => (
               <MultiSelectOption key={opt._id} label={opt.name} value={opt.name} />
             ))}
           </MultiSelect>
+        </div>
+        <div>
+          {/* <Test /> */}
         </div>
       </div>
       <div className="flex items-center justify-center w-full m-1 p-2">
