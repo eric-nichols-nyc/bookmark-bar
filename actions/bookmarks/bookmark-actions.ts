@@ -138,3 +138,38 @@ export const deleteBookmark = async (id: string) => {
 }
 
 
+// update bookmark by replacing the model with the current data params
+export const updateBookmark = async (id: string, data: BookmarkData) => {
+  try {
+    await connectDB()
+    const bookmark = await Bookmark.findById (id);
+    bookmark.url = data.url;
+    bookmark.title = data.title;
+    bookmark.description = data.description;
+    bookmark.image = data.image;
+    bookmark.category = data.category;
+    bookmark.tags = data.tags;
+    await bookmark.save();
+    // revalidate path
+    revalidatePath('/')
+    return JSON.stringify(bookmark);
+  }
+  catch (error: any) {
+    console.error(`Error: ${error.message}`);
+    return error.message;
+  }
+}
+
+// return a single bookmark by id
+export const getBookmark = async (id: string) => {
+  try {
+    await connectDB()
+    const bookmark = await Bookmark.findById(id);
+    return JSON.parse(JSON.stringify(bookmark));
+  }
+  catch (error: any) {
+    console.error(`Error: ${error.message}`);
+    return error.message;
+  }
+}
+

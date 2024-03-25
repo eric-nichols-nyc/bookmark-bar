@@ -6,40 +6,49 @@ import {
   Drawer,
   DrawerClose,
   DrawerContent,
-  DrawerDescription,
   DrawerFooter,
   DrawerHeader,
   DrawerTitle,
 } from "@/components/ui/drawer"
 import { useShowEditBookmarkForm } from "@/store/useShowEditBookmarkForm"
+import { SelectDemo } from "../category-select/category-select"
+import { MSTest } from "../MStest/MStest"
+import { Input } from "../ui/input"
+import { Textarea } from "../ui/textarea"
 
 export function EditDrawer() {
+  const handleOnFocus = (e: React.FocusEvent<HTMLInputElement>) => {
+    e.stopPropagation()
+    e.preventDefault()
+  }
 
-  const {show, setToggle} = useShowEditBookmarkForm((state) => ({show: state.show, setToggle: state.setToggle}    ))
+  const { show, setToggle } = useShowEditBookmarkForm((state) => ({ show: state.show, setToggle: state.setToggle }))
 
   return (
-    <div onClick={() => setToggle(false)}>
-    <Drawer open={show}>
-      <DrawerContent>
-        <div className="mx-auto w-full max-w-sm">
-          <DrawerHeader>
-            <DrawerTitle>Move Goal</DrawerTitle>
-            <DrawerDescription>Set your daily activity goal.</DrawerDescription>
-          </DrawerHeader>
-          <div className="p-4 pb-0">
-            <div className="flex items-center justify-center space-x-2">
-              <div className="mt-3 h-[120px]">Content goes here!</div>
-            </div>
+    <div>
+      <Drawer open={show}>
+        <DrawerContent>
+          <div className="mx-auto w-full max-w-sm flex flex-col">
+            <DrawerTitle>Edit Bookmark</DrawerTitle>
+            <DrawerHeader>
+              <form>
+                <Input name="title" onFocus={(e) => handleOnFocus(e)} value="value here"/>
+                <Textarea name="description" value="value here"/>
+                <SelectDemo />
+                <MSTest />
+              </form>
+            </DrawerHeader>
+            <DrawerFooter>
+              <Button>Submit</Button>
+              <DrawerClose asChild>
+                <Button variant="outline" onClick={() => setToggle(false)}>
+                  Cancel
+                </Button>
+              </DrawerClose>
+            </DrawerFooter>
           </div>
-          <DrawerFooter>
-            <Button>Submit</Button>
-            <DrawerClose asChild>
-              <Button variant="outline">Cancel</Button>
-            </DrawerClose>
-          </DrawerFooter>
-        </div>
-      </DrawerContent>
-    </Drawer>
+        </DrawerContent>
+      </Drawer>
     </div>
   )
 }

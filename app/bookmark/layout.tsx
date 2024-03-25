@@ -1,6 +1,5 @@
 import type { Metadata } from "next"
 import { EditDrawer } from "@/components/bookmark-form/edit-form"
-import { Navbar } from "@/components/navbar/navbar"
 import { ServerForm } from "@/components/server-form/server-form"
 import { Sidebar } from "@/components/sidebar/sidebar"
 
@@ -26,7 +25,7 @@ export default function BookmarkLayout({
         <Sidebar />
       </div>
       <div>
-        <div>
+        <div className="z-10">
           <ServerForm />
         </div>
         <div>{children}</div>

@@ -48,7 +48,7 @@ const FRAMEWORKS = [
   }
 ] satisfies Framework[];
 
-export function Test() {
+export function MSTest() {
   const inputRef = React.useRef<HTMLInputElement>(null);
   const [open, setOpen] = React.useState(false);
   const [selected, setSelected] = React.useState<Framework[]>([FRAMEWORKS[4]]);

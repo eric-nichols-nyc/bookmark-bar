@@ -6,7 +6,6 @@ import { Input } from "@/components/input/input"
 import { MultiSelect, MultiSelectOption } from "@/components/multi-select/multi-select"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/select/select"
 import { BookmarkData, BookmarkError, Category, FieldErrors, Tag } from "@/types"
-import { Test } from "../test/test"
 
 type FormProps = {
   categories: Category[]
@@ -80,7 +79,7 @@ export const BookmarkForm = ({ categories, bookmarktags }: FormProps) => {
       <h1 className="mb-2 text-xl font-semibold">👋 Add a new bookmark</h1>
       <Input name="url" placeholder="https://www.example.com" className="mb-2"/>
       {fieldErrors?.url && <p className="text-sm text-red-500">{fieldErrors.url}</p>}
-      <div className="flex">
+      <div className="flex z-10">
         <div className="flex flex-col gap-2">
           <div className="w-[200px] bg-slate-100 mr-2">
             <Select name="category" onValueChange={(value: string) => console.log(value)}>
