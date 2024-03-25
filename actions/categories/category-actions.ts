@@ -18,28 +18,28 @@ export const getCategories = async () => {
 
 
 // add bookmark to db
-export const addCategory = async (data: any) => {
+export const addCategory = async (category: string) => {
     try {
         await connectDB()
 
         // validate data
-        const result = addCategorySchema.safeParse(data);
+        const result = addCategorySchema.safeParse({category});
         if (!result.success) {
             // handle error then return
             console.log("ERROR: ",result.error);
             return result.error;
         }
 
-        const bookmark = new Category({
-            category: data.category,
+        const newcategory = new Category({
+            category: category,
         });
-        await bookmark.save();
+        await newcategory.save();
         // revalidate path
         revalidatePath('/')
-        return JSON.stringify(bookmark);
+        return JSON.stringify(newcategory);
     } catch (error: any) {
         console.error(`Error: ${error.message}`)
-        process.exit(1)
+        return {message:error.message}
     }
 }
 

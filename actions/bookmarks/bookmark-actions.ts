@@ -54,7 +54,7 @@ export const getBookmarksByCategory = async (id: string) => {
     }).sort({ createdAt: -1 });
   
 //     // return JSON.parse(JSON.stringify(bookmarks));
-    return JSON.parse(JSON.stringify(bookmarks));
+    return JSON.parse(JSON.stringify({bookmarks, category: category.category}));
   } catch (error: any) {
     console.error(`Error: ${error.message}`)
   }

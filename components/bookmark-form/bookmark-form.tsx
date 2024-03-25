@@ -113,7 +113,7 @@ export const BookmarkForm = ({ categories, bookmarktags }: FormProps) => {
         </div>
       </div>
       <div className="flex items-center justify-center w-full m-1 p-2">
-        <button type="submit" className="m-2 border p-2 w-[220px] text-sm">
+        <button id="addboomark-button" type="submit" className="m-2 border p-2 w-[220px] text-sm">
           Add bookmark
         </button>
       </div>
