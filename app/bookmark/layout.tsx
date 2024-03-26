@@ -29,7 +29,6 @@ export default function BookmarkLayout({
           <ServerForm />
         </div>
         <div>{children}</div>
-        <EditDrawer />
       </div>
     </div>
   )

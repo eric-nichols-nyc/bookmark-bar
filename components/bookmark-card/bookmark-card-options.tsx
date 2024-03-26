@@ -15,7 +15,7 @@ type BookmarkActionsProp ={
     _id: string | undefined,
 }
 export const BookmarkCardDropdown = ({_id}:BookmarkActionsProp) => {
-  const { setToggle } = useShowEditBookmarkForm((state) => ({ setToggle: state.setToggle }))
+  const { setToggle, setCurrentBookmarkId } = useShowEditBookmarkForm((state) => ({ setToggle: state.setToggle, setCurrentBookmarkId: state.setCurrentBookmarkId}))
 
 
   const handleDeleteBookmark = async (id: string | undefined) => {
@@ -40,6 +40,7 @@ export const BookmarkCardDropdown = ({_id}:BookmarkActionsProp) => {
       <DropdownMenuContent align="end">
         <DropdownMenuItem
           onSelect={() => {
+            setCurrentBookmarkId(_id  as string)
             setToggle(true)
           }}
         >

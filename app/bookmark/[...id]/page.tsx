@@ -1,4 +1,5 @@
 import { getBookmarksByCategory } from "@/actions/bookmarks/bookmark-actions"
+import { EditDrawer } from "@/components/bookmark-form/edit-form"
 import BMSection from "@/components/bookmark-section/bookmark-section"
 
 const fetchBookmarks = async (id: string) => {
@@ -9,6 +10,9 @@ const fetchBookmarks = async (id: string) => {
     console.log("error with bookmarks")
   }
 }
+
+
+    // fetch current card item by id
 const BookmarkPage = async (context: { params: { id: string } }) => {
   const id = context.params.id[0]
   const content = await fetchBookmarks(id)
@@ -17,8 +21,11 @@ const BookmarkPage = async (context: { params: { id: string } }) => {
   return (
     <>
       <div>
-        <h1>{category}</h1>
+        <div className="container border">
+          <div>{category}</div>
+        </div>
         <BMSection bookmarks={bookmarks} />
+        <EditDrawer />
       </div>
     </>
   )

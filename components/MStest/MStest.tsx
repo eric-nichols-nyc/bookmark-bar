@@ -10,52 +10,67 @@ import {
   CommandGroup,
   CommandItem,
 } from "@/components/ui/command";
+import { Tag } from "@/types";
+import { set } from "mongoose";
+// import { Tag } from "@/types";
 
-type Framework = Record<"value" | "label", string>;
+// type Framework = Record<"value" | "label", string>;
 
-const FRAMEWORKS = [
-  {
-    value: "next.js",
-    label: "Next.js",
-  },
-  {
-    value: "sveltekit",
-    label: "SvelteKit",
-  },
-  {
-    value: "nuxt.js",
-    label: "Nuxt.js",
-  },
-  {
-    value: "remix",
-    label: "Remix",
-  },
-  {
-    value: "astro",
-    label: "Astro",
-  },
-  {
-    value: "wordpress",
-    label: "WordPress",
-  },
-  {
-    value: "express.js",
-    label: "Express.js",
-  },
-  {
-    value: "nest.js",
-    label: "Nest.js",
-  }
-] satisfies Framework[];
+// const FRAMEWORKS = [
+//   {
+//     value: "next.js",
+//     label: "Next.js",
+//   },
+//   {
+//     value: "sveltekit",
+//     label: "SvelteKit",
+//   },
+//   {
+//     value: "nuxt.js",
+//     label: "Nuxt.js",
+//   },
+//   {
+//     value: "remix",
+//     label: "Remix",
+//   },
+//   {
+//     value: "astro",
+//     label: "Astro",
+//   },
+//   {
+//     value: "wordpress",
+//     label: "WordPress",
+//   },
+//   {
+//     value: "express.js",
+//     label: "Express.js",
+//   },
+//   {
+//     value: "nest.js",
+//     label: "Nest.js",
+//   }
+// ] satisfies Framework[];
 
-export function MSTest() {
+
+type MSTestProps = {
+  // Add your type definition here
+  tags: Tag[],
+  value: string[],
+}
+
+export function MSTest({tags, value}: MSTestProps) {
   const inputRef = React.useRef<HTMLInputElement>(null);
   const [open, setOpen] = React.useState(false);
-  const [selected, setSelected] = React.useState<Framework[]>([FRAMEWORKS[4]]);
+  const [selected, setSelected] = React.useState<string[]>(value);
   const [inputValue, setInputValue] = React.useState("");
 
-  const handleUnselect = React.useCallback((framework: Framework) => {
-    setSelected(prev => prev.filter(s => s.value !== framework.value));
+  React.useEffect(() => {
+     setSelected(value)
+  }
+  , [value])
+
+  const handleUnselect = React.useCallback((framework: String) => {
+    setSelected(prev => prev?.filter(s => s !== framework));
   }, []);
 
   const handleKeyDown = React.useCallback((e: React.KeyboardEvent<HTMLDivElement>) => {
@@ -77,18 +92,19 @@ export function MSTest() {
     }
   }, []);
 
-  const selectables = FRAMEWORKS.filter(framework => !selected.includes(framework));
+  const selectables = tags.filter(tag => !selected?.includes(tag.name));
 
   return (
+    <>
     <Command onKeyDown={handleKeyDown} className="overflow-visible bg-transparent">
       <div
         className="group border border-input px-3 py-2 text-sm ring-offset-background rounded-md focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2"
       >
         <div className="flex gap-1 flex-wrap">
-          {selected.map((framework) => {
+          {selected?.map((framework) => {
             return (
-              <Badge key={framework.value} variant="secondary">
-                {framework.label}
+              <Badge key={framework} variant="secondary">
+                {framework}
                 <button
                   className="ml-1 ring-offset-background rounded-full outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
                   onKeyDown={(e) => {
@@ -123,21 +139,21 @@ export function MSTest() {
         {open && selectables.length > 0 ?
           <div className="absolute w-full z-10 top-0 rounded-md border bg-popover text-popover-foreground shadow-md outline-none animate-in">
             <CommandGroup className="h-full overflow-auto">
-              {selectables.map((framework) => {
+              {tags.map((framework) => {
                 return (
                   <CommandItem
-                    key={framework.value}
+                    key={framework._id}
                     onMouseDown={(e) => {
                       e.preventDefault();
                       e.stopPropagation();
                     }}
-                    onSelect={(value) => {
+                    onSelect={() => {
                       setInputValue("")
-                      setSelected(prev => [...prev, framework])
+                      setSelected(prev => [...prev, framework.name])
                     }}
                     className={"cursor-pointer"}
                   >
-                    {framework.label}
+                    {framework.name}
                   </CommandItem>
                 );
               })}
@@ -146,5 +162,6 @@ export function MSTest() {
           : null}
       </div>
     </Command >
+    </>
   )
 }

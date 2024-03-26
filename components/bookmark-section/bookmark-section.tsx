@@ -14,9 +14,6 @@ const BMSection = ({ bookmarks }: BMSectionType) => {
   }
   return (
     <>
-    <div className="container border">
-       <div>{bookmarks[0].category}</div>
-    </div>
 
       <div>
         <div className="justify-center space-y-8 md:grid md:grid-cols-2 md:gap-2 md:space-y-0 lg:grid-cols-4">

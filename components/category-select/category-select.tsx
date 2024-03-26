@@ -5,25 +5,27 @@ import {
   SelectContent,
   SelectGroup,
   SelectItem,
-  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import { Category, Tag } from "@/types"
 
-export function SelectDemo() {
+type SelectDemoProps = {
+    selected: string,
+    cats: Category[]
+    }
+
+export function SelectDemo({cats, selected}:SelectDemoProps) {
   return (
-    <Select value="apple">
-      <SelectTrigger className="w-[180px]">
+    <Select value={selected}>
+      <SelectTrigger>
         <SelectValue />
       </SelectTrigger>
       <SelectContent>
         <SelectGroup>
-          <SelectLabel>Fruits</SelectLabel>
-          <SelectItem value="apple">Apple</SelectItem>
-          <SelectItem value="banana">Banana</SelectItem>
-          <SelectItem value="blueberry">Blueberry</SelectItem>
-          <SelectItem value="grapes">Grapes</SelectItem>
-          <SelectItem value="pineapple">Pineapple</SelectItem>
+            {
+                cats.map((cat) => <SelectItem key={cat._id} value={cat.category}>{cat.category}</SelectItem>)
+            }
         </SelectGroup>
       </SelectContent>
     </Select>

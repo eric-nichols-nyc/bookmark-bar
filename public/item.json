@@ -1,0 +1,17 @@
+{
+    "_id": {
+      "$oid": "65ef4e270dd59490aa4e246e"
+    },
+    "url": "https://www.youtube.com/watch?v=xiE7ebXOqlY",
+    "title": "Data Breakpoints in Visual Studio Code",
+    "description": "Sign up for Pure Virtual C++ 2022, a free one-day virtual conference for the whole C++ community running on April 26th: https://aka.ms/pure-virtual-cppData b...",
+    "image": "http://res.cloudinary.com/djwmr47ao/image/upload/v1710181926/nj0tzerfsg7njcet6eny.jpg",
+    "category": "youtube",
+    "createdAt": {
+      "$date": "2024-03-11T18:32:07.645Z"
+    },
+    "__v": 0,
+    "tags": [
+      "react"
+    ]
+  }
