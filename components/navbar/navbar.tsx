@@ -3,7 +3,7 @@ import Image from "next/image"
 import Link from "next/link"
 export const Navbar = () => {
   return (
-    <div className="relative flex h-12 w-full border p-2 drop-shadow-md">
+    <header className="relative flex h-12 w-full border p-2 drop-shadow-md">
       <div className="relative flex h-full w-32 flex-1 items-start justify-start">
         <Link href="/">
           <Image src="/images/logo.svg" alt="logo" width={40} height={35} />
@@ -17,6 +17,6 @@ export const Navbar = () => {
           <CircleUserRound />
         </div>
       </div>
-    </div>
+    </header>
   )
 }
