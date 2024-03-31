@@ -4,7 +4,7 @@ import { X } from "lucide-react"
 import Image from "next/image"
 import * as React from "react"
 
-import { getBookmark, getBookmarkTags } from "@/actions/bookmarks/bookmark-actions"
+import { getBookmark, getBookmarkTags, updateBookmark } from "@/actions/bookmarks/bookmark-actions"
 import { getCategories } from "@/actions/categories/category-actions"
 import { Button } from "@/components/ui/button"
 import { Drawer, DrawerClose, DrawerContent, DrawerFooter, DrawerHeader, DrawerTitle } from "@/components/ui/drawer"
@@ -67,8 +67,27 @@ export function EditDrawer() {
     e.preventDefault()
   }
 
+  const handleUpdateBookmark = async (data: FormData) => {
+    const test = {
+      _id: current!._id,
+      url: current!.url,
+      title: "test",
+      description: "test",
+      category: "github",
+      tags: ["typesrcript","react"],
+    }
+    // validate data
+   console.log(Object.fromEntries(data))
+    try{
+      await updateBookmark(currentBookmarkId as string, test)
+      alert('success')
+    }catch(e){
+      console.error(e)
+    }
+  }
+
   const { show, setToggle } = useShowEditBookmarkForm((state) => ({ show: state.show, setToggle: state.setToggle }))
-  if (!current) return <div>Loading...</div>
+  if (!current) return <></>
   return (
     <div className="border">
       <Drawer open={show}>
@@ -84,39 +103,41 @@ export function EditDrawer() {
                   className="rounded-md object-cover"
                 />
               </AspectRatio>
-              <form>
-                <Input
-                  name="title"
-                  onFocus={(e) => handleOnFocus(e)}
-                  value={current.title}
-                  onChange={() => console.log("change")}
-                />
-                <Textarea name="description" value={current.description} onChange={() => console.log("change")} />
-                <Select value={current.category}>
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectGroup>
-                      {categories.map((cat: Category) => (
-                        <SelectItem key={cat._id} value={cat.category}>
-                          {cat.category}
-                        </SelectItem>
-                      ))}
-                    </SelectGroup>
-                  </SelectContent>
-                </Select>
-                <MSTest tags={tags} value={current.tags as []} />
-              </form>
             </DrawerHeader>
-            <DrawerFooter>
-              <Button>Submit</Button>
-              <DrawerClose asChild>
-                <Button variant="outline" onClick={() => setToggle(false)}>
-                  Cancel
-                </Button>
-              </DrawerClose>
-            </DrawerFooter>
+
+            <form action={handleUpdateBookmark}>
+              <Input
+                name="title"
+                onFocus={(e) => handleOnFocus(e)}
+                defaultValue={current.title}
+                onChange={() => console.log("change")}
+              />
+              <Textarea name="description" defaultValue={current.description} onChange={() => console.log("change")} />
+              <Select name="category" value={current.category}>
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    {categories.map((cat: Category) => (
+                      <SelectItem key={cat._id} value={cat.category}>
+                        {cat.category}
+                      </SelectItem>
+                    ))}
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+              <MSTest tags={tags} value={current.tags as []} />
+
+              <DrawerFooter>
+                <Button>Submit</Button>
+                <DrawerClose asChild>
+                  <Button variant="outline" onClick={() => setToggle(false)}>
+                    Cancel
+                  </Button>
+                </DrawerClose>
+              </DrawerFooter>
+            </form>
           </div>
           <X className="absolute right-3 top-3 cursor-pointer text-black" onClick={() => setToggle(false)} />
         </DrawerContent>

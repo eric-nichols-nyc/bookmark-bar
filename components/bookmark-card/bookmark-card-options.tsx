@@ -31,8 +31,8 @@ export const BookmarkCardDropdown = ({_id}:BookmarkActionsProp) => {
   }
 
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger>
+    <DropdownMenu  data-testid="cardoptions">
+      <DropdownMenuTrigger id="cardoptions">
         <div className="relative flex items-center justify-center ml-1 size-9 rounded-full border border-white bg-black">
           <DotsHorizontalIcon color="white" className="size-4" />
         </div>

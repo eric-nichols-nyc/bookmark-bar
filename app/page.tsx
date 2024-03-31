@@ -40,7 +40,7 @@ async function fetchCategories() {
 export default async function Web() {
   const categories = await fetchCategories()
   return (
-    <section className="container w-full border bg-white">
+    <section className="container w-full border">
       <div className="mx-auto grid max-w-screen-lg grid-flow-row-dense grid-cols-4 grid-rows-4 gap-2 px-4 py-8 sm:py-16 lg:px-6">
         {categories &&
           categories.length > 0 &&

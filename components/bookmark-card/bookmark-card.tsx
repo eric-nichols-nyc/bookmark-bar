@@ -9,14 +9,13 @@ import { Badge } from "../badge/badge"
 export const BookmarkCard = ({ _id, url, title, description, image, tags }: BookmarkData) => {
   return (
     <div key={title} className="relative flex flex-col overflow-hidden border drop-shadow-md">
-      <div className="relative mb-4 flex h-[120px] w-full">
+      <div className="relative mb-4 flex h-[110px] w-full overflow-hidden">
         <a className="cursor-pointer hover:underline" href={url} rel="noreferrer" target="_blank">
           <Image
             src={image || "/images/placeholder.webp"}
             alt="Photo by Drew Beamer"
-            fill
-            objectFit="contain"
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            width={200}
+            height={110}
           />
         </a>
       </div>

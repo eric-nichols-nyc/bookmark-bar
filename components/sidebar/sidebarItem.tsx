@@ -1,3 +1,4 @@
+import { Folder } from 'lucide-react'
 import Link from 'next/link'
 import React from 'react'
 import { Category } from '@/types'
@@ -10,7 +11,7 @@ type SidebarType = {
 const SidebarItem = ({category}:SidebarType) => {
   return (
     <Link id={category._id} href={`/bookmark/${category._id}/${category.category}`}>
-     <Button className="w-full h-8 rounded-none">{category.category}</Button>
+     <Button className="w-full h-8 rounded-none flex justify-start gap-2"><Folder size={16}/>{category.category}</Button>
     </Link>
   )
 }

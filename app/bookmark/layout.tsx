@@ -1,5 +1,4 @@
 import type { Metadata } from "next"
-import { EditDrawer } from "@/components/bookmark-form/edit-form"
 import { ServerForm } from "@/components/server-form/server-form"
 import { Sidebar } from "@/components/sidebar/sidebar"
 
@@ -20,11 +19,11 @@ export default function BookmarkLayout({
   children: React.ReactNode
 }>) {
   return (
-    <div className="flex">
+    <div className="flex mt-12">
       <div className="border">
         <Sidebar />
       </div>
-      <div>
+      <div className="p-5">
         <div className="z-10">
           <ServerForm />
         </div>
