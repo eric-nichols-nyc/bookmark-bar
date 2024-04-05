@@ -3,9 +3,14 @@
 import mongoose from "mongoose";
 
 const categorySchema = new mongoose.Schema({
-    category: {
+    name: {
         type: String,
         trim: true,
+    },
+    userId: {
+        type: String,
+        trim: true,
+        required: true,
     },
     createdAt: {
         type: Date,

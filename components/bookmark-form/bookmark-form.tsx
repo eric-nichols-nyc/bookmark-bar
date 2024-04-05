@@ -88,8 +88,8 @@ export const BookmarkForm = ({ categories, bookmarktags }: FormProps) => {
               </SelectTrigger>
               <SelectContent>
                 {categories.map((cat) => (
-                  <SelectItem key={cat._id} value={cat.category} className="bg-slate-50 hover:bg-slate-100">
-                    {cat.category}
+                  <SelectItem key={cat._id} value={cat.name} className="bg-slate-50 hover:bg-slate-100">
+                    {cat.name}
                   </SelectItem>
                 ))}
               </SelectContent>

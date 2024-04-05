@@ -10,8 +10,8 @@ type SidebarType = {
 
 const SidebarItem = ({category}:SidebarType) => {
   return (
-    <Link id={category._id} href={`/bookmark/${category._id}/${category.category}`}>
-     <Button className="w-full h-8 rounded-none flex justify-start gap-2"><Folder size={16}/>{category.category}</Button>
+    <Link id={category._id} href={`/bookmark/${category._id}/${category.name}`}>
+     <Button className="w-full h-8 rounded-none flex justify-start gap-2"><Folder size={16}/>{category.name}</Button>
     </Link>
   )
 }

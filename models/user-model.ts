@@ -2,15 +2,10 @@
 // Path: models/bookmark-model.ts
 import mongoose from "mongoose";
 
-const tagSchema = new mongoose.Schema({
-    name: {
-        type: String,
-        trim: true,
-    },
+const userSchema = new mongoose.Schema({
     userId: {
         type: String,
         trim: true,
-        required: true,
     },
     createdAt: {
         type: Date,
@@ -18,4 +13,4 @@ const tagSchema = new mongoose.Schema({
     },
 });
 
-export const Tag = mongoose.models.Tag || mongoose.model("Tag", tagSchema);
+export const User = mongoose.models.User || mongoose.model("User", userSchema);

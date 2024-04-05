@@ -1,4 +1,3 @@
-import { Folder } from "lucide-react"
 import Image from "next/image"
 import { getBookmarksByCategory } from "@/actions/bookmarks/bookmark-actions"
 import { EditDrawer } from "@/components/bookmark-form/edit-form"

@@ -2,6 +2,8 @@ import type { Metadata } from "next"
 import "./globals.css"
 import { Navbar } from "@/components/navbar/navbar"
 import { Sidebar } from "@/components/sidebar/sidebar"
+// eslint-disable-next-line import/order
+import { ClerkProvider } from "@clerk/nextjs"
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -20,13 +22,14 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en">
+    <ClerkProvider>
+      <html lang="en" suppressHydrationWarning>
       <body>
-        <Navbar />
-        <main className="flex w-full">
-            <div className="w-full">{children}</div>
+        <main className="flex size-full">
+            <div className="size-full">{children}</div>
         </main>
       </body>
     </html>
+    </ClerkProvider>
   )
 }

@@ -1,10 +1,17 @@
+import { currentUser, SignOutButton } from "@clerk/nextjs"
 import { CircleUserRound } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
-export const Navbar = () => {
+import AuthDropdown from "@/app/(dashboard)/_components/auth-dropdown"
+import { Button } from "../ui/button"
+
+
+export const Navbar = async() => {
+  const user = await currentUser();
+ 
   return (
-    <header className="fixed top-0 flex h-12 w-full p-2 drop-shadow-md bg-slate-400 z-20">
-      <div className="relative flex h-full w-32 flex-1 items-start justify-start">
+    <header className="sticky top-0 flex h-12 w-full p-2 drop-shadow-md bg-slate-400 z-20">
+      <div className="relative container flex h-full w-32 flex-1 items-start justify-start">
         <Link href="/">
           <Image src="/images/logo.svg" alt="logo" width={40} height={35} />
         </Link>
@@ -15,7 +22,14 @@ export const Navbar = () => {
       </div>
       <div className="flex flex-1 justify-end">
         <div>
-          <CircleUserRound />
+          {
+            user ? <AuthDropdown /> : <Link href="sign-in"><Button>Sign in</Button></Link> 
+          }
+          {/* <CircleUserRound />
+          }
+          <AuthDropdown />
+          {/* <CircleUserRound />
+          <SignOutButton /> */}
         </div>
       </div>
     </header>

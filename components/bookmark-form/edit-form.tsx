@@ -77,7 +77,7 @@ export function EditDrawer() {
       tags: ["typesrcript","react"],
     }
     // validate data
-   console.log(Object.fromEntries(data))
+   // console.log(Object.fromEntries(data))
     try{
       await updateBookmark(currentBookmarkId as string, test)
       alert('success')
@@ -120,8 +120,8 @@ export function EditDrawer() {
                 <SelectContent>
                   <SelectGroup>
                     {categories.map((cat: Category) => (
-                      <SelectItem key={cat._id} value={cat.category}>
-                        {cat.category}
+                      <SelectItem key={cat._id} value={cat.name}>
+                        {cat.name}
                       </SelectItem>
                     ))}
                   </SelectGroup>

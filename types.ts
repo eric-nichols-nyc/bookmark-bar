@@ -28,7 +28,7 @@ export type FieldErrors<T extends object> = {
 
   export type Category = {
     _id: string;
-    category: string;
+    name: string;
   };
   
   export type Tag = {
