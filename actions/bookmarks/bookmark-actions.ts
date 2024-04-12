@@ -22,6 +22,12 @@ export const getBookmarks = async () => {
   }
 }
 
+// get bookmarks by user id
+export const getBookmarksByUser = async (id: string) => {
+  // get current users with clerf
+  
+}
+
 export const getBookmarkTags = async () => {
   try {
     await connectDB()

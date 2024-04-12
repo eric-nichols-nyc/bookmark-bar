@@ -1,9 +1,10 @@
 import { WebhookEvent } from '@clerk/nextjs/server'
-import { User } from '@/models/user-model';
 import { headers } from 'next/headers'
 import { Webhook } from 'svix'
+import { prisma } from '@/db/prisma';
  
 export async function POST(req: Request) {
+  console.log('Webhook received')
  
   // You can find this in the Clerk Dashboard -> Webhooks -> choose the webhook
   const WEBHOOK_SECRET = process.env.WEBHOOK_SECRET
@@ -53,12 +54,25 @@ export async function POST(req: Request) {
   // Get the ID and type
   const { id } = evt.data;
   const eventType = evt.type;
-
+  let user;
     // add user to db
-    const user = await User.create({
-      userId: evt.data.id,
-    });
+    if (eventType === "user.created" || eventType === "user.updated") {
+      const { id, email_addresses } = evt.data;
+      const email = email_addresses[0].email_address;
+      if(!email) {
+        return new Response('Error occured -- no email', {
+          status: 400
+        })
+      }
   
+      user = await prisma.user.create({
+        data: {
+          externalId: id as string,
+          email: email_addresses[0].email_address,
+        },
+      });
+    }
+
   console.log('user', user)
   console.log(`Webhook with and ID of ${id} and type of ${eventType}`)
   console.log('Webhook body:', body)

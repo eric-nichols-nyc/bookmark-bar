@@ -1,13 +1,14 @@
-import { currentUser, SignOutButton } from "@clerk/nextjs"
-import { CircleUserRound } from "lucide-react"
+import { currentUser } from "@clerk/nextjs"
 import Image from "next/image"
 import Link from "next/link"
+import { redirect } from "next/navigation"
 import AuthDropdown from "@/app/(dashboard)/_components/auth-dropdown"
 import { Button } from "../ui/button"
 
 
 export const Navbar = async() => {
   const user = await currentUser();
+  if(!user) redirect("/sign-in")
  
   return (
     <header className="sticky top-0 flex h-12 w-full p-2 drop-shadow-md bg-slate-400 z-20">
@@ -25,11 +26,6 @@ export const Navbar = async() => {
           {
             user ? <AuthDropdown /> : <Link href="sign-in"><Button>Sign in</Button></Link> 
           }
-          {/* <CircleUserRound />
-          }
-          <AuthDropdown />
-          {/* <CircleUserRound />
-          <SignOutButton /> */}
         </div>
       </div>
     </header>

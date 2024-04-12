@@ -1,17 +1,18 @@
 "use client"
+import { Folder, Tag } from "@prisma/client";
 import { useState } from "react"
 import { addBookmark, handleFetchOpengraph, uploadToCloud } from "@/actions/bookmarks/bookmark-actions"
 import { addBookmarkSchema } from "@/actions/bookmarks/schemas"
 import { Input } from "@/components/input/input"
 import { MultiSelect, MultiSelectOption } from "@/components/multi-select/multi-select"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/select/select"
-import { BookmarkData, BookmarkError, Category, FieldErrors, Tag } from "@/types"
+import { BookmarkData, BookmarkError, FieldErrors } from "@/types"
 
 type FormProps = {
-  categories: Category[]
+  folders: Folder[]
   bookmarktags: Tag[]
 }
-export const BookmarkForm = ({ categories, bookmarktags }: FormProps) => {
+export const BookmarkForm = ({ folders, bookmarktags }: FormProps) => {
   const [fieldErrors, setFieldErrors] = useState<FieldErrors<BookmarkError> | undefined>()
 
   const [tags, setTags] = useState<string[] | undefined>()
@@ -84,12 +85,12 @@ export const BookmarkForm = ({ categories, bookmarktags }: FormProps) => {
           <div className="w-[200px] bg-slate-100 mr-2">
             <Select name="category" onValueChange={(value: string) => console.log(value)}>
               <SelectTrigger>
-                <SelectValue placeholder="category" />
+                <SelectValue placeholder="folder" />
               </SelectTrigger>
               <SelectContent>
-                {categories.map((cat) => (
-                  <SelectItem key={cat._id} value={cat.name} className="bg-slate-50 hover:bg-slate-100">
-                    {cat.name}
+                {folders.map((fld) => (
+                  <SelectItem key={fld.id} value={fld.name} className="bg-slate-50 hover:bg-slate-100">
+                    {fld.name}
                   </SelectItem>
                 ))}
               </SelectContent>
@@ -103,7 +104,7 @@ export const BookmarkForm = ({ categories, bookmarktags }: FormProps) => {
             onChange={onTagsChange}
           >
             {bookmarktags.map((opt) => (
-              <MultiSelectOption key={opt._id} label={opt.name} value={opt.name} />
+              <MultiSelectOption key={opt.id} label={opt.name} value={opt.name} />
             ))}
           </MultiSelect>
         </div>

@@ -26,7 +26,7 @@ export type FieldErrors<T extends object> = {
 
   export type UpdateBookmarkData = Omit<BookmarkData, "url">;
 
-  export type Category = {
+  export type Folder = {
     _id: string;
     name: string;
   };
