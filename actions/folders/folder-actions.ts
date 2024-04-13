@@ -1,24 +1,35 @@
 "use server";
+import { Folder } from "@prisma/client";
 import { revalidatePath } from "next/cache";
+import { prisma } from '@/db/prisma';
 import { connectDB } from "@/lib/db";
 import { Category } from "@/models/category-model";
 import { addCategorySchema } from "./schemas";
-
 // return all bookmarks
-export const getCategories = async () => {
+export const getFolders = async (id:string) => {
+    // find the user
+    const user = await prisma.user.findUnique({
+        where: {
+            externalId: id,
+        },
+    });
     try {
-        const conn =  await connectDB()
-        const bookmarks = await Category.find();
-        return JSON.parse(JSON.stringify(bookmarks));
+        const bookmarks = await prisma.folder.findMany({
+            where: {
+                userId: user?.id,
+            },
+        });
+        return bookmarks;
+
     } catch (error: any) {
-        console.error(`Error poop: ${error.message}`)
+        console.error(`Error getting folders from server: ${error.message}`)
         throw new Error(error.message)
     }
 }
 
 
 // add bookmark to db
-export const addCategory = async (category: string) => {
+export const addFolder = async (category: string) => {
     try {
         await connectDB()
 

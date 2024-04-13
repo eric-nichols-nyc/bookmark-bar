@@ -1,15 +1,19 @@
-import React from 'react'
-import { getCategories } from '@/actions/categories/category-actions'
-import { Category } from '@/types';
-import SidebarItem from './sidebarItem'
-export const Sidebar = async() => {
-    const categories = await getCategories();
+import { auth } from "@clerk/nextjs"
+import { Folder } from "@prisma/client"
+import React from "react"
+import { getFolders } from "@/actions/folders/folder-actions"
+import SidebarItem from "./sidebarItem"
+export const Sidebar = async () => {
+  const { userId } = auth()
+  if(!userId) {
+    throw new Error("userId not found")
+  }
+  const folders = await getFolders(userId)
   return (
     <div className="w-[260px]">
-        {
-            categories.map((cat:Category) => <SidebarItem key={cat._id} category={cat}/>)
-        }
+      {folders.map((cat: Folder) => (
+        <SidebarItem key={cat.id} category={cat} />
+      ))}
     </div>
   )
 }
-

@@ -1,8 +1,10 @@
 import { auth } from "@clerk/nextjs";
+import { Folder } from "@prisma/client";
 import React from 'react'
 import { BookmarkForm } from '@/components/bookmark-form/bookmark-form'
 import { Search } from '@/components/search/search'
 import { prisma } from '@/db/prisma';
+import { HomeCard } from "../_components/home-card";
 //add 
 
 const BookMarksPage = async() => {
@@ -53,15 +55,8 @@ const BookMarksPage = async() => {
       <h2>Your Folders</h2>
       <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
        {
-        folders.length ? folders.map((folder, i) => (
-          <div key={i} className="bg-white p-4 rounded-lg shadow-md">
-            <div className="flex justify-between items-center">
-              <h1 className="text-xl font-bold">{folder.name}</h1>
-              <div>
-                <button className="text-red-500">Delete</button>
-              </div>
-            </div>
-          </div>
+        folders.length ? folders.map((folder:Folder) => (
+          <HomeCard key={folder.id} folder={folder}/>   
         )) : <div className="w-full text-center">No folders found</div>
        }
       </div>

@@ -2,6 +2,7 @@
 import { v2 as cloudinary } from "cloudinary";
 import { fetch } from "fetch-opengraph";
 import { revalidatePath } from "next/cache";
+import { prisma } from "@/db/prisma";
 import { connectDB } from "@/lib/db";
 import { Category } from "@/models/category-model";
 import { Tag } from "@/models/tag-model";
@@ -18,14 +19,24 @@ export const getBookmarks = async () => {
     return JSON.parse(JSON.stringify(bookmarks));
   } catch (error: any) {
     console.error(`Error: ${error.message}`)
-    return {message: error.message}
+    return { message: error.message }
   }
 }
 
 // get bookmarks by user id
-export const getBookmarksByUser = async (id: string) => {
-  // get current users with clerf
-  
+export const getBookmarksByFolderId = async (id: string) => {
+  try {
+    const bookmarks = await prisma.url.findMany({
+      where: {
+        folderId: id,
+      },
+    });
+
+    return bookmarks;
+  } catch (e) {
+    console.log("error with bookmarks action", e)
+  }
+
 }
 
 export const getBookmarkTags = async () => {
@@ -43,7 +54,7 @@ export const getBookmarkTags = async () => {
 export const updateBookmarks = async () => {
   try {
     await connectDB()
-    const bookmarks = await Bookmark.updateMany({ $set: { tags: ["react"] } }); 
+    const bookmarks = await Bookmark.updateMany({ $set: { tags: ["react"] } });
 
     return JSON.parse(JSON.stringify(bookmarks));
   } catch (error: any) {
@@ -58,9 +69,9 @@ export const getBookmarksByCategory = async (id: string) => {
     const bookmarks = await Bookmark.find({
       category: category.category,
     }).sort({ createdAt: -1 });
-  
-//     // return JSON.parse(JSON.stringify(bookmarks));
-    return JSON.parse(JSON.stringify({bookmarks, category: category.category}));
+
+    //     // return JSON.parse(JSON.stringify(bookmarks));
+    return JSON.parse(JSON.stringify({ bookmarks, category: category.category }));
   } catch (error: any) {
     console.error(`Error: ${error.message}`)
   }
@@ -72,7 +83,7 @@ export const handleFetchOpengraph = async (url: string) => {
     return data;
   } catch (error: any) {
     console.error(`OOPS!!! Error: ${error.message}`);
-    return {message: 'There was a error fetching the data'}
+    return { message: 'There was a error fetching the data' }
   }
 };
 
@@ -135,7 +146,7 @@ export const deleteBookmark = async (id: string) => {
     await Bookmark.findByIdAndDelete(id);
     // revalidate path
     revalidatePath('/')
-    return {success: 'Bookmark was deleted'}
+    return { success: 'Bookmark was deleted' }
   }
   catch (error: any) {
     console.error(`Error: ${error.message}`);
@@ -148,7 +159,7 @@ export const deleteBookmark = async (id: string) => {
 export const updateBookmark = async (id: string, data: BookmarkData) => {
   try {
     await connectDB()
-    const bookmark = await Bookmark.findById (id);
+    const bookmark = await Bookmark.findById(id);
     bookmark.url = data.url;
     bookmark.title = data.title;
     bookmark.description = data.description;

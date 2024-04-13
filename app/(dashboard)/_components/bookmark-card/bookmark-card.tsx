@@ -4,7 +4,7 @@ import Image from "next/image"
 import React from "react"
 import { BookmarkData } from "@/types"
 import BookmarkCardDropdown from "./bookmark-card-options"
-import { Badge } from "../badge/badge"
+import { Badge } from "../../../../components/badge/badge"
 
 export const BookmarkCard = ({ _id, url, title, description, image, tags }: BookmarkData) => {
   return (

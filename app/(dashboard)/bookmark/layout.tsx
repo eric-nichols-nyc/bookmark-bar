@@ -19,13 +19,13 @@ export default function BookmarkLayout({
   children: React.ReactNode
 }>) {
   return (
-    <div className="flex mt-12">
+    <div className="flex w-full">
       <div className="border">
         <Sidebar />
       </div>
-      <div className="p-5">
+      <div className="container">
         <div className="z-10">
-          <ServerForm />
+          {/* <ServerForm /> */}
         </div>
         <div>{children}</div>
       </div>

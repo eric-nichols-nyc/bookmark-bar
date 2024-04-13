@@ -1,5 +1,5 @@
 import { getBookmarkTags } from '@/actions/bookmarks/bookmark-actions';
-import { getCategories } from '@/actions/categories/category-actions';
+import { getCategories } from '@/actions/folders/folder-actions';
 import { BookmarkForm } from '../bookmark-form/bookmark-form';
 
 async function fetchCategories(){

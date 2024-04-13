@@ -5,7 +5,7 @@ import Image from "next/image"
 import * as React from "react"
 
 import { getBookmark, getBookmarkTags, updateBookmark } from "@/actions/bookmarks/bookmark-actions"
-import { getCategories } from "@/actions/categories/category-actions"
+import { getCategories } from "@/actions/folders/folder-actions"
 import { Button } from "@/components/ui/button"
 import { Drawer, DrawerClose, DrawerContent, DrawerFooter, DrawerHeader, DrawerTitle } from "@/components/ui/drawer"
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"

@@ -2,7 +2,7 @@
 import { PlusIcon, SendHorizontal, X } from "lucide-react"
 import { useState } from "react"
 import React from "react"
-import { addCategory } from "@/actions/categories/category-actions"
+import { addCategory } from "@/actions/folders/folder-actions"
 import { AspectRatio } from "../ui/aspect-ratio"
 
 export const NewCategoryForm = () => {
