@@ -2,7 +2,7 @@
 
 import { FolderIcon } from "lucide-react"
 import { useEffect, useState } from "react"
-import { getBookmarksByCategory } from "@/actions/bookmarks/bookmark-actions"
+import { getBookmarksByCategory } from "@/actions/mongoose/bookmarks/mongoose-actions"
 import { BookmarkData, Category } from "@/types"
 import { BookmarkCard } from "../../app/(dashboard)/_components/bookmark-card/bookmark-card"
 

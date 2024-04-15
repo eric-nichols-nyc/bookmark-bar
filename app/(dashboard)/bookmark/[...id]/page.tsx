@@ -1,8 +1,7 @@
 import Image from "next/image"
-import { getBookmarksByCategory, getBookmarksByFolderId } from "@/actions/bookmarks/bookmark-actions"
-import { getFolders } from "@/actions/folders/folder-actions"
-import { EditDrawer } from "@/components/bookmark-form/edit-form"
+import { getBookmarksByFolderId } from "@/actions/prisma/folders/folder-actions"
 import BMSection from "@/app/(dashboard)/_components/bookmark-section/bookmark-section"
+import { EditDrawer } from "@/components/bookmark-form/edit-form"
 const fetchBookmarks = async (id: string) => {
   try {
     const bookmarks = await getBookmarksByFolderId(id)

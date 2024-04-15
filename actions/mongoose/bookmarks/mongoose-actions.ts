@@ -2,13 +2,12 @@
 import { v2 as cloudinary } from "cloudinary";
 import { fetch } from "fetch-opengraph";
 import { revalidatePath } from "next/cache";
-import { prisma } from "@/db/prisma";
 import { connectDB } from "@/lib/db";
 import { Category } from "@/models/category-model";
 import { Tag } from "@/models/tag-model";
 import { BookmarkData } from "@/types";
 import { addBookmarkSchema } from "./schemas";
-import { Bookmark } from "../../models/bookmark-model";
+import { Bookmark } from "../../../models/bookmark-model";
 
 // // return all bookmarks
 export const getBookmarks = async () => {
@@ -25,17 +24,7 @@ export const getBookmarks = async () => {
 
 // get bookmarks by user id
 export const getBookmarksByFolderId = async (id: string) => {
-  try {
-    const bookmarks = await prisma.url.findMany({
-      where: {
-        folderId: id,
-      },
-    });
-
-    return bookmarks;
-  } catch (e) {
-    console.log("error with bookmarks action", e)
-  }
+  console.log("id ", id)
 
 }
 

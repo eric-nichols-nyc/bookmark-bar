@@ -1,15 +1,15 @@
 "use client"
 import { Folder, Tag } from "@prisma/client";
 import { useState } from "react"
-import { addBookmark, handleFetchOpengraph, uploadToCloud } from "@/actions/bookmarks/bookmark-actions"
-import { addBookmarkSchema } from "@/actions/bookmarks/schemas"
+import { addBookmark, handleFetchOpengraph, uploadToCloud } from "@/actions/mongoose/bookmarks/mongoose-actions"
+import { addBookmarkSchema } from "@/actions/mongoose/bookmarks/schemas"
 import { Input } from "@/components/input/input"
 import { MultiSelect, MultiSelectOption } from "@/components/multi-select/multi-select"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/select/select"
 import { BookmarkData, BookmarkError, FieldErrors } from "@/types"
 
 type FormProps = {
-  folders: Folder[]
+  folders: Folder[] | undefined
   bookmarktags: Tag[]
 }
 export const BookmarkForm = ({ folders, bookmarktags }: FormProps) => {
@@ -88,7 +88,7 @@ export const BookmarkForm = ({ folders, bookmarktags }: FormProps) => {
                 <SelectValue placeholder="folder" />
               </SelectTrigger>
               <SelectContent>
-                {folders.map((fld) => (
+                {folders?.map((fld) => (
                   <SelectItem key={fld.id} value={fld.name} className="bg-slate-50 hover:bg-slate-100">
                     {fld.name}
                   </SelectItem>

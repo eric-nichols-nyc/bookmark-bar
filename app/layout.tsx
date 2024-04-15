@@ -1,7 +1,7 @@
 import type { Metadata } from "next"
 import "./globals.css"
 import { Navbar } from "@/components/navbar/navbar"
-import { Sidebar } from "@/components/sidebar/sidebar"
+import { Sidebar } from "@/app/(dashboard)/_components/sidebar/sidebar"
 // eslint-disable-next-line import/order
 import { ClerkProvider } from "@clerk/nextjs"
 

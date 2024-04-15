@@ -1,28 +1,28 @@
-import { getBookmarkTags } from '@/actions/bookmarks/bookmark-actions';
-import { getCategories } from '@/actions/folders/folder-actions';
+import { getTags } from '@/actions/prisma/folders/folder-actions';
+import { getFolders } from '@/actions/prisma/folders/folder-actions';
 import { BookmarkForm } from '../bookmark-form/bookmark-form';
 
 async function fetchCategories(){
     try{
-      const categories = await getCategories();
-      return categories;
+      const folders = await getFolders();
+      return folders;
     }catch(e){
       console.log('error with categories')
     }
   }
   
   
-  async function getTags(){
-    const tags = await getBookmarkTags();
+  async function getUserTags(){
+    const tags = await getTags();
     return tags;
   }
   
 
 export const ServerForm = async () => {
-    const categories = await fetchCategories();
-    const tags = await getTags();
+    const folders = await fetchCategories();
+    const tags = await getUserTags();
   return (
-    <BookmarkForm categories={categories} bookmarktags={tags}/>
+    <BookmarkForm folders={folders} bookmarktags={tags}/>
 
   )
 }

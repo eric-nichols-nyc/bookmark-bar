@@ -1,7 +1,7 @@
 "use client"
 import { DotsHorizontalIcon } from "@radix-ui/react-icons"
 import React from "react"
-import { deleteBookmark } from "@/actions/bookmarks/bookmark-actions"
+import { deleteBookmark } from "@/actions/prisma/folders/folder-actions"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -22,7 +22,7 @@ export const BookmarkCardDropdown = ({_id}:BookmarkActionsProp) => {
     if(!id) return console.error("No id")
     try {
       const res = await deleteBookmark(id)
-      if (res.success) {
+      if (res) {
         alert("Deleted")
       }
     } catch (error) {

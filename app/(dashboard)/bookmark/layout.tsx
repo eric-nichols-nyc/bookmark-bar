@@ -1,6 +1,6 @@
 import type { Metadata } from "next"
 import { ServerForm } from "@/components/server-form/server-form"
-import { Sidebar } from "@/components/sidebar/sidebar"
+import { Sidebar } from "@/app/(dashboard)/_components/sidebar/sidebar"
 
 export const metadata: Metadata = {
   title: "Create Next App",
