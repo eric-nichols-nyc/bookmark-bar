@@ -1,13 +1,26 @@
+"use client"
+import { Url } from "@prisma/client";
+import { useEffect, useState } from "react";
+import { getBookmarksByFolderId } from "@/actions/prisma/folders/folder-actions";
+import { Button } from "@/components/ui/button";
 
-const BookmarkList = async ({id}:{id: string}) => {
-    // const bookmarks = await getBookmarks();
+const BookmarkList = ({id}:{id: string}) => {
+    const [items, setItems] = useState<Url[]>([])
+    useEffect(() => {
+        const getBookmarks = async () => {
+            const bookmarks = await getBookmarksByFolderId(id);
+            if(bookmarks)
+            setItems(bookmarks);
+        }
+        getBookmarks();
+    }
+    , [id])
     return (
-        <div>
-            {/* {bookmarks.map((bookmark) => (
-                <Bookmark key={bookmark.id} bookmark={bookmark} />
-            ))} */}
-            <h1>Bookmark List {id}</h1>
-        </div>
+        <ul>
+            {items?.map((bookmark:Url) => (
+                <li key={bookmark.id}><Button variant="outline" className="w-full">{bookmark.title}</Button></li>
+            ))}
+        </ul>
     );
 }
 

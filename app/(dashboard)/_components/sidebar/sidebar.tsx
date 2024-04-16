@@ -9,9 +9,9 @@ export const Sidebar = async () => {
   if (!userId) {
     throw new Error("userId not found")
   }
-  const folders = await getFolders(userId)
+  const folders = await getFolders()
   return (
-    <div className="w-[260px]">
+    <div className="w-[260px] z-index[10]">
       <AuthDropdown />
       <div>
         {folders.map((cat: Folder) => (

@@ -20,7 +20,7 @@ export default function BookmarkLayout({
 }>) {
   return (
     <div className="flex w-full">
-      <div className="border">
+      <div className="border z-10">
         <Sidebar />
       </div>
       <div className="container">
