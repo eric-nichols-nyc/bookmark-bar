@@ -12,7 +12,9 @@ export const Sidebar = async () => {
   const folders = await getFolders()
   return (
     <div className="w-[260px] z-index[10]">
-      <AuthDropdown />
+      <div className="w-full">
+       <AuthDropdown />
+      </div>
       <div>
         {folders.map((cat: Folder) => (
           <SidebarItem key={cat.id} category={cat} />

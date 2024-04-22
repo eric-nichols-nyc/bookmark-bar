@@ -14,7 +14,7 @@ type Errors = {
   notfound?: string
 }
 export const SigninForm = () => {
-    const router = useRouter()
+  const router = useRouter()
 
   const { isLoaded, signIn, setActive } = useSignIn()
 
@@ -25,8 +25,9 @@ export const SigninForm = () => {
     // return () => {
     //     setErrors(null);
     // }
-    console.log(errors?.email)
+    console.log('ERR ', errors)
   }, [errors])
+
   const handleSignin = async (formData: FormData) => {
     if (!isLoaded) return
 
@@ -61,11 +62,11 @@ export const SigninForm = () => {
         console.log(result)
       }
     } catch (err: any) {
-        console.error(err)
-    //   setErrors((prev) => ({
-    //     ...prev, // Copy the old fields
-    //     notfound: err.errors[0].message, // But override this one
-    //   }))
+      console.error("OOPS Errors", err.errors[0].message)
+      setErrors((prev) => ({
+        ...prev, // Copy the old fields
+        notfound: err.errors[0].message, // But override this one
+      }))
     } finally {
       setLoading(false)
     }
@@ -74,7 +75,7 @@ export const SigninForm = () => {
     <form action={handleSignin}>
       <div>
         <Label htmlFor="email">Email</Label>
-        <Input type="email" id="email" name="email" />
+        <Input data-testid="email" type="email" id="email" name="email" />
         {errors?.email &&
           errors.email.map((error, index) => (
             <div className="text-red-500" key={index}>
@@ -84,7 +85,7 @@ export const SigninForm = () => {
       </div>
       <div>
         <Label htmlFor="password">Password</Label>
-        <Input type="password" id="password" name="password" />
+        <Input data-testid="password"  type="password" id="password" name="password" />
         {errors?.password &&
           errors.password.map((error, index) => (
             <div className="text-red-500" key={index}>
@@ -92,9 +93,7 @@ export const SigninForm = () => {
             </div>
           ))}
       </div>
-      <div>
-        <Button type="submit">Sign In</Button>
-      </div>
+      <Button data-testid="login-button" type="submit">Sign In</Button>
       {errors?.notfound && <div className="text-red-500">{errors.notfound}</div>}
     </form>
   )

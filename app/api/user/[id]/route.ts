@@ -30,7 +30,7 @@ export async function GET(req: NextRequest, context: any) {
 }
 export async function POST(req: NextRequest, context: any) {
     const { params } = context;
-    const id = params.userId;
+    const id = params.id;
 
 
       const { isSignedIn } = await clerkClient.authenticateRequest({ request: req })

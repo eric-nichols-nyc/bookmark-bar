@@ -1,30 +1,30 @@
 "use client"
+import { Folder, Tag, Url } from "@prisma/client"
 import { AspectRatio } from "@radix-ui/react-aspect-ratio"
 import { X } from "lucide-react"
 import Image from "next/image"
 import * as React from "react"
-
-import { getBookmark, getBookmarkTags, updateBookmark } from "@/actions/mongoose/bookmarks/mongoose-actions"
-import { getCategories } from "@/actions/prisma/folders/folder-actions"
+import { getBookmark, getFolders, getTags,updateBookmark  } from "@/actions/prisma/folders/folder-actions"
 import { Button } from "@/components/ui/button"
 import { Drawer, DrawerClose, DrawerContent, DrawerFooter, DrawerHeader, DrawerTitle } from "@/components/ui/drawer"
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { useShowEditBookmarkForm } from "@/store/useShowEditBookmarkForm"
-import { BookmarkData, Category } from "@/types"
-import { MSTest } from "../MStest/MStest"
+//import { MSTest } from "../MStest/MStest"
 import { Input } from "../ui/input"
+import { Label } from "../ui/label"
 import { Textarea } from "../ui/textarea"
 
 export function EditDrawer() {
-  const [tags, setTags] = React.useState([])
-  const [current, setCurrent] = React.useState<BookmarkData | undefined>()
-  const [categories, setCategories] = React.useState([])
+  const [tags, setTags] = React.useState<Tag[] | undefined>([])
+  const [current, setCurrent] = React.useState<Url | undefined>()
+  const [categories, setCategories] = React.useState<Folder[] | undefined>([])
+  const [value, setValue] = React.useState<string | undefined>("dev")
 
   const { currentBookmarkId } = useShowEditBookmarkForm((state) => ({ currentBookmarkId: state.currentBookmarkId }))
 
   const fetchTags = async () => {
     try {
-      const tags = await getBookmarkTags()
+      const tags = await getTags()
       return tags
     } catch (e) {
       console.log("error with tags")
@@ -33,7 +33,7 @@ export function EditDrawer() {
 
   const fetchCategories = async () => {
     try {
-      const categories = await getCategories()
+      const categories = await getFolders()
       return categories
     } catch (e) {
       console.log("error with categories")
@@ -42,8 +42,12 @@ export function EditDrawer() {
 
   const fetchCurrent = React.useCallback(async () => {
     try {
-      const current = await getBookmark(currentBookmarkId as string)
+      const current = await getBookmark(currentBookmarkId as string) as Url
       setCurrent(current)
+
+      if (current.title) {
+        setValue("dev")
+      }
     } catch (e) {
       console.log("error with current")
     }
@@ -59,8 +63,7 @@ export function EditDrawer() {
     })
     fetchCurrent()
 
-    console.log("current", current)
-  }, [currentBookmarkId])
+  }, [currentBookmarkId, fetchCurrent])
 
   const handleOnFocus = (e: React.FocusEvent<HTMLInputElement>) => {
     e.stopPropagation()
@@ -68,23 +71,35 @@ export function EditDrawer() {
   }
 
   const handleUpdateBookmark = async (data: FormData) => {
-    const test = {
-      _id: current!._id,
+    const obj = {
+      _id: current!.id,
       url: current!.url,
-      title: "test",
-      description: "test",
-      category: "github",
-      tags: ["typesrcript","react"],
+      title: data.get("title") as string,
+      description: data.get("description") as string,
+      folderId: data.get("category") as string || current!.folderId,
+      tags: [],
     }
     // validate data
-   // console.log(Object.fromEntries(data))
-    try{
-      await updateBookmark(currentBookmarkId as string, test)
-      alert('success')
-    }catch(e){
+    console.log('obj', obj)
+    console.log(Object.fromEntries(data))
+
+    try {
+      const update = await updateBookmark(currentBookmarkId as string, obj) as any
+      console.log(update)
+      if (update.error) {
+        alert(update.error)
+      }
+    } catch (e) {
       console.error(e)
     }
   }
+
+  // get current bookmark folder name by select option id
+  const getFolderName = (id: string) => {
+    const folder = categories?.find((cat) => cat.id === id)
+    return folder?.name as string
+  }
+
 
   const { show, setToggle } = useShowEditBookmarkForm((state) => ({ show: state.show, setToggle: state.setToggle }))
   if (!current) return <></>
@@ -97,7 +112,7 @@ export function EditDrawer() {
             <DrawerHeader>
               <AspectRatio ratio={16 / 9} className="bg-muted">
                 <Image
-                  src={current.image || "/images/placeholder.webp"}
+                  src={current.imageUrl || "/images/placeholder.webp"}
                   alt="Photo by Drew Beamer"
                   fill
                   className="rounded-md object-cover"
@@ -106,28 +121,30 @@ export function EditDrawer() {
             </DrawerHeader>
 
             <form action={handleUpdateBookmark}>
+              <Label htmlFor="title">title</Label>
               <Input
                 name="title"
                 onFocus={(e) => handleOnFocus(e)}
-                defaultValue={current.title}
+                defaultValue={current.title || ''}
                 onChange={() => console.log("change")}
               />
-              <Textarea name="description" defaultValue={current.description} onChange={() => console.log("change")} />
-              <Select name="category" value={current.category}>
+              <Label>Description</Label>
+              <Textarea name="description" defaultValue={current.description || ''} onChange={() => console.log("change")} />
+              <Select name="category" defaultValue={getFolderName(current.folderId)} onValueChange={() => console.log('change')}>
                 <SelectTrigger>
-                  <SelectValue />
+                  <SelectValue placeholder={getFolderName(current.folderId)}/>
                 </SelectTrigger>
                 <SelectContent>
                   <SelectGroup>
-                    {categories.map((cat: Category) => (
-                      <SelectItem key={cat._id} value={cat.name}>
+                    {categories?.map((cat: Folder) => (
+                      <SelectItem key={cat.id} value={cat.id}>
                         {cat.name}
                       </SelectItem>
                     ))}
                   </SelectGroup>
                 </SelectContent>
               </Select>
-              <MSTest tags={tags} value={current.tags as []} />
+              {/* <MSTest tags={tags} value={current.tags as []} /> */}
 
               <DrawerFooter>
                 <Button>Submit</Button>

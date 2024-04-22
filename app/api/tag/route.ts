@@ -7,7 +7,7 @@ export async function POST(req: NextRequest) {
     const { userId } = auth();
  
     if (userId) {
-        console.log('User Id = ', userId)
+        console.log('User Id tags route = ', userId)
       // Query DB for user specific information or display assets only to signed in users 
     }
 

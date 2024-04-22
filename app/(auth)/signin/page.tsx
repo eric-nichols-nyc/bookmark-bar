@@ -2,9 +2,8 @@ import Link from "next/link"
 import * as React from "react"
 
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-
 import { OauthSignin } from "../_components/oauth/oauth-signin"
-import { SigninForm } from "../_components/signin/signin-form"
+import { SigninForm } from "../_components/sign-in/signin-form"
 
 export default function SiginPage() {
   return (
@@ -39,7 +38,7 @@ export default function SiginPage() {
           </div>
           <Link
             aria-label="Reset password"
-            href="/signin/reset-password"
+            href="/reset-password"
             className="text-sm text-primary underline-offset-4 transition-colors hover:underline"
           >
             Reset password

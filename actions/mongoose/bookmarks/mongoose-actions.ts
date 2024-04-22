@@ -9,8 +9,20 @@ import { BookmarkData } from "@/types";
 import { addBookmarkSchema } from "./schemas";
 import { Bookmark } from "../../../models/bookmark-model";
 
+
+const isConnect = async () => {
+  try {
+    await connectDB()
+    return { success: "You are connected to the server" }
+  } catch (error: any) {
+    console.error(`Error: ${error.message}`)
+    return { message: error.message }
+  }
+}
+
 // // return all bookmarks
 export const getBookmarks = async () => {
+  console.log("getBookmarks was called")
   try {
     await connectDB()
     const bookmarks = await Bookmark.find();
@@ -146,8 +158,19 @@ export const deleteBookmark = async (id: string) => {
 
 // update bookmark by replacing the model with the current data params
 export const updateBookmark = async (id: string, data: BookmarkData) => {
+  console.log('updateBookmark data', data)  
   try {
-    await connectDB()
+    const test = await connectDB() as any
+    if(test.message){
+      console.error(`Error: ${test.message}`)
+      return {error: "You are not connected to the server"};
+    } 
+  }catch(error: any){
+    console.error(`dasaffdaf: ${error.message}`)
+    return {error: "You are not connected to the server"};
+  }
+
+  try {
     const bookmark = await Bookmark.findById(id);
     bookmark.url = data.url;
     bookmark.title = data.title;

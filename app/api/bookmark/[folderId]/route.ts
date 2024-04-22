@@ -9,7 +9,7 @@ export async function POST(req: NextRequest, context: any) {
     const { userId } = auth();
  
     if (userId) {
-        console.log('User Id = ', userId)
+        console.log('User Id bookmark by folderId = ', userId)
       // Query DB for user specific information or display assets only to signed in users 
     }
 

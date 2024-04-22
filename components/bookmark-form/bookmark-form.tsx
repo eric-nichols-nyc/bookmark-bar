@@ -1,18 +1,21 @@
 "use client"
-import { Folder, Tag } from "@prisma/client";
+import { Folder, Tag, Url } from "@prisma/client";
 import { useState } from "react"
-import { addBookmark, handleFetchOpengraph, uploadToCloud } from "@/actions/mongoose/bookmarks/mongoose-actions"
+import { handleFetchOpengraph, uploadToCloud } from "@/actions/mongoose/bookmarks/mongoose-actions"
 import { addBookmarkSchema } from "@/actions/mongoose/bookmarks/schemas"
+import { addBookmark } from "@/actions/prisma/folders/folder-actions";
 import { Input } from "@/components/input/input"
 import { MultiSelect, MultiSelectOption } from "@/components/multi-select/multi-select"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/select/select"
 import { BookmarkData, BookmarkError, FieldErrors } from "@/types"
 
 type FormProps = {
+  id: string
   folders: Folder[] | undefined
   bookmarktags: Tag[]
+  defaultValue?:string
 }
-export const BookmarkForm = ({ folders, bookmarktags }: FormProps) => {
+export const BookmarkForm = ({ id, folders, bookmarktags, defaultValue }: FormProps) => {
   const [fieldErrors, setFieldErrors] = useState<FieldErrors<BookmarkError> | undefined>()
 
   const [tags, setTags] = useState<string[] | undefined>()
@@ -24,9 +27,10 @@ export const BookmarkForm = ({ folders, bookmarktags }: FormProps) => {
   const onSubmitAction = async (data: FormData) => {
     const url = data.get("url") as string
     const category = data.get("category")
+    const folderId = id
     // 1. validate url and category
     const valid = addBookmarkSchema.safeParse({ url, category })
-    let image
+    let imageUrl
     let title = "No Title"
 
     if (!valid.success) {
@@ -46,7 +50,7 @@ export const BookmarkForm = ({ folders, bookmarktags }: FormProps) => {
       if (response.image) {
         try {
           if (response.image) {
-            image = await uploadToCloud(response.image as string)
+            imageUrl = await uploadToCloud(response.image as string)
           }
         } catch (error: any) {
           console.error("OOPS!!!", error.message)
@@ -63,27 +67,32 @@ export const BookmarkForm = ({ folders, bookmarktags }: FormProps) => {
       // add tags and bookmark in db
       const data = {
         url,
+        folderId,
         title: title,
         description: response.description || "",
-        image,
+        imageUrl,
         category,
         tags,
-      } as BookmarkData
+      }
       await addBookmark(data)
+      console.log(data)
+      alert("Bookmark added")
     } catch (e: any) {
       console.error(e.message)
     }
   }
 
+  const headerText = defaultValue ? `👋 Add a new bookmark to ${defaultValue}`: "👋 Add a new bookmark"
+
   return (
-    <form className="flex flex-col" action={onSubmitAction}>
-      <h1 className="mb-2 text-xl font-semibold">👋 Add a new bookmark</h1>
+    <form data-testid="add-form" className="flex flex-col" action={onSubmitAction}>
+      <h1 className="mb-2 text-xl font-semibold">{headerText}</h1>
       <Input name="url" placeholder="https://www.example.com" className="mb-2"/>
       {fieldErrors?.url && <p className="text-sm text-red-500">{fieldErrors.url}</p>}
       <div className="flex z-10">
         <div className="flex flex-col gap-2">
           <div className="w-[200px] bg-slate-100 mr-2">
-            <Select name="category" onValueChange={(value: string) => console.log(value)}>
+            <Select defaultValue={defaultValue} name="category" onValueChange={(value: string) => console.log(value)}>
               <SelectTrigger>
                 <SelectValue placeholder="folder" />
               </SelectTrigger>
@@ -99,14 +108,14 @@ export const BookmarkForm = ({ folders, bookmarktags }: FormProps) => {
           </div>
         </div>
         <div className="w-[300px]">
-          <MultiSelect 
+          {/* <MultiSelect 
             placeholder="Add tags" 
             onChange={onTagsChange}
           >
             {bookmarktags.map((opt) => (
               <MultiSelectOption key={opt.id} label={opt.name} value={opt.name} />
             ))}
-          </MultiSelect>
+          </MultiSelect> */}
         </div>
         <div>
         </div>

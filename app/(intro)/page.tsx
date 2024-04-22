@@ -30,8 +30,9 @@ export default async function IntroPage() {
   
   const user = await auth();
   console.log("currentUser: ", user)
+  const userId = user?.userId;
 
-  if (user) redirect("/bookmarks");
+  if (userId) redirect("/bookmarks");
 
   return (
     <section className="flex flex-col items-center justify-center container size-full border">

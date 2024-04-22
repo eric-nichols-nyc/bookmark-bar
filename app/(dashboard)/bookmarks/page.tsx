@@ -1,4 +1,4 @@
-import { auth } from "@clerk/nextjs";
+import { auth, useSignIn } from "@clerk/nextjs";
 import { Folder } from "@prisma/client";
 import React from 'react'
 import { BookmarkForm } from '@/components/bookmark-form/bookmark-form'
@@ -8,10 +8,11 @@ import { HomeCard } from "../_components/home-card";
 //add 
 
 const BookMarksPage = async() => {
+
   const { userId } = auth();
  
   if (userId) {
-    console.log('user id = ', userId)
+    console.log('user id bookmarks = ', userId)
     // Query DB for user specific information or display assets only to signed in users 
   }
 

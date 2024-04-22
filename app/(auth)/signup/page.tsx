@@ -40,7 +40,7 @@ const SignUpPage = async() => {
           <span className="mr-1 hidden sm:inline-block">Already have an account?</span>
           <Link
             aria-label="Sign in"
-            href="/signin"
+            href="/sign-in"
             className="text-primary underline-offset-4 transition-colors hover:underline"
           >
             Sign in

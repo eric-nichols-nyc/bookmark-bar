@@ -24,6 +24,7 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en" suppressHydrationWarning>
+      <head />
       <body>
         <main className="flex size-full">
             <div className="size-full">{children}</div>
