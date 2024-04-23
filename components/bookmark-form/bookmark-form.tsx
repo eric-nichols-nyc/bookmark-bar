@@ -10,7 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { BookmarkData, BookmarkError, FieldErrors } from "@/types"
 
 type FormProps = {
-  id: string
+  id?: string
   folders: Folder[] | undefined
   bookmarktags: Tag[]
   defaultValue?:string
@@ -27,9 +27,9 @@ export const BookmarkForm = ({ id, folders, bookmarktags, defaultValue }: FormPr
   const onSubmitAction = async (data: FormData) => {
     const url = data.get("url") as string
     const category = data.get("category")
-    const folderId = id
+    const folderId = id || category
     // 1. validate url and category
-    const valid = addBookmarkSchema.safeParse({ url, category })
+    const valid = addBookmarkSchema.safeParse({ url, category,folderId })
     let imageUrl
     let title = "No Title"
 
@@ -98,7 +98,7 @@ export const BookmarkForm = ({ id, folders, bookmarktags, defaultValue }: FormPr
               </SelectTrigger>
               <SelectContent>
                 {folders?.map((fld) => (
-                  <SelectItem key={fld.id} value={fld.name} className="bg-slate-50 hover:bg-slate-100">
+                  <SelectItem key={fld.id} value={fld.id} className="bg-slate-50 hover:bg-slate-100">
                     {fld.name}
                   </SelectItem>
                 ))}

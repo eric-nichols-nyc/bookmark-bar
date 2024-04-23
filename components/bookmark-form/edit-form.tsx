@@ -18,7 +18,6 @@ export function EditDrawer() {
   const [tags, setTags] = React.useState<Tag[] | undefined>([])
   const [current, setCurrent] = React.useState<Url | undefined>()
   const [categories, setCategories] = React.useState<Folder[] | undefined>([])
-  const [value, setValue] = React.useState<string | undefined>("dev")
 
   const { currentBookmarkId } = useShowEditBookmarkForm((state) => ({ currentBookmarkId: state.currentBookmarkId }))
 
@@ -44,10 +43,6 @@ export function EditDrawer() {
     try {
       const current = await getBookmark(currentBookmarkId as string) as Url
       setCurrent(current)
-
-      if (current.title) {
-        setValue("dev")
-      }
     } catch (e) {
       console.log("error with current")
     }
@@ -85,7 +80,6 @@ export function EditDrawer() {
 
     try {
       const update = await updateBookmark(currentBookmarkId as string, obj) as any
-      console.log(update)
       if (update.error) {
         alert(update.error)
       }
@@ -120,7 +114,7 @@ export function EditDrawer() {
               </AspectRatio>
             </DrawerHeader>
 
-            <form action={handleUpdateBookmark}>
+            <form data-testid="edit-form" action={handleUpdateBookmark}>
               <Label htmlFor="title">title</Label>
               <Input
                 name="title"
@@ -147,7 +141,7 @@ export function EditDrawer() {
               {/* <MSTest tags={tags} value={current.tags as []} /> */}
 
               <DrawerFooter>
-                <Button>Submit</Button>
+                <Button data-testid="edit">Submit</Button>
                 <DrawerClose asChild>
                   <Button variant="outline" onClick={() => setToggle(false)}>
                     Cancel

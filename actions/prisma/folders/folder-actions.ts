@@ -3,6 +3,7 @@ import { auth } from "@clerk/nextjs";
 import { Url } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 import { prisma } from '@/db/prisma';
+import { addBookmarkSchema } from "./schemas";
 
 // ======================== FOLDER ACTIONS ========================
 // return all bookmarks
@@ -194,6 +195,12 @@ export const addBookmark = async (bookmark: any) => {
     }
 
     const currentUserId = currentUser?.id;
+
+    // validate data with zod schema
+    const valid = addBookmarkSchema.safeParse(bookmark);
+    if (!valid.success) {
+        throw new Error('Validation failed')
+    }
     try {
         const newBookmark = await prisma.url.create({
             data: {

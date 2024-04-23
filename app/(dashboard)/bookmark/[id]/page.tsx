@@ -5,8 +5,10 @@ import { BookmarkForm } from "@/components/bookmark-form/bookmark-form"
 import { EditDrawer } from "@/components/bookmark-form/edit-form"
 
 const fetchBookmarks = async (id: string) => {
+  console.log('id = ', id)
   try {
     const bookmarks = await getBookmarksByFolderId(id)
+    console.log('bookmarks = ', bookmarks)
     return bookmarks
   } catch (e) {
     console.log("error with bookmarks", e)
