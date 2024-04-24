@@ -30,7 +30,8 @@ const BookMarksPage = async() => {
 
   // therow error if user is not found
   if (!user) {
-    throw new Error("User not found");
+    // throw new Error("User not found");
+    return <div>User not found in database</div>;
   }
  
   // Get the Backend API User object when you need access to the user's information
@@ -48,7 +49,7 @@ const BookMarksPage = async() => {
   
   //return a div if there are no bookmarks
  
-  // Use
+
   return (
     <div className="size-full border flex flex-col container">
       <div className="container mt-5 mb-10"><Search /></div>

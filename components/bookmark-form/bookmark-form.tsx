@@ -92,9 +92,9 @@ export const BookmarkForm = ({ id, folders, bookmarktags, defaultValue }: FormPr
       <div className="flex z-10">
         <div className="flex flex-col gap-2">
           <div className="w-[200px] bg-slate-100 mr-2">
-            <Select defaultValue={defaultValue} name="category" onValueChange={(value: string) => console.log(value)}>
+            <Select name="category">
               <SelectTrigger>
-                <SelectValue placeholder="folder" />
+                <SelectValue placeholder="choose a folder" />
               </SelectTrigger>
               <SelectContent>
                 {folders?.map((fld) => (

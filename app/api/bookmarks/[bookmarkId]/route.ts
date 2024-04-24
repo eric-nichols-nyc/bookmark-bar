@@ -22,6 +22,6 @@ export async function PUT(req: NextRequest, context: any) {
         return new Response(JSON.stringify({ updatedUrl }));
     }catch(error: any){
         console.error(`Error: ${error.message}`);
-        return {message:error.message}
+        return new Response(JSON.stringify({message:error.message}));
     }   
 }

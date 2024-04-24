@@ -124,7 +124,7 @@ export function EditDrawer() {
               />
               <Label>Description</Label>
               <Textarea name="description" defaultValue={current.description || ''} onChange={() => console.log("change")} />
-              <Select name="category" defaultValue={getFolderName(current.folderId)} onValueChange={() => console.log('change')}>
+              <Select name="category">
                 <SelectTrigger>
                   <SelectValue placeholder={getFolderName(current.folderId)}/>
                 </SelectTrigger>
@@ -139,7 +139,6 @@ export function EditDrawer() {
                 </SelectContent>
               </Select>
               {/* <MSTest tags={tags} value={current.tags as []} /> */}
-
               <DrawerFooter>
                 <Button data-testid="edit">Submit</Button>
                 <DrawerClose asChild>
