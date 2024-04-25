@@ -45,7 +45,7 @@ export const HomeCard = ({ folder }: HomeCardProps) => {
   // return a alert dialog markup
   const dialog = (
     <AlertDialog open={open}>
-    <AlertDialogTrigger onClick={(e) => alert(e)}>Open</AlertDialogTrigger>
+    <AlertDialogTrigger onClick={(e) => alert(e)}>Delete</AlertDialogTrigger>
     <AlertDialogContent>
       <AlertDialogHeader>
         <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
