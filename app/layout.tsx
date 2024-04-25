@@ -1,7 +1,9 @@
-import type { Metadata } from "next";
-import "./globals.css";
-import { Navbar } from "@/components/navbar/navbar";
-
+import type { Metadata } from "next"
+import "./globals.css"
+import { Navbar } from "@/components/navbar/navbar"
+import { Sidebar } from "@/app/(dashboard)/_components/sidebar/sidebar"
+// eslint-disable-next-line import/order
+import { ClerkProvider } from "@clerk/nextjs"
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -12,19 +14,23 @@ export const metadata: Metadata = {
       href: "/images/logo.svg",
     },
   ],
-};
+}
 
 export default function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode;
+  children: React.ReactNode
 }>) {
   return (
-    <html lang="en">
-    <body>
-      <Navbar />
-      <main>{children}</main>
-    </body>
-  </html>
-  );
+    <ClerkProvider>
+      <html lang="en" suppressHydrationWarning>
+      <head />
+      <body>
+        <main className="flex size-full">
+            <div className="size-full">{children}</div>
+        </main>
+      </body>
+    </html>
+    </ClerkProvider>
+  )
 }

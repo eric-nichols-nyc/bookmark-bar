@@ -3,6 +3,11 @@
 import mongoose from "mongoose";
 
 const bookmarkSchema = new mongoose.Schema({
+    userId: {
+        type: String,
+        trim: true,
+        required: true,
+    },
     url: {
         type: String,
         required: true,

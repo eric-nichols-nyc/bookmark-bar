@@ -1,22 +1,46 @@
+import { authMiddleware } from "@clerk/nextjs"
 import { NextResponse } from "next/server"
-import type { NextRequest } from "next/server"
 
-export function middleware(request: NextRequest) {
-  // TODO: Feel free to remove this block
-  if (request.headers?.get("host")?.includes("next-enterprise.vercel.app")) {
-    return NextResponse.redirect("https://blazity.com/open-source/nextjs-enterprise-boilerplate", { status: 301 })
-  }
-}
+export default authMiddleware({
+  // Public routes are routes that don't require authentication
+  publicRoutes: [
+    "/",
+    "/signin(.*)",
+    "/signup(.*)",
+    "/sso-callback(.*)",
+    "/collections(.*)",
+    "/product(.*)",
+    "/products(.*)",
+    "/product(.*)",
+    "/preview(.*)",
+    "/stores(.*)",
+    "/store(.*)",
+    "/build-a-board(.*)",
+    "/email-preferences(.*)",
+    "/blog(.*)",
+    "/about(.*)",
+    "/contact(.*)",
+    "/terms(.*)",
+    "/privacy(.*)",
+    "/api(.*)",
+  ],
+  async afterAuth(auth, req) {
+    if (auth.isPublicRoute) {
+      //  For public routes, we don't need to do anything
+      return NextResponse.next()
+    }
+
+    const url = new URL(req.nextUrl.origin)
+
+    if (!auth.userId) {
+      //  If user tries to access a private route without being authenticated,
+      //  redirect them to the sign in page
+      url.pathname = "/signin"
+      return NextResponse.redirect(url)
+    }
+  },
+})
 
 export const config = {
-  matcher: [
-    /*
-     * Match all request paths except for the ones starting with:
-     * - api (API routes)
-     * - _next/static (static files)
-     * - _next/image (image optimization files)
-     * - favicon.ico (favicon file)
-     */
-    "/((?!api|_next/static|_next/image|favicon.ico).*)",
-  ],
+  matcher: ["/((?!.*\\..*|_next).*)", "/", "/(api|trpc)(.*)"],
 }

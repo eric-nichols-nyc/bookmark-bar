@@ -24,9 +24,11 @@ export type FieldErrors<T extends object> = {
     tags?: string[];
   };
 
-  export type Category = {
+  export type UpdateBookmarkData = Omit<BookmarkData, "url">;
+
+  export type Folder = {
     _id: string;
-    category: string;
+    name: string;
   };
   
   export type Tag = {
