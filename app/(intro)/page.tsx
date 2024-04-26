@@ -36,7 +36,7 @@ export default async function IntroPage() {
 
   return (
     <section className="flex flex-col items-center justify-center container size-full border">
-        <h1 className="text-7xl font-bold">Bookmark Manager</h1>
+        <h1 className="text-7xl font-bold">Webmark</h1>
         <h3 className="text-xl">Effortlessly manage and access all your bookmarks with our intuitive app, keeping your digital world organized and accessible at your fingertips</h3>
         <h3>Streamline your online research and browsing experience with our app, effortlessly organizing all your bookmarks for easy access and efficient navigation.</h3>
     </section>

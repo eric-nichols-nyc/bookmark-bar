@@ -1,13 +1,16 @@
-import { auth, useSignIn } from "@clerk/nextjs";
+import { auth } from "@clerk/nextjs";
 import { Folder } from "@prisma/client";
+import { Tag } from "@prisma/client";
 import React from 'react'
+import { getFolders } from "@/actions/prisma/folders/folder-actions";
 import { BookmarkForm } from '@/components/bookmark-form/bookmark-form'
-import { Search } from '@/components/search/search'
 import { prisma } from '@/db/prisma';
 import { HomeCard } from "../_components/home-card";
+import { AddFolderItem } from "../_components/sidebar/add-folder-item";
 //add 
 
 const BookMarksPage = async() => {
+  const tags = [] as Tag[]
 
   const { userId } = auth();
  
@@ -35,27 +38,18 @@ const BookMarksPage = async() => {
   }
  
   // Get the Backend API User object when you need access to the user's information
-  const folders = await prisma.folder.findMany({
-    where: {
-      userId: user.id,
-    },
-  });
-
-  const tags = await prisma.tag.findMany({
-    where: {
-      userId: user.id,
-    },
-  });
+  const folders = await getFolders();
   
   //return a div if there are no bookmarks
  
 
   return (
     <div className="size-full border flex flex-col container">
-      <div className="container mt-5 mb-10"><Search /></div>
       <BookmarkForm folders={folders} bookmarktags={tags}/>
       <h2>Your Folders</h2>
       <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <AddFolderItem />
+
        {
         folders.length ? folders.map((folder:Folder) => (
           <HomeCard key={folder.id} folder={folder}/>   

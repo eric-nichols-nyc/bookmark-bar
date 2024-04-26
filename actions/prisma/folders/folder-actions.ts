@@ -20,6 +20,9 @@ export const getFolders = async () => {
             where: {
                 userId: user?.id,
             },
+            orderBy: {
+                createdAt: 'desc',
+            },
         });
         return bookmarks;
 
@@ -161,6 +164,31 @@ export const updateFolder = async (id: string, name: string) => {
 }
 
 //======================== URL ACTIONS ========================
+// get all bookmarks by user id
+export const getBookmarks = async () => {
+    const { userId } = auth();
+    // find the user
+    const user = await prisma.user.findUnique({
+        where: {
+            externalId: userId as string,
+        },
+    });
+    try {
+        const bookmarks = await prisma.url.findMany({
+            where: {
+                userId: user?.id,
+            },
+            orderBy: {
+                createdAt: 'desc',
+            },
+        });
+        return bookmarks;
+
+    } catch (error: any) {
+        console.error(`Error getting bookmarks from server: ${error.message}`)
+        throw new Error(error.message)
+    }
+}
 // get a url by id
 export const getBookmark = async (id: string) => {
     try {

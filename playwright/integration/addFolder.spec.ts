@@ -1,4 +1,4 @@
-import { expect, test } from '@playwright/test';
+import { test } from '@playwright/test';
 
 test('Form should add annew folder', async ({ page }) => {
     await page.goto('http://localhost:3000/bookmark/661718ddd896f0252077e150');

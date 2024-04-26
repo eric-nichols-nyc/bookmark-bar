@@ -1,13 +1,15 @@
 "use client"
 import { Folder, Tag, Url } from "@prisma/client";
-import { useState } from "react"
+import { useRef, useState } from "react"
+import { useFormStatus } from "react-dom";
 import { handleFetchOpengraph, uploadToCloud } from "@/actions/mongoose/bookmarks/mongoose-actions"
 import { addBookmarkSchema } from "@/actions/mongoose/bookmarks/schemas"
 import { addBookmark } from "@/actions/prisma/folders/folder-actions";
 import { Input } from "@/components/input/input"
 import { MultiSelect, MultiSelectOption } from "@/components/multi-select/multi-select"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/select/select"
-import { BookmarkData, BookmarkError, FieldErrors } from "@/types"
+import { BookmarkError, FieldErrors } from "@/types"
+import { Button } from "../ui/button";
 
 type FormProps = {
   id?: string
@@ -16,6 +18,8 @@ type FormProps = {
   defaultValue?:string
 }
 export const BookmarkForm = ({ id, folders, bookmarktags, defaultValue }: FormProps) => {
+  const {pending} = useFormStatus()
+  const ref = useRef<HTMLFormElement>(null)
   const [fieldErrors, setFieldErrors] = useState<FieldErrors<BookmarkError> | undefined>()
 
   const [tags, setTags] = useState<string[] | undefined>()
@@ -75,6 +79,7 @@ export const BookmarkForm = ({ id, folders, bookmarktags, defaultValue }: FormPr
         tags,
       }
       await addBookmark(data)
+      ref.current?.reset()
       console.log(data)
       alert("Bookmark added")
     } catch (e: any) {
@@ -85,7 +90,7 @@ export const BookmarkForm = ({ id, folders, bookmarktags, defaultValue }: FormPr
   const headerText = defaultValue ? `👋 Add a new bookmark to ${defaultValue}`: "👋 Add a new bookmark"
 
   return (
-    <form data-testid="add-form" className="flex flex-col" action={onSubmitAction}>
+    <form ref={ref} data-testid="add-form" className="flex flex-col" action={onSubmitAction}>
       <h1 className="mb-2 text-xl font-semibold">{headerText}</h1>
       <Input name="url" placeholder="https://www.example.com" className="mb-2"/>
       {fieldErrors?.url && <p className="text-sm text-red-500">{fieldErrors.url}</p>}
@@ -121,9 +126,14 @@ export const BookmarkForm = ({ id, folders, bookmarktags, defaultValue }: FormPr
         </div>
       </div>
       <div className="flex items-center justify-center w-full p-2">
-        <button data-testid="addbookmark-button" type="submit" className="m-2 border p-2 w-[220px] text-sm">
-          Add bookmark
-        </button>
+        <Button 
+        data-testid="addbookmark-button" 
+        type="submit" 
+        className="m-2 border p-2 w-[220px] text-sm"
+        disabled={pending}
+        >
+              {pending ? "Submitting..." : "Submit"}
+        </Button>
       </div>
     </form>
   )

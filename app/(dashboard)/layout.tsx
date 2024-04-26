@@ -1,4 +1,4 @@
-import { Navbar } from "@/components/navbar/navbar"
+import { Navbar } from "./_components/navbar/navbar";
 
 export default function AuthLayout({ children }: React.PropsWithChildren) {
   return (
