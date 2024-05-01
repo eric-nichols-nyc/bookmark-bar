@@ -238,6 +238,7 @@ export const addBookmark = async (bookmark: any) => {
                 title: bookmark.title,
                 description: bookmark.description,
                 imageUrl: bookmark.imageUrl,
+                icon: bookmark.icon,
             },
         });
         console.log('new bookmark = ', newBookmark)

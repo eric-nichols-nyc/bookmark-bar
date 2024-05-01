@@ -10,7 +10,6 @@ export const addBookmarkSchema = object({
     folderId: string().min(1, { message: "Folder is required" }),
     title: string().optional(),
     description: string().optional(),
-    category: string().min(1, { message: "Category is required" }),
     imageUrl: string().optional(),
 });
 

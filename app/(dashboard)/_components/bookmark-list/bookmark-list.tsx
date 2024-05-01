@@ -17,9 +17,18 @@ const BookmarkList = ({ id }: { id: string }) => {
     }
         , [id])
     return (
-        <ul>
+        <ul className="flex flex-col w-auto">
             {items?.map((bookmark: Url) => (
-                <li key={bookmark.id}><Button variant="outline" className="w-full flex justify-start text-left"><Bookmark />{bookmark.title}</Button></li>
+                <li 
+                    key={bookmark.id}
+                    className="flex flex-row w-full justify-start items-center"
+                    >
+                    <Button 
+                        variant="outline" 
+                        className="flex flex-1 justify-start text-left bg-slate-400">
+                            <Bookmark />{bookmark.title}
+                    </Button>
+                </li>
             ))}
         </ul>
     );

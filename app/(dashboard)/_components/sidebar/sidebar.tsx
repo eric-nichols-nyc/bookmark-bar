@@ -12,7 +12,7 @@ export const Sidebar = async () => {
   }
   const folders = await getFolders()
   return (
-    <div className="w-[260px] z-index[10]">
+    <div className="w-[260px]">
       <div className="w-full">
        <AuthDropdown />
       </div>

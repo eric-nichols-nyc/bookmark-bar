@@ -2,7 +2,7 @@
 
 import { Url } from "@prisma/client"
 import { AspectRatio } from "@radix-ui/react-aspect-ratio"
-import { BookOpen } from "lucide-react"
+import { FileIcon } from "lucide-react"
 import Image from "next/image"
 import React from "react"
 import { Badge } from "@/components/ui/badge"
@@ -13,7 +13,7 @@ export const BookmarkCard = ({ id, url, title, description, icon, imageUrl, tags
   return (
     <Card className="relative flex flex-1 flex-col overflow-hidden border drop-shadow-md">
       <CardHeader className="flex flex-row items-center justify-between p-1">
-        {icon ? <Image src={icon} alt="icon" width={20} height={20} /> : <BookOpen />}
+        {icon ? <Image src={icon} alt="icon" width={20} height={20} /> : <FileIcon />}
         <BookmarkCardDropdown _id={id} />
       </CardHeader>
       <CardContent className="relative mb-4 flex flex-col h-auto w-full overflow-hidden p-1">

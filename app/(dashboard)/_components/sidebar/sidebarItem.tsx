@@ -49,7 +49,7 @@ const SidebarItem = ({ category }: SidebarType) => {
           open &&
           <div
             onMouseOver={(e) => handleSubMenuOver(e)}
-            className="w-[200px] border absolute top-0 right-[-200px] bg-slate-100 z-index[10]">
+            className="w-[200px] border absolute top-0 right-[-195px] bg-slate-100 z-index[10]">
             <Suspense fallback={<div>Loading...</div>}>
               <BookMarkList id={category.id} />
             </Suspense>

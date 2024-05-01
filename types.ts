@@ -11,7 +11,7 @@ export type FieldErrors<T extends object> = {
 
   export type BookmarkError = {
     url?: string[] | undefined;
-    category?: string[] | undefined;
+    folderId?: string[] | undefined;
   };
 
   export type BookmarkData = {
