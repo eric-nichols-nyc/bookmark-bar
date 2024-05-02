@@ -18,7 +18,7 @@ export function SearchResults({ bookmarks }: SearchResultsProps) {
         <>
             <Button
                 variant="outline"
-                className="relative flex items-center justify-center w-full"
+                className="relative flex items-center justify-center sm:w-4 md:w-full"
                 onClick={() => setOpen(true)}
             >
                 <span className="hidden lg:inline-flex">Search documentation...</span>
