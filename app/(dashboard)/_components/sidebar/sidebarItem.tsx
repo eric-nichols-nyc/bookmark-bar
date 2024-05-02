@@ -2,9 +2,9 @@
 import { Folder } from '@prisma/client'
 import { ChevronRight, FolderIcon } from 'lucide-react'
 import Link from 'next/link'
-import React, { lazy, Suspense } from 'react'
+import React, { lazy, Suspense, useEffect } from 'react'
+import {useFlyoutStore} from "@/store/useCloseFlyout";
 import { Button } from '../../../../components/ui/button'
-
 
 type SidebarType = {
   category: Folder
@@ -13,7 +13,14 @@ type SidebarType = {
 const BookMarkList = lazy(() => import("@/app/(dashboard)/_components/bookmark-list/bookmark-list"))
 
 const SidebarItem = ({ category }: SidebarType) => {
+  const isOpen = useFlyoutStore((state) => state.isOpen)
   const [open, setOpen] = React.useState(false)
+
+  // useEffect(() => {
+  //   if (isOpen) {
+  //     setOpen(false)
+  //   }
+  // } , [isOpen])
 
   const handleMouseOver = () => {
     setOpen(true)
@@ -30,11 +37,11 @@ const SidebarItem = ({ category }: SidebarType) => {
 
   return (
     <div className="relative"
-      onMouseOut={handleMouseOut}
+      onMouseLeave={handleMouseOut}
     >
       <Link className="border flex justify-between" id={category.id} href={`/bookmark/${category.id}`}
       >
-        <Button variant="outline" className="w-full h-8 p-0 rounded-none flex justify-between gap-2">
+        <Button variant="outline" className="relative w-full h-8 p-0 rounded-none flex justify-between gap-2">
           <div className='flex gap-2'>
             <FolderIcon size={24} />
             {category.name}
@@ -49,7 +56,7 @@ const SidebarItem = ({ category }: SidebarType) => {
           open &&
           <div
             onMouseOver={(e) => handleSubMenuOver(e)}
-            className="w-[200px] border absolute top-0 right-[-195px] bg-slate-100 z-index[10]">
+            className="flex w-full border absolute top-0 right-[-255px] bg-slate-100 z-index[10]">
             <Suspense fallback={<div>Loading...</div>}>
               <BookMarkList id={category.id} />
             </Suspense>
