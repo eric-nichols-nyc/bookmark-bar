@@ -11,11 +11,14 @@ export const metadata: Metadata = {
     },
   ],
 }
-export default function AuthLayout({ children }: React.PropsWithChildren) {
+export default function DashBoardLayout({ children }: React.PropsWithChildren) {
   return (
-    <div>
-        <Navbar />
-        <div className="h-full">{children}</div>
+    <div className="h-screen min-h-screen flex flex-col overflow-hidden">
+      <Navbar />
+      <div className="flex flex-row w-full border-2 border-black bg-slate-500 overflow-y-hidden">
+        {children}
+      </div>
+      <footer className="w-full h-5 bg-slate-600">I am a footer</footer>
     </div>
   )
 }

@@ -1,5 +1,4 @@
 import type { Metadata } from "next"
-import { ServerForm } from "@/components/server-form/server-form"
 import { Sidebar } from "@/app/(dashboard)/_components/sidebar/sidebar"
 
 export const metadata: Metadata = {
@@ -19,16 +18,13 @@ export default function BookmarkLayout({
   children: React.ReactNode
 }>) {
   return (
-    <div className="flex w-full">
-      <div className="border z-[100]">
+    <>
+    <div className="flex size-full overflow-auto border z-[100]">
         <Sidebar />
       </div>
-      <div className="container">
-        <div className="z-10">
-          {/* <ServerForm /> */}
-        </div>
-        <div>{children}</div>
+      <div className="flex overflow-auto">
+      {children}
       </div>
-    </div>
+    </>
   )
 }

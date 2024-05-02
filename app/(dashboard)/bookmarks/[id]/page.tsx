@@ -31,7 +31,7 @@ const BookmarkPage = async (context: { params: { id: string } }) => {
   const tags = await getTags()
   
   return (
-    <div className="w-full flex flex-col border">
+    <div className="size-full flex flex-1 flex-col border bg-red-500">
         <BookmarkForm id={id} folders={folders} bookmarktags={tags} defaultValue={folderName}/>
       <div className="w-full flex container h-auto border border-blue-400 bg-slate-200 p-2 drop-shadow">
         <div className="flex gap-2">

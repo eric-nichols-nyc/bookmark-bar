@@ -39,7 +39,7 @@ const SidebarItem = ({ category }: SidebarType) => {
     <div className="relative"
       onMouseLeave={handleMouseOut}
     >
-      <Link className="border flex justify-between" id={category.id} href={`/bookmark/${category.id}`}
+      <Link className="border flex justify-between" id={category.id} href={`/bookmarks/${category.id}`}
       >
         <Button variant="outline" className="relative w-full h-8 p-0 rounded-none flex justify-between gap-2">
           <div className='flex gap-2'>
