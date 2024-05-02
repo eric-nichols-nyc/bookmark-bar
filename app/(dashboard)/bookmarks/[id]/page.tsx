@@ -3,6 +3,7 @@ import { getBookmarksByFolderId, getFolders, getTags } from "@/actions/prisma/fo
 import BMSection from "@/app/(dashboard)/_components/bookmark-section/bookmark-section"
 import { BookmarkForm } from "@/components/bookmark-form/bookmark-form"
 import { EditDrawer } from "@/components/bookmark-form/edit-form"
+import ScrollToTop from "@/components/scroll-to-top"
 
 const fetchBookmarks = async (id: string) => {
   console.log('id = ', id)
@@ -31,7 +32,7 @@ const BookmarkPage = async (context: { params: { id: string } }) => {
   const tags = await getTags()
   
   return (
-    <div className="size-full flex flex-1 flex-col border bg-red-500">
+    <div id="test" className="container size-full flex flex-1 flex-col border bg-red-500">
         <BookmarkForm id={id} folders={folders} bookmarktags={tags} defaultValue={folderName}/>
       <div className="w-full flex container h-auto border border-blue-400 bg-slate-200 p-2 drop-shadow">
         <div className="flex gap-2">
@@ -43,6 +44,7 @@ const BookmarkPage = async (context: { params: { id: string } }) => {
         <BMSection bookmarks={urls} />
       </div>
       <EditDrawer />
+      <ScrollToTop />
     </div>
   )
 }

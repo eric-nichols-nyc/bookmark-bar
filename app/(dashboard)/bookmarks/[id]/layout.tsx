@@ -19,10 +19,10 @@ export default function BookmarkLayout({
 }>) {
   return (
     <>
-    <div className="flex size-full overflow-auto border z-[100]">
+    <div className="flex h-full w-[260px] overflow-auto border z-[100]">
         <Sidebar />
       </div>
-      <div className="flex overflow-auto">
+      <div className="flex flex-1 overflow-auto">
       {children}
       </div>
     </>
