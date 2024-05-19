@@ -3,7 +3,7 @@ import { expect, test } from '@playwright/test';
 // test.use({ userAgent: '' });
 test.describe('Add a new bookmark', () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto('http://localhost:3000/bookmark/66197beb75de3122905b20e4');
+    await page.goto('http://localhost:3000/bookmarks/66197beb75de3122905b20e4');
   });
   test('Form should be visible', async ({ page }) => {
     // the add form should be visible

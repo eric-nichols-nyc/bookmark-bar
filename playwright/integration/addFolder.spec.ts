@@ -1,7 +1,7 @@
 import { test } from '@playwright/test';
 
 test('Form should add annew folder', async ({ page }) => {
-    await page.goto('http://localhost:3000/bookmark/661718ddd896f0252077e150');
+    await page.goto('http://localhost:3000/bookmarks/661718ddd896f0252077e150');
     await page.locator('[id="cardoptions"]').first().click();
     await page.getByRole('menuitem', { name: 'Edit' }).click();
     await page.locator('input[name="title"]').click();

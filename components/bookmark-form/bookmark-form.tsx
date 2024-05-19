@@ -1,5 +1,7 @@
 "use client"
-import { Folder, Tag, Url } from "@prisma/client";
+import { Folder, Tag } from "@prisma/client";
+import { getLogos } from 'favicons-scraper'
+import { useParams } from "next/navigation";
 import { useRef, useState } from "react"
 import { useFormStatus } from "react-dom";
 import { handleFetchOpengraph, uploadToCloud } from "@/actions/mongoose/bookmarks/mongoose-actions"
@@ -10,15 +12,19 @@ import { MultiSelect, MultiSelectOption } from "@/components/multi-select/multi-
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/select/select"
 import { BookmarkError, FieldErrors } from "@/types"
 import { Button } from "../ui/button";
-
+import { set } from "mongoose";
+import { cn } from "@/lib/utils";
 type FormProps = {
   id?: string
   folders: Folder[] | undefined
   bookmarktags: Tag[]
-  defaultValue?:string
+  defaultValue?: string
 }
 export const BookmarkForm = ({ id, folders, bookmarktags, defaultValue }: FormProps) => {
-  const {pending} = useFormStatus()
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const params = useParams()
+  const folder = folders?.find((fld) => fld.id === params.id)?.name 
+  const { pending } = useFormStatus()
   const ref = useRef<HTMLFormElement>(null)
   const [fieldErrors, setFieldErrors] = useState<FieldErrors<BookmarkError> | undefined>()
 
@@ -30,21 +36,38 @@ export const BookmarkForm = ({ id, folders, bookmarktags, defaultValue }: FormPr
 
   const onSubmitAction = async (data: FormData) => {
     const url = data.get("url") as string
-    const category = data.get("category")
-    const folderId = id || category
+    const folderId = data.get("category") || params.id
     // 1. validate url and category
-    const valid = addBookmarkSchema.safeParse({ url, category,folderId })
+    const valid = addBookmarkSchema.safeParse({ url, folderId })
     let imageUrl
     let title = "No Title"
 
     if (!valid.success) {
+      console.log(valid.error.flatten().fieldErrors)
       setFieldErrors(valid.error.flatten().fieldErrors)
       return
+    }
+
+    let favicon;
+    let icon;
+    try {
+      const domain = url
+      const domainLogos = await getLogos(domain)
+      favicon = domainLogos[0].src
+    } catch (e: any) {
+      console.log(e)
+    }
+    if(favicon) {
+      try{
+        icon = await uploadToCloud(favicon as string)
+        console.log('Icon was created...', icon)
+      }catch(e){
+        console.log(e)
+      }
     }
     // 1. get url and send to opengraph
     try {
       const response = await handleFetchOpengraph(url as string) as any
-      console.log(response)
       //2. load image title and description
       // of image is returned upload to cloudinary
       if (response.message) {
@@ -75,31 +98,34 @@ export const BookmarkForm = ({ id, folders, bookmarktags, defaultValue }: FormPr
         title: title,
         description: response.description || "",
         imageUrl,
-        category,
+        icon,
         tags,
       }
       await addBookmark(data)
       ref.current?.reset()
       console.log(data)
-      alert("Bookmark added")
+      console.log("Bookmark added")
     } catch (e: any) {
       console.error(e.message)
+      alert(e.message)
+    }finally{
+      setIsSubmitting(false)
     }
   }
 
-  const headerText = defaultValue ? `👋 Add a new bookmark to ${defaultValue}`: "👋 Add a new bookmark"
+  const headerText = defaultValue ? `👋 Add a new bookmark to ${defaultValue}` : "👋 Add a new bookmark"
 
   return (
     <form ref={ref} data-testid="add-form" className="flex flex-col" action={onSubmitAction}>
       <h1 className="mb-2 text-xl font-semibold">{headerText}</h1>
-      <Input name="url" placeholder="https://www.example.com" className="mb-2"/>
+      <Input name="url" placeholder="https://www.example.com" className="mb-2" />
       {fieldErrors?.url && <p className="text-sm text-red-500">{fieldErrors.url}</p>}
       <div className="flex z-10">
         <div className="flex flex-col gap-2">
           <div className="w-[200px] bg-slate-100 mr-2">
             <Select name="category">
               <SelectTrigger>
-                <SelectValue placeholder="choose a folder" />
+                <SelectValue placeholder={folder || "choose a folder"} />
               </SelectTrigger>
               <SelectContent>
                 {folders?.map((fld) => (
@@ -109,7 +135,7 @@ export const BookmarkForm = ({ id, folders, bookmarktags, defaultValue }: FormPr
                 ))}
               </SelectContent>
             </Select>
-            {fieldErrors?.category && <p className="text-sm text-red-500">{fieldErrors.category}</p>}
+            {fieldErrors?.folderId && <p className="text-sm text-red-500">{fieldErrors.folderId}</p>}
           </div>
         </div>
         <div className="w-[300px]">
@@ -126,13 +152,14 @@ export const BookmarkForm = ({ id, folders, bookmarktags, defaultValue }: FormPr
         </div>
       </div>
       <div className="flex items-center justify-center w-full p-2">
-        <Button 
-        data-testid="addbookmark-button" 
-        type="submit" 
-        className="m-2 border p-2 w-[220px] text-sm"
-        disabled={pending}
+        <Button
+          data-testid="addbookmark-button"
+          type="submit"
+          className="m-2 border p-2 w-[220px] text-sm"
+          onClick={() => setTimeout(() => setIsSubmitting(true),0)}
+          disabled={isSubmitting}
         >
-              {pending ? "Submitting..." : "Submit"}
+          {isSubmitting ? "Submitting..." : "Submit"}
         </Button>
       </div>
     </form>

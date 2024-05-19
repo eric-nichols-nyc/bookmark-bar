@@ -3,9 +3,12 @@ import { Url } from "@prisma/client";
 import { Bookmark } from "lucide-react";
 import { useEffect, useState } from "react";
 import { getBookmarksByFolderId } from "@/actions/prisma/folders/folder-actions";
-import { Button } from "@/components/ui/button";
+import { ItemFlyoutMenu } from "@/components/sidenav-item-flyout/item-flyout-menu";
+import { useFlyoutStore } from "@/store/useCloseFlyout";
 
 const BookmarkList = ({ id }: { id: string }) => {
+    const close = useFlyoutStore((state) => state.toggle);
+
     const [items, setItems] = useState<Url[]>([])
     useEffect(() => {
         const getBookmarks = async () => {
@@ -14,14 +17,20 @@ const BookmarkList = ({ id }: { id: string }) => {
                 setItems(bookmarks);
         }
         getBookmarks();
-    }
-        , [id])
+    }, [id])
     return (
-        <ul>
-            {items?.map((bookmark: Url) => (
-                <li key={bookmark.id}><Button variant="outline" className="w-full flex justify-start text-left"><Bookmark />{bookmark.title}</Button></li>
-            ))}
-        </ul>
+        <div onMouseLeave={() => close()}>
+            <ul className="flex flex-col w-auto">
+                {items?.map((bookmark: Url) => (
+                    <li
+                        key={bookmark.id}
+                        className="flex flex-row w-full justify-start items-center"
+                    >
+                        <ItemFlyoutMenu bookmark={bookmark} />
+                    </li>
+                ))}
+            </ul>
+        </div>
     );
 }
 
