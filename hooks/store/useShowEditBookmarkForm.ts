@@ -1,15 +1,17 @@
 import { create } from "zustand";
 
 type ToggleForm = {
-    show: boolean;
-    setToggle: (show: boolean) => void;
+    showBookmarkEditDrawer: boolean;
+    setToggle: () => void;
     currentBookmarkId: string | undefined;
     setCurrentBookmarkId: (id: string) => void;
 };
 
 export const useShowEditBookmarkForm = create<ToggleForm>((set) => ({
-    show: false,
-    setToggle: (show:boolean) => set({ show }),
+    showBookmarkEditDrawer: false,
+    setToggle: () => set((state) => ({ showBookmarkEditDrawer: !state.showBookmarkEditDrawer })),
     currentBookmarkId: undefined,
     setCurrentBookmarkId: (currentBookmarkId: string) => set({ currentBookmarkId }),
 }));
+
+//   toggle: () => set((state) => ({ isOpen: !state.isOpen })),

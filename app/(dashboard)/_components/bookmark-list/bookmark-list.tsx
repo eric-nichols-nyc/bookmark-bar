@@ -1,10 +1,9 @@
 "use client"
 import { Url } from "@prisma/client";
-import { Bookmark } from "lucide-react";
 import { useEffect, useState } from "react";
 import { getBookmarksByFolderId } from "@/actions/prisma/folders/folder-actions";
 import { ItemFlyoutMenu } from "@/components/sidenav-item-flyout/item-flyout-menu";
-import { useFlyoutStore } from "@/store/useCloseFlyout";
+import { useFlyoutStore } from "@/hooks/store/useFlyoutStore";
 
 const BookmarkList = ({ id }: { id: string }) => {
     const close = useFlyoutStore((state) => state.toggle);

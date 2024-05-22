@@ -44,17 +44,19 @@ const BookMarksPage = async() => {
  
 
   return (
-    <div className="size-full border flex flex-col container">
-      <BookmarkForm folders={folders} bookmarktags={tags}/>
-      <h2>Your Folders</h2>
-      <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-      <AddFolderItem />
+    <div className="size-full flex flex-col container justify-center">
+      <div className="w-full mx-auto overflow-y-scroll">
+        <BookmarkForm folders={folders} bookmarktags={tags}/>
+        <h2>Your Folders</h2>
+        <div className="w-full grid md:grid-cols-2 lg:grid-cols-4 gap-4 mx-auto">
+        <AddFolderItem />
 
-       {
-        folders.length ? folders.map((folder:Folder) => (
-          <HomeCard key={folder.id} folder={folder}/>   
-        )) : <div className="w-full text-center">No folders found</div>
-       }
+        {
+          folders.length ? folders.map((folder:Folder) => (
+            <HomeCard key={folder.id} folder={folder}/>   
+          )) : <div className="w-full text-center">No folders found</div>
+        }
+      </div>
       </div>
     </div>
   )

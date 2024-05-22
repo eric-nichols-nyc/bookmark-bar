@@ -1,10 +1,10 @@
 "use server";
 import { auth } from "@clerk/nextjs";
-import { Url } from "@prisma/client";
+import { Folder, Url } from "@prisma/client";
 import { revalidatePath } from "next/cache";
+import {z} from 'zod';
 import { prisma } from '@/db/prisma';
-import { addBookmarkSchema } from "./schemas";
-
+import { addBookmarkSchema, FolderSchema } from "./schemas";
 // ======================== FOLDER ACTIONS ========================
 // return all bookmarks
 export const getFolders = async () => {
@@ -35,12 +35,13 @@ export const getFolders = async () => {
 
 
 export const getBookmarksByFolderId = async (id: string) => {
-    console.log('id = ', id)
-
     try {
       const bookmarks = await prisma.url.findMany({
         where: {
           folderId: id,
+        },
+        orderBy: {
+            createdAt: 'desc',
         },
       });
   
@@ -54,7 +55,7 @@ export const getBookmarksByFolderId = async (id: string) => {
 
   // add a url to a folder with prisma
 export const addUrlToFolder = async (bookmark:Url) => {
-    const {folderId, url, title, description, imageUrl} = bookmark;
+    const {folderId, url, title, description, imageUrl, index} = bookmark;
 
     const { userId } = auth();
     if (!userId) {
@@ -81,6 +82,7 @@ export const addUrlToFolder = async (bookmark:Url) => {
                 title: title,
                 description: description,
                 imageUrl: imageUrl,
+                index: index
             },
         });
         revalidatePath('/')
@@ -94,7 +96,8 @@ export const addUrlToFolder = async (bookmark:Url) => {
 
 
 // add a new folder
-export const addFolder = async (name: string) => {
+export const addFolder = async (data: Folder) => {
+    const {name, index} = data
     const { userId } = auth();
     if (!userId) {
         throw new Error("userId not found")
@@ -111,11 +114,19 @@ export const addFolder = async (name: string) => {
     }
 
     const currentUserId = currentUser?.id;
+
+    // validate data with zod schema
+    const valid = FolderSchema.safeParse(data);
+    // reture message if not valid
+    if (!valid.success) {
+        throw new Error('Validation failed')
+    }
     try {
         const newFolder = await prisma.folder.create({
             data: {
                 userId: currentUserId,
                 name: name,
+                index: index
             },
         });
         revalidatePath('/')
@@ -205,7 +216,7 @@ export const getBookmark = async (id: string) => {
 }
 
 // add a new bookmark
-export const addBookmark = async (bookmark: any) => {
+export const addBookmark = async (bookmark: Url) => {
     // add validation schema here
     const { userId } = auth();
     if (!userId) {
@@ -239,9 +250,11 @@ export const addBookmark = async (bookmark: any) => {
                 description: bookmark.description,
                 imageUrl: bookmark.imageUrl,
                 icon: bookmark.icon,
+                notes: bookmark.notes,
+                tags: bookmark.tags,
+                index: bookmark.index,
             },
         });
-        console.log('new bookmark = ', newBookmark)
         revalidatePath('/')
         return newBookmark;
     } catch (error: any) {

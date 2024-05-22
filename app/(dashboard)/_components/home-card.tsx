@@ -63,9 +63,9 @@ export const HomeCard = ({ folder }: HomeCardProps) => {
   )
   
   return (
-    <Link href={`/bookmarks/${folder.id}`} className="rounded-lg bg-white p-4 shadow-md">
+    <Link href={`/bookmarks/${folder.id}`} className="rounded-lg bg-white p-4 shadow-md h-[125px]">
       <div className="flex items-center justify-between">
-        <h1 className="text-xl font-bold">{folder.name}</h1>
+        <h1 className="text-lg font-bold">{folder.name}</h1>
         <div className="z-10">
           {dialog}
         </div>

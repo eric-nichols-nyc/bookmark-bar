@@ -2,8 +2,8 @@
 import { Folder } from '@prisma/client'
 import { ChevronRight, FolderIcon } from 'lucide-react'
 import Link from 'next/link'
-import React, { lazy, Suspense, useEffect } from 'react'
-import {useFlyoutStore} from "@/store/useCloseFlyout";
+import React, { lazy, Suspense } from 'react'
+import {useFlyoutStore} from "@/hooks/store/useFlyoutStore";
 import { Button } from '../../../../components/ui/button'
 
 type SidebarType = {
@@ -42,8 +42,8 @@ const SidebarItem = ({ category }: SidebarType) => {
       <Link className="border flex justify-between" id={category.id} href={`/bookmarks/${category.id}`}
       >
         <Button variant="outline" className="relative w-full h-8 p-0 rounded-none flex justify-between gap-2">
-          <div className='flex gap-2'>
-            <FolderIcon size={24} />
+          <div className='flex gap-2 pl-2'>
+            {/* <FolderIcon size={24} /> */}
             {category.name}
           </div>
           <span

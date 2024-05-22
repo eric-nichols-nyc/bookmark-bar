@@ -17,6 +17,11 @@ const nextConfig = {
       ],
       domains: ['res.cloudinary.com','asset.cloudinary.com','www.google.com']
     },
+    crossOrigin: 'anonymous',
+    api:{
+      externalResolver: true,
+      externalResolverPath: '/api',
+    }
   };
 
 export default nextConfig;

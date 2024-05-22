@@ -12,8 +12,7 @@ import { MultiSelect, MultiSelectOption } from "@/components/multi-select/multi-
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/select/select"
 import { BookmarkError, FieldErrors } from "@/types"
 import { Button } from "../ui/button";
-import { set } from "mongoose";
-import { cn } from "@/lib/utils";
+import { Textarea } from "../ui/textarea";
 type FormProps = {
   id?: string
   folders: Folder[] | undefined
@@ -36,6 +35,7 @@ export const BookmarkForm = ({ id, folders, bookmarktags, defaultValue }: FormPr
 
   const onSubmitAction = async (data: FormData) => {
     const url = data.get("url") as string
+    const notes = data.get("notes") as string
     const folderId = data.get("category") || params.id
     // 1. validate url and category
     const valid = addBookmarkSchema.safeParse({ url, folderId })
@@ -100,11 +100,12 @@ export const BookmarkForm = ({ id, folders, bookmarktags, defaultValue }: FormPr
         imageUrl,
         icon,
         tags,
+        notes,
       }
-      await addBookmark(data)
+      const bm = await addBookmark(data)
       ref.current?.reset()
       console.log(data)
-      console.log("Bookmark added")
+      console.log("Bookmark added",)
     } catch (e: any) {
       console.error(e.message)
       alert(e.message)
@@ -116,10 +117,13 @@ export const BookmarkForm = ({ id, folders, bookmarktags, defaultValue }: FormPr
   const headerText = defaultValue ? `👋 Add a new bookmark to ${defaultValue}` : "👋 Add a new bookmark"
 
   return (
-    <form ref={ref} data-testid="add-form" className="flex flex-col" action={onSubmitAction}>
+    <form ref={ref} data-testid="add-form" className="flex flex-col pt-4" action={onSubmitAction}>
       <h1 className="mb-2 text-xl font-semibold">{headerText}</h1>
       <Input name="url" placeholder="https://www.example.com" className="mb-2" />
       {fieldErrors?.url && <p className="text-sm text-red-500">{fieldErrors.url}</p>}
+      <div>
+          <Textarea name="notes" placeholder="Add notes here" className="mb-2" defaultValue=""/>
+        </div>
       <div className="flex z-10">
         <div className="flex flex-col gap-2">
           <div className="w-[200px] bg-slate-100 mr-2">
@@ -148,8 +152,7 @@ export const BookmarkForm = ({ id, folders, bookmarktags, defaultValue }: FormPr
             ))}
           </MultiSelect> */}
         </div>
-        <div>
-        </div>
+   
       </div>
       <div className="flex items-center justify-center w-full p-2">
         <Button

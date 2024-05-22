@@ -1,4 +1,4 @@
-import {object, string} from 'zod';
+import {number, object, string} from 'zod';
 
 
 export const addCategorySchema = object({
@@ -11,6 +11,11 @@ export const addBookmarkSchema = object({
     title: string().optional(),
     description: string().optional(),
     imageUrl: string().optional(),
+});
+
+export const FolderSchema = object({
+    name: string().min(3),
+    index: number().int({message: "index must be unique"}),
 });
 
 export const urlSchema = string().url({ message: "Invalid url" });
