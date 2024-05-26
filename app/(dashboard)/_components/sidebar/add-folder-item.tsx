@@ -22,10 +22,11 @@ export function AddFolderItem() {
   const handleSubmit = async (data: FormData) => {
     console.log("submitted", Object.fromEntries(data))
     const name = data.get("folderName") as string
+    const index = 66535;
     if (!name) return console.log("no name")
     // send data to server
     try {
-      await addFolder(name)
+      await addFolder({name, index})
       console.log("sucess")
       ref.current?.reset()
       setOpen(false)
@@ -50,7 +51,7 @@ export function AddFolderItem() {
             Add Folder
           </Button>
         </form>{" "}
-        <InputEmoji value={text} onChange={setText} cleanOnEnter onEnter={handleOnEnter} placeholder="Type a message" />
+        {/* <InputEmoji value={text} onChange={setText} cleanOnEnter onEnter={handleOnEnter} placeholder="Type a message" /> */}
       </PopoverContent>
     </Popover>
   )

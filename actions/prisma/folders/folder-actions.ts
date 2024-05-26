@@ -94,9 +94,12 @@ export const addUrlToFolder = async (bookmark:Url) => {
 }
 
 
-
+type FolderProps = {
+    name: string;
+    index: number;
+}
 // add a new folder
-export const addFolder = async (data: Folder) => {
+export const addFolder = async (data: FolderProps) => {
     const {name, index} = data
     const { userId } = auth();
     if (!userId) {
