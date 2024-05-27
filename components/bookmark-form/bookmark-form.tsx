@@ -36,7 +36,8 @@ export const BookmarkForm = ({ id, folders, bookmarktags, defaultValue }: FormPr
   const onSubmitAction = async (data: FormData) => {
     const url = data.get("url") as string
     const notes = data.get("notes") as string
-    const folderId = data.get("category") || params.id
+    const folderId = data.get("category") as string || params.id as string
+    const index = 633333 // get index from db
     // 1. validate url and category
     const valid = addBookmarkSchema.safeParse({ url, folderId })
     let imageUrl
@@ -101,6 +102,7 @@ export const BookmarkForm = ({ id, folders, bookmarktags, defaultValue }: FormPr
         icon,
         tags,
         notes,
+        index
       }
       const bm = await addBookmark(data)
       ref.current?.reset()

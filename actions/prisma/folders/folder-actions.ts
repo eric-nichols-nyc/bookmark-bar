@@ -218,8 +218,21 @@ export const getBookmark = async (id: string) => {
     }
 }
 
+
+type UrlProps = {
+    url: string;
+    title: string;
+    description: string;
+    imageUrl?: string;
+    folderId: string;
+    icon?: string;
+    tags?: string[];
+    notes?: string;
+    index: number;
+}
+
 // add a new bookmark
-export const addBookmark = async (bookmark: Url) => {
+export const addBookmark = async (bookmark: UrlProps) => {
     // add validation schema here
     const { userId } = auth();
     if (!userId) {
