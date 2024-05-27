@@ -28,7 +28,7 @@ export async function POST(req: NextRequest, context: any) {
      
     const body = await req.json()
 
-     const { url, title, description, imageUrl, icon } = body;
+     const { url, title, description, imageUrl, icon, index } = body;
 
     if (!url || !title || !folderId) {
         return new Response(JSON.stringify({ error: 'Missing required fields' }));
@@ -43,7 +43,8 @@ export async function POST(req: NextRequest, context: any) {
             description: description,
             imageUrl: imageUrl,
             icon: icon,
-            tags: []
+            tags: [],
+            index: index,
         },
     });
 
