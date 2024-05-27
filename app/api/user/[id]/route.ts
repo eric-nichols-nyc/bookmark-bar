@@ -51,7 +51,7 @@ export async function POST(req: NextRequest, context: any) {
     const currentUserId = currentUser?.id;
 
     const body = await req.json()
-    const { name } = body;
+    const { name, index } = body;
 
     if (!name) {
         return new Response(JSON.stringify({ error: 'Missing required fields' }));
@@ -60,6 +60,7 @@ export async function POST(req: NextRequest, context: any) {
     const bookmark = await prisma.folder.create({
         data: {
             name,
+            index,
             userId: currentUserId as string,
         },
     });
