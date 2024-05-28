@@ -1,10 +1,43 @@
 "use server";
 import { auth } from "@clerk/nextjs";
-import { Folder, Url } from "@prisma/client";
+import { Url } from "@prisma/client";
+import { v2 as cloudinary } from "cloudinary";
 import { revalidatePath } from "next/cache";
-import {z} from 'zod';
 import { prisma } from '@/db/prisma';
 import { addBookmarkSchema, FolderSchema } from "./schemas";
+
+
+export const handleFetchOpengraph = async (url: string) => {
+    try {
+      const data = await fetch(url);
+      return data;
+    } catch (error: any) {
+      console.error(`OOPS!!! Error: ${error.message}`);
+      return { message: 'There was a error fetching the data' }
+    }
+  };
+
+  // upload to Cloudinary
+export const uploadToCloud = async (url: string) => {
+    cloudinary.config({
+      cloud_name: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_API,
+      secure: true,
+      api_key: process.env.CLOUDINARY_API_KEY,
+      api_secret: process.env.CLOUDINARY_API_SECRET,
+    });
+    try {
+      const loader = await cloudinary.uploader.upload(url, {
+        quality_analysis: true,
+        colors: true,
+        quality: "auto",
+        fetch_format: "auto",
+      });
+      return loader.url;
+    } catch (error: any) {
+      console.error(`Error: ${error.message}`);
+    }
+  };
+
 // ======================== FOLDER ACTIONS ========================
 // return all bookmarks
 export const getFolders = async () => {
@@ -21,7 +54,7 @@ export const getFolders = async () => {
                 userId: user?.id,
             },
             orderBy: {
-                createdAt: 'desc',
+                index: 'asc',
             },
         });
         return bookmarks;
@@ -41,7 +74,7 @@ export const getBookmarksByFolderId = async (id: string) => {
           folderId: id,
         },
         orderBy: {
-            createdAt: 'desc',
+            index: 'asc',
         },
       });
   
@@ -51,47 +84,6 @@ export const getBookmarksByFolderId = async (id: string) => {
     }
   
   }
-
-
-  // add a url to a folder with prisma
-export const addUrlToFolder = async (bookmark:Url) => {
-    const {folderId, url, title, description, imageUrl, index} = bookmark;
-
-    const { userId } = auth();
-    if (!userId) {
-        throw new Error("userId not found")
-    }
-
-    const currentUser = await prisma.user.findUnique({
-        where: {
-            externalId: userId as string,
-        },
-    });
-
-    if (!currentUser) {
-        throw new Error("User not found")
-    }
-
-    const currentUserId = currentUser?.id;
-    try {
-        const newUrl = await prisma.url.create({
-            data: {
-                userId: currentUserId,
-                folderId: folderId,
-                url: url,
-                title: title,
-                description: description,
-                imageUrl: imageUrl,
-                index: index
-            },
-        });
-        revalidatePath('/')
-        return newUrl;
-    } catch (error: any) {
-        console.error(`Error: ${error.message}`)
-        return {message:error.message}
-    }
-}
 
 
 type FolderProps = {
@@ -193,10 +185,10 @@ export const getBookmarks = async () => {
                 userId: user?.id,
             },
             orderBy: {
-                createdAt: 'desc',
+                index: 'asc',
             },
         });
-        return bookmarks;
+        return JSON.parse(JSON.stringify(bookmarks)) ;
 
     } catch (error: any) {
         console.error(`Error getting bookmarks from server: ${error.message}`)
@@ -272,7 +264,7 @@ export const addBookmark = async (bookmark: UrlProps) => {
             },
         });
         revalidatePath('/')
-        return newBookmark;
+        return JSON.parse(JSON.stringify(newBookmark)) ;
     } catch (error: any) {
         console.error(`Error: ${error.message}`)
         return {message:error.message}

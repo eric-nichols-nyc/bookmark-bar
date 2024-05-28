@@ -1,12 +1,12 @@
 "use client"
-import { Folder, Tag } from "@prisma/client";
+import { Folder, Tag, Url } from "@prisma/client";
 import { getLogos } from 'favicons-scraper'
 import { useParams } from "next/navigation";
 import { useRef, useState } from "react"
 import { useFormStatus } from "react-dom";
-import { handleFetchOpengraph, uploadToCloud } from "@/actions/mongoose/bookmarks/mongoose-actions"
-import { addBookmarkSchema } from "@/actions/mongoose/bookmarks/schemas"
+import { handleFetchOpengraph, uploadToCloud } from "@/actions/prisma/folders/folder-actions"
 import { addBookmark } from "@/actions/prisma/folders/folder-actions";
+import { addBookmarkSchema } from "@/actions/prisma/folders/schemas"
 import { Input } from "@/components/input/input"
 import { MultiSelect, MultiSelectOption } from "@/components/multi-select/multi-select"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/select/select"
@@ -16,10 +16,11 @@ import { Textarea } from "../ui/textarea";
 type FormProps = {
   id?: string
   folders: Folder[] | undefined
-  bookmarktags: Tag[]
+  urls?: Url[] | undefined
+  bookmarktags?: Tag[]
   defaultValue?: string
 }
-export const BookmarkForm = ({ id, folders, bookmarktags, defaultValue }: FormProps) => {
+export const BookmarkForm = ({ id, folders, bookmarktags, urls, defaultValue }: FormProps) => {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const params = useParams()
   const folder = folders?.find((fld) => fld.id === params.id)?.name 
@@ -37,7 +38,12 @@ export const BookmarkForm = ({ id, folders, bookmarktags, defaultValue }: FormPr
     const url = data.get("url") as string
     const notes = data.get("notes") as string
     const folderId = data.get("category") as string || params.id as string
-    const index = 633333 // get index from db
+    
+    // if there are urls get the index of the first folder 
+    // and add one to the index
+    const index = urls?.length ? urls[0].index/2 : 65333
+
+    
     // 1. validate url and category
     const valid = addBookmarkSchema.safeParse({ url, folderId })
     let imageUrl
@@ -72,7 +78,7 @@ export const BookmarkForm = ({ id, folders, bookmarktags, defaultValue }: FormPr
       //2. load image title and description
       // of image is returned upload to cloudinary
       if (response.message) {
-        alert(response.message)
+        console.log('WHOOPS...'+ response.message)
         return
       }
       if (response.image) {
@@ -93,7 +99,7 @@ export const BookmarkForm = ({ id, folders, bookmarktags, defaultValue }: FormPr
       }
 
       // add tags and bookmark in db
-      const data = {
+      const bm = {
         url,
         folderId,
         title: title,
@@ -104,10 +110,9 @@ export const BookmarkForm = ({ id, folders, bookmarktags, defaultValue }: FormPr
         notes,
         index
       }
-      const bm = await addBookmark(data)
+       await addBookmark(bm)
       ref.current?.reset()
-      console.log(data)
-      console.log("Bookmark added",)
+      console.log("Bookmark added")
     } catch (e: any) {
       console.error(e.message)
       alert(e.message)

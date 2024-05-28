@@ -2,7 +2,7 @@
 import { Plus } from "lucide-react"
 import { useRef, useState } from "react"
 import { useFormStatus } from "react-dom"
-import InputEmoji from "react-input-emoji"
+// import InputEmoji from "react-input-emoji"
 import { addFolder } from "@/actions/prisma/folders/folder-actions"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -13,11 +13,11 @@ export function AddFolderItem() {
   const ref = useRef<HTMLFormElement>(null)
   const [open, setOpen] = useState(false)
   const { pending } = useFormStatus()
-  const [text, setText] = useState("")
+  // const [text, setText] = useState("")
 
-  function handleOnEnter(text:any) {
-    console.log("enter", text)
-  }
+  // function handleOnEnter(text:any) {
+  //   console.log("enter", text)
+  // }
 
   const handleSubmit = async (data: FormData) => {
     console.log("submitted", Object.fromEntries(data))

@@ -6,10 +6,8 @@ import ScrollToTop from "@/components/scroll-to-top"
 import { DetailDrawer } from "../../_components/detail-sheet"
 
 const fetchBookmarks = async (id: string) => {
-  console.log('id = ', id)
   try {
     const bookmarks = await getBookmarksByFolderId(id)
-    console.log('bookmarks = ', bookmarks)
     return bookmarks
   } catch (e) {
     console.log("error with bookmarks", e)
@@ -33,7 +31,7 @@ const BookmarkPage = async (context: { params: { id: string } }) => {
   
   return (
     <div id="test" className="container size-full flex flex-1 flex-col">
-        <BookmarkForm id={id} folders={folders} bookmarktags={tags} defaultValue={folderName}/>
+        <BookmarkForm id={id} folders={folders} urls={urls} defaultValue={folderName}/>
       <div className="w-full flex container h-auto bg-slate-200 p-2 drop-shadow">
         <div className="flex gap-2">
          {folderName} ({urls?.length})
