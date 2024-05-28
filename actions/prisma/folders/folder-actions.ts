@@ -1,7 +1,7 @@
 "use server";
 import { auth } from "@clerk/nextjs";
-import { Url } from "@prisma/client";
 import { v2 as cloudinary } from "cloudinary";
+import { fetch } from "fetch-opengraph";
 import { revalidatePath } from "next/cache";
 import { prisma } from '@/db/prisma';
 import { addBookmarkSchema, FolderSchema } from "./schemas";

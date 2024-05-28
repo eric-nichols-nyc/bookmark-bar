@@ -3,12 +3,12 @@ import { Folder, Tag, Url } from "@prisma/client";
 import { getLogos } from 'favicons-scraper'
 import { useParams } from "next/navigation";
 import { useRef, useState } from "react"
-import { useFormStatus } from "react-dom";
+//import { useFormStatus } from "react-dom";
 import { handleFetchOpengraph, uploadToCloud } from "@/actions/prisma/folders/folder-actions"
 import { addBookmark } from "@/actions/prisma/folders/folder-actions";
 import { addBookmarkSchema } from "@/actions/prisma/folders/schemas"
 import { Input } from "@/components/input/input"
-import { MultiSelect, MultiSelectOption } from "@/components/multi-select/multi-select"
+// import { MultiSelect, MultiSelectOption } from "@/components/multi-select/multi-select"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/select/select"
 import { BookmarkError, FieldErrors } from "@/types"
 import { Button } from "../ui/button";
@@ -24,16 +24,15 @@ export const BookmarkForm = ({ id, folders, bookmarktags, urls, defaultValue }: 
   const [isSubmitting, setIsSubmitting] = useState(false)
   const params = useParams()
   const folder = folders?.find((fld) => fld.id === params.id)?.name 
-  const { pending } = useFormStatus()
+  // const { pending } = useFormStatus()
   const ref = useRef<HTMLFormElement>(null)
   const [fieldErrors, setFieldErrors] = useState<FieldErrors<BookmarkError> | undefined>()
 
   const [tags, setTags] = useState<string[] | undefined>()
   // add to tags to send to db
-  const onTagsChange = (selected: string[]) => {
-    setTags(selected)
-  }
-
+  // const onTagsChange = (selected: string[]) => {
+  //   setTags(selected)
+  // }
   const onSubmitAction = async (data: FormData) => {
     const url = data.get("url") as string
     const notes = data.get("notes") as string
@@ -72,7 +71,7 @@ export const BookmarkForm = ({ id, folders, bookmarktags, urls, defaultValue }: 
         console.log(e)
       }
     }
-    // 1. get url and send to opengraph
+    // // 1. get url and send to opengraph
     try {
       const response = await handleFetchOpengraph(url as string) as any
       //2. load image title and description
@@ -82,6 +81,7 @@ export const BookmarkForm = ({ id, folders, bookmarktags, urls, defaultValue }: 
         return
       }
       if (response.image) {
+        console.log('image was uploaded',response.image)
         try {
           if (response.image) {
             imageUrl = await uploadToCloud(response.image as string)
@@ -98,7 +98,6 @@ export const BookmarkForm = ({ id, folders, bookmarktags, urls, defaultValue }: 
         title = response.title
       }
 
-      // add tags and bookmark in db
       const bm = {
         url,
         folderId,
@@ -112,7 +111,7 @@ export const BookmarkForm = ({ id, folders, bookmarktags, urls, defaultValue }: 
       }
        await addBookmark(bm)
       ref.current?.reset()
-      console.log("Bookmark added")
+      alert("Bookmark added")
     } catch (e: any) {
       console.error(e.message)
       alert(e.message)
@@ -120,6 +119,93 @@ export const BookmarkForm = ({ id, folders, bookmarktags, urls, defaultValue }: 
       setIsSubmitting(false)
     }
   }
+
+  // const onSubmitAction = async (data: FormData) => {
+  //   const url = data.get("url") as string
+  //   const notes = data.get("notes") as string
+  //   const folderId = data.get("category") as string || params.id as string
+    
+  //   // if there are urls get the index of the first folder 
+  //   // and add one to the index
+  //   const index = urls?.length ? urls[0].index/2 : 65333
+
+    
+  //   // 1. validate url and category
+  //   const valid = addBookmarkSchema.safeParse({ url, folderId })
+  //   let imageUrl
+  //   let title = "No Title"
+
+  //   if (!valid.success) {
+  //     console.log(valid.error.flatten().fieldErrors)
+  //     setFieldErrors(valid.error.flatten().fieldErrors)
+  //     return
+  //   }
+
+  //   let favicon;
+  //   let icon;
+  //   try {
+  //     const domain = url
+  //     const domainLogos = await getLogos(domain)
+  //     favicon = domainLogos[0].src
+  //   } catch (e: any) {
+  //     console.log(e)
+  //   }
+  //   if(favicon) {
+  //     try{
+  //       icon = await uploadToCloud(favicon as string)
+  //       console.log('Icon was created...', icon)
+  //     }catch(e){
+  //       console.log(e)
+  //     }
+  //   }
+  //   // 1. get url and send to opengraph
+  //   try {
+  //     const response = await handleFetchOpengraph(url as string) as any
+  //     //2. load image title and description
+  //     // of image is returned upload to cloudinary
+  //     if (response.message) {
+  //       console.log('WHOOPS...'+ response.message)
+  //       return
+  //     }
+  //     if (response.image) {
+  //       try {
+  //         if (response.image) {
+  //           imageUrl = await uploadToCloud(response.image as string)
+  //         }
+  //       } catch (error: any) {
+  //         console.error("OOPS!!!", error.message)
+  //         return error.message
+  //       }
+  //     } else {
+  //       console.log("no image was found")
+  //     }
+
+  //     if (response.title) {
+  //       title = response.title
+  //     }
+
+  //     // add tags and bookmark in db
+  //     const bm = {
+  //       url,
+  //       folderId,
+  //       title: title,
+  //       description: response.description || "",
+  //       imageUrl,
+  //       icon,
+  //       tags,
+  //       notes,
+  //       index
+  //     }
+  //      await addBookmark(bm)
+  //     ref.current?.reset()
+  //     console.log("Bookmark added")
+  //   } catch (e: any) {
+  //     console.error(e.message)
+  //     alert(e.message)
+  //   }finally{
+  //     setIsSubmitting(false)
+  //   }
+  // }
 
   const headerText = defaultValue ? `👋 Add a new bookmark to ${defaultValue}` : "👋 Add a new bookmark"
 

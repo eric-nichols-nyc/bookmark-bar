@@ -27,7 +27,7 @@ const BookmarkPage = async (context: { params: { id: string } }) => {
   const urls = await fetchBookmarks(id)
   const folders = await getFolders()
   const folderName = await getFolderId(id)
-  const tags = await getTags()
+  //const tags = await getTags()
   
   return (
     <div id="test" className="container size-full flex flex-1 flex-col">
