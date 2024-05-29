@@ -13,6 +13,9 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { BookmarkError, FieldErrors } from "@/types"
 import { Button } from "../ui/button";
 import { Textarea } from "../ui/textarea";
+import { useAddingBookmark } from "@/hooks/store/use-adding-bookmark"
+
+
 type FormProps = {
   id?: string
   folders: Folder[] | undefined
@@ -21,6 +24,7 @@ type FormProps = {
   defaultValue?: string
 }
 export const BookmarkForm = ({ id, folders, bookmarktags, urls, defaultValue }: FormProps) => {
+  const {startLoading, stopLoading} = useAddingBookmark((state) => ({startLoading: state.startLoading, stopLoading: state.stopLoading}))
   const [isSubmitting, setIsSubmitting] = useState(false)
   const params = useParams()
   const folder = folders?.find((fld) => fld.id === params.id)?.name 
@@ -34,6 +38,7 @@ export const BookmarkForm = ({ id, folders, bookmarktags, urls, defaultValue }: 
   //   setTags(selected)
   // }
   const onSubmitAction = async (data: FormData) => {
+    startLoading()
     const url = data.get("url") as string
     const notes = data.get("notes") as string
     const folderId = data.get("category") as string || params.id as string
@@ -111,101 +116,15 @@ export const BookmarkForm = ({ id, folders, bookmarktags, urls, defaultValue }: 
       }
        await addBookmark(bm)
       ref.current?.reset()
-      alert("Bookmark added")
+      console.log("Bookmark added")
     } catch (e: any) {
       console.error(e.message)
       alert(e.message)
     }finally{
       setIsSubmitting(false)
+      stopLoading()
     }
   }
-
-  // const onSubmitAction = async (data: FormData) => {
-  //   const url = data.get("url") as string
-  //   const notes = data.get("notes") as string
-  //   const folderId = data.get("category") as string || params.id as string
-    
-  //   // if there are urls get the index of the first folder 
-  //   // and add one to the index
-  //   const index = urls?.length ? urls[0].index/2 : 65333
-
-    
-  //   // 1. validate url and category
-  //   const valid = addBookmarkSchema.safeParse({ url, folderId })
-  //   let imageUrl
-  //   let title = "No Title"
-
-  //   if (!valid.success) {
-  //     console.log(valid.error.flatten().fieldErrors)
-  //     setFieldErrors(valid.error.flatten().fieldErrors)
-  //     return
-  //   }
-
-  //   let favicon;
-  //   let icon;
-  //   try {
-  //     const domain = url
-  //     const domainLogos = await getLogos(domain)
-  //     favicon = domainLogos[0].src
-  //   } catch (e: any) {
-  //     console.log(e)
-  //   }
-  //   if(favicon) {
-  //     try{
-  //       icon = await uploadToCloud(favicon as string)
-  //       console.log('Icon was created...', icon)
-  //     }catch(e){
-  //       console.log(e)
-  //     }
-  //   }
-  //   // 1. get url and send to opengraph
-  //   try {
-  //     const response = await handleFetchOpengraph(url as string) as any
-  //     //2. load image title and description
-  //     // of image is returned upload to cloudinary
-  //     if (response.message) {
-  //       console.log('WHOOPS...'+ response.message)
-  //       return
-  //     }
-  //     if (response.image) {
-  //       try {
-  //         if (response.image) {
-  //           imageUrl = await uploadToCloud(response.image as string)
-  //         }
-  //       } catch (error: any) {
-  //         console.error("OOPS!!!", error.message)
-  //         return error.message
-  //       }
-  //     } else {
-  //       console.log("no image was found")
-  //     }
-
-  //     if (response.title) {
-  //       title = response.title
-  //     }
-
-  //     // add tags and bookmark in db
-  //     const bm = {
-  //       url,
-  //       folderId,
-  //       title: title,
-  //       description: response.description || "",
-  //       imageUrl,
-  //       icon,
-  //       tags,
-  //       notes,
-  //       index
-  //     }
-  //      await addBookmark(bm)
-  //     ref.current?.reset()
-  //     console.log("Bookmark added")
-  //   } catch (e: any) {
-  //     console.error(e.message)
-  //     alert(e.message)
-  //   }finally{
-  //     setIsSubmitting(false)
-  //   }
-  // }
 
   const headerText = defaultValue ? `👋 Add a new bookmark to ${defaultValue}` : "👋 Add a new bookmark"
 
