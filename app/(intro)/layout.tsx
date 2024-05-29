@@ -3,7 +3,7 @@ import React from 'react'
 import { Navbar } from '@/components/navbar/navbar'
 const IntroLayout = ({children}:React.PropsWithChildren) => {
   return (
-    <div className="relative h-full bg-cover bg-no-repeat" style={{backgroundImage:"url(/images/image0_0.jpg)"}}>
+    <div className="relative h-full bg-cover bg-no-repeat">
         <Navbar />
         <div className="z-10">
         {children}

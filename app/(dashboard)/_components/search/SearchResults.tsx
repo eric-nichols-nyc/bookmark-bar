@@ -21,7 +21,7 @@ export function SearchResults({ bookmarks }: SearchResultsProps) {
                 className="relative flex items-center justify-center sm:w-4 md:w-full"
                 onClick={() => setOpen(true)}
             >
-                <span className="hidden lg:inline-flex">Search documentation...</span>
+                <span className="hidden lg:inline-flex">Search bookmarks...</span>
                 <SearchIcon size={18} className="absolute right-3 top-1" />
             </Button>
             <CommandDialog open={open} onOpenChange={setOpen}>

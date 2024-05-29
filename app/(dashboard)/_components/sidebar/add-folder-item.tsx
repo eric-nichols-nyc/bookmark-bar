@@ -39,11 +39,11 @@ export function AddFolderItem() {
     <Popover open={open}>
       <PopoverTrigger asChild>
         <Button variant="outline" className="flex w-full justify-between" onClick={() => setOpen(!open)}>
-          <span>Add New Folder</span>
-          <Plus />
+          <span>New Folder</span>
+          <Plus size={16}/>
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-80" side="right">
+      <PopoverContent className="w-auto" side="right">
         <form ref={ref} className="flex flex-col gap-3" action={handleSubmit}>
           <Label htmlFor="folderName">Folder Name</Label>
           <Input type="text" id="folderName" name="folderName" />

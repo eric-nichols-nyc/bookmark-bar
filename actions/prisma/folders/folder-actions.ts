@@ -5,6 +5,7 @@ import { fetch } from "fetch-opengraph";
 import { revalidatePath } from "next/cache";
 import { prisma } from '@/db/prisma';
 import { addBookmarkSchema, FolderSchema } from "./schemas";
+import { Folder, Url } from "@prisma/client";
 
 
 export const handleFetchOpengraph = async (url: string) => {
@@ -149,16 +150,19 @@ export const deleteFolder = async (id: string) => {
         return {message:error.message}
     }
 }
-
+type UpdateFolderProps = {
+    name?: string;
+    index?: number;
+}
 // update folder name
-export const updateFolder = async (id: string, name: string) => {
+export const updateFolder = async (id: string, data: UpdateFolderProps) => {
     try {
         const updatedFolder = await prisma.folder.update({
             where: {
                 id: id,
             },
             data: {
-                name: name,
+                ...data
             },
         });
         revalidatePath('/')
@@ -288,18 +292,14 @@ export const deleteBookmark = async (id: string) => {
 }  
 
 // update a bookmark by id
-export const updateBookmark = async (id: string, data: any) => {
+export const updateBookmark = async (id: string, data: Url) => {
     try {
         const updatedBookmark = await prisma.url.update({
             where: {
                 id: id,
             },
             data: {
-                url: data.url,
-                title: data.title,
-                description: data.description,
-                imageUrl: data.imageUrl,
-                folderId: data.folderId,
+                ...data
             },
         });
         revalidatePath('/')
