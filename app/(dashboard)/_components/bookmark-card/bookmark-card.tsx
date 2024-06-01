@@ -1,5 +1,7 @@
 "use client"
 
+import { useSortable } from "@dnd-kit/sortable"
+import { CSS } from "@dnd-kit/utilities"
 import { Url } from "@prisma/client"
 import { AspectRatio } from "@radix-ui/react-aspect-ratio"
 import { FileIcon } from "lucide-react"
@@ -12,26 +14,45 @@ import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card"
 import { useDetailDrawer } from "@/hooks/store/use-detail-drawer"
 import BookmarkCardDropdown from "./bookmark-card-options"
 
-export const BookmarkCard = ({ id, url, title, description, icon, imageUrl, tags }: Url) => {
+type BookmarkCardType = {
+  id: string
+  index: number
+  url: string
+  title?: string | null
+  icon?: string | null
+  imageUrl?: string | null
+  tags?: string[]
+  isDragging?: boolean
+}
+
+export const BookmarkCard = ({ id, url, title, icon, imageUrl, tags }: BookmarkCardType) => {
+  const { isDragging, attributes, listeners, setNodeRef, transform, transition } = useSortable({ id })
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition: transition || undefined,
+  }
+
   const { open } = useDetailDrawer()
   return (
-    <div className="flex relative">
-      <Card
-        className="relative flex flex-1 cursor-pointer flex-col overflow-hidden drop-shadow-md px-2"
-      >
+    <div style={style} ref={setNodeRef} className="relative flex">
+      <Card className="relative flex flex-1 cursor-pointer flex-col overflow-hidden px-2 drop-shadow-md">
         <CardHeader className="flex flex-row items-center justify-between p-1">
           {icon ? <Image src={icon} alt="icon" width={20} height={20} /> : <FileIcon />}
-            <Link className="w-full cursor-pointer hover:underline" href={url} rel="noreferrer" target="_blank">
-              <Button variant="ghost" className="w-full">
-                View Post
-              </Button>
-            </Link>
-          <BookmarkCardDropdown _id={id} />
+          <Link className="w-full cursor-pointer hover:underline" href={url} rel="noreferrer" target="_blank">
+            <Button variant="ghost" className="w-full">
+              View Post
+            </Button>
+          </Link>
+          <Button variant="ghost" size="sm" {...attributes} {...listeners}>
+            ⣿
+          </Button>
         </CardHeader>
-        <CardContent         
+        <CardContent
           onClick={open}
-          className="relative mb-4 flex flex-1 h-auto w-full flex-col overflow-hidden p-1 justify-between">
-          <h1 className="text-lg font-bold leading-snug mb-2">{title}</h1>
+          className="relative mb-4 flex h-auto w-full flex-1 flex-col justify-between overflow-hidden p-1"
+        >
+          <h1 className="mb-2 text-lg font-bold leading-snug">{title}</h1>
           <AspectRatio ratio={16 / 9} className="bg-muted">
             <Image
               src={imageUrl || "/images/placeholder.webp"}
@@ -40,8 +61,11 @@ export const BookmarkCard = ({ id, url, title, description, icon, imageUrl, tags
               className="rounded-md object-cover"
             />
           </AspectRatio>
-          {/* <p className="text-sm">{description}</p> */}
+    
         </CardContent>
+        <div className="flex justify-end">
+            <BookmarkCardDropdown _id={id} />
+          </div>
         {tags && tags.length > 0 && (
           <CardFooter className="p1">
             <div className="flex flex-wrap gap-2 p-2">{tags?.map((tag) => <Badge key={tag}>{tag}</Badge>)}</div>
@@ -51,4 +75,3 @@ export const BookmarkCard = ({ id, url, title, description, icon, imageUrl, tags
     </div>
   )
 }
-

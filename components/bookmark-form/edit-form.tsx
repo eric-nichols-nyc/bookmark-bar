@@ -72,16 +72,17 @@ export function EditSheet() {
       _id: current!.id,
       url: current!.url,
       title: data.get("title") as string,
+      notes: data.get("notes") as string,
       description: data.get("description") as string,
       folderId: (data.get("category") as string) || current!.folderId,
-      tags: [],
+      tags: tags,
     }
     // validate data
     console.log("obj", obj)
     console.log(Object.fromEntries(data))
 
     try {
-      const update = (await updateBookmark(currentBookmarkId as string, obj)) as any
+      const update = (await updateBookmark(currentBookmarkId as string, obj)) as any;
       if (update.error) {
         alert(update.error)
       }
@@ -141,7 +142,7 @@ export function EditSheet() {
               <Label>Notes</Label>
               <Textarea
                 className="h-[150px]"
-                name="Notes"
+                name="notes"
                 defaultValue={current?.notes || ""}
                 onChange={() => console.log("change")}
               />

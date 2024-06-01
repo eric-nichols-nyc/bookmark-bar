@@ -1,5 +1,5 @@
 "use client"
-import { useSignIn } from "@clerk/nextjs"
+import { useSignIn } from "@clerk/clerk-react";
 import { OAuthStrategy } from "@clerk/types"
 import React from "react"
 import { Button } from "@/components/ui/button"
@@ -17,15 +17,30 @@ export const OauthSignin = () => {
   const [loading, setLoading] = React.useState<OAuthStrategy | null>(null)
   const {signIn, isLoaded: signInLoaded} = useSignIn()
 
-  async function handleSignIn(provider: OAuthStrategy) {
+  async function handleSignIn1(provider: OAuthStrategy) {
     if (!signInLoaded) return null
     setLoading(provider)
     try{
       setLoading(provider)
-      await signIn.authenticateWithRedirect({
-        strategy: provider,
+      await signIn.create({
+        strategy: "oauth_google",
         redirectUrl: "/sso-callback",
-        redirectUrlComplete: "/bookmarks",
+        
+      })
+    }catch(e){
+      console.error(e)  
+    }
+
+  }
+
+  async function handleSignIn2(provider: OAuthStrategy) {
+    if (!signInLoaded) return null
+    setLoading(provider)
+    try{
+      setLoading(provider)
+      await signIn.create({
+        strategy: "oauth_github",
+        redirectUrl: "/bookmarks",
       })
     }catch(e){
       console.error(e)  
@@ -34,7 +49,7 @@ export const OauthSignin = () => {
   }
 
   return <div className="flex flex-col items-center gap-2 sm:flex-row sm:gap-4">
-       {oauthProviders.map((provider) => {
+       {/* {oauthProviders.map((provider) => {
         return (
           <Button
           key={provider.strategy}
@@ -46,6 +61,24 @@ export const OauthSignin = () => {
             {provider.name}
           </Button>
         )
-      })}
+      })} */}
+           <Button
+          key={"oauth_google"}
+          variant="outline"
+          className="w-full bg-background"
+          onClick={() => void handleSignIn1("oauth_google")}
+          disabled={loading !== null}
+          >
+            Google
+          </Button>
+          <Button
+          key={"oauth_github"}
+          variant="outline"
+          className="w-full bg-background"
+          onClick={() => void handleSignIn2("oauth_github")}
+          disabled={loading !== null}
+          >
+            github
+          </Button>
   </div>
 }

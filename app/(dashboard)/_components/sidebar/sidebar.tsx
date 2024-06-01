@@ -1,4 +1,4 @@
-import { auth } from "@clerk/nextjs"
+import { auth } from "@clerk/nextjs/server"
 import { Folder } from "@prisma/client"
 import React from "react"
 import { getFolders } from "@/actions/prisma/folders/folder-actions"

@@ -1,5 +1,5 @@
 "use server";
-import { auth } from "@clerk/nextjs";
+import { auth } from "@clerk/nextjs/server";
 import { v2 as cloudinary } from "cloudinary";
 import { fetch } from "fetch-opengraph";
 import { revalidatePath } from "next/cache";
@@ -290,9 +290,19 @@ export const deleteBookmark = async (id: string) => {
         return {message:error.message}
     }
 }  
-
+type UrlUpdateProps = {
+    url?: string;
+    title?: string;
+    description?: string;
+    imageUrl?: string;
+    folderId?: string;
+    icon?: string;
+    tags?: string[];
+    notes?: string;
+    index?: number;
+}
 // update a bookmark by id
-export const updateBookmark = async (id: string, data: Url) => {
+export const updateBookmark = async (id: string, data: UrlUpdateProps) => {
     try {
         const updatedBookmark = await prisma.url.update({
             where: {

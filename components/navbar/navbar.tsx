@@ -1,4 +1,4 @@
-import { currentUser } from "@clerk/nextjs"
+import { currentUser } from '@clerk/nextjs/server';
 import Image from "next/image"
 import Link from "next/link"
 import { LogoutButton } from "../logout-button.tsx/logout-button"
@@ -20,7 +20,7 @@ export const Navbar = async() => {
         {
           user ?
           <LogoutButton />
-         : <Link href="/signin"><Button id="signin" >Sign in</Button></Link>
+         : <Link href="/sign-in"><Button id="signin" >Sign in</Button></Link>
         }
       </div>
     </header>

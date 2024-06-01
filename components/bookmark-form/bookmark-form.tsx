@@ -38,7 +38,7 @@ export const BookmarkForm = ({ id, folders, bookmarktags, urls, defaultValue }: 
   //   setTags(selected)
   // }
   const onSubmitAction = async (data: FormData) => {
-    startLoading()
+
     const url = data.get("url") as string
     const notes = data.get("notes") as string
     const folderId = data.get("category") as string || params.id as string
@@ -56,8 +56,12 @@ export const BookmarkForm = ({ id, folders, bookmarktags, urls, defaultValue }: 
     if (!valid.success) {
       console.log(valid.error.flatten().fieldErrors)
       setFieldErrors(valid.error.flatten().fieldErrors)
+      setIsSubmitting(false)
+      stopLoading()
       return
     }
+    // start loading actions
+
 
     let favicon;
     let icon;
@@ -78,6 +82,8 @@ export const BookmarkForm = ({ id, folders, bookmarktags, urls, defaultValue }: 
     }
     // // 1. get url and send to opengraph
     try {
+      setIsSubmitting(true)
+      startLoading()
       const response = await handleFetchOpengraph(url as string) as any
       //2. load image title and description
       // of image is returned upload to cloudinary
@@ -171,7 +177,7 @@ export const BookmarkForm = ({ id, folders, bookmarktags, urls, defaultValue }: 
           data-testid="addbookmark-button"
           type="submit"
           className="m-2 border p-2 w-[220px] text-sm"
-          onClick={() => setTimeout(() => setIsSubmitting(true),0)}
+          // onClick={() => setTimeout(() => setIsSubmitting(true),0)}
           disabled={isSubmitting}
         >
           {isSubmitting ? "Submitting..." : "Submit"}

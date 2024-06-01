@@ -1,20 +1,22 @@
+import { SignIn } from "@clerk/nextjs"
 import Link from "next/link"
 import * as React from "react"
 
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { OauthSignin } from "../_components/oauth/oauth-signin"
-import { SigninForm } from "../_components/sign-in/signin-form"
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "../../../../components/ui/card"
+// import { OauthSignin } from "../../_components/oauth/oauth-signin"
+//import { SigninForm } from "../../_components/sign-in/signin-form"
 
 export default function SiginPage() {
   return (
     <section className="flex size-full items-center justify-center border-5 ">
       <Card className="max-w-lg">
-        <CardHeader>
+        {/* <CardHeader>
           <CardTitle>Sign in</CardTitle>
           <CardDescription>Choose your preferred sign up method</CardDescription>
-        </CardHeader>
+        </CardHeader> */}
         <CardContent>
-          <OauthSignin />
+          {/* <OauthSignin /> */}
+          <SignIn />
           <div className="relative">
             <div className="absolute inset-0 flex items-center">
               <span className="w-full border-t" />
@@ -23,14 +25,14 @@ export default function SiginPage() {
               <span className="bg-background px-2 text-muted-foreground">Or continue with</span>
             </div>
           </div>
-          <SigninForm />
+          {/* <SigninForm /> */}
         </CardContent>
         <CardFooter className="flex justify-between">
           <div className="text-sm text-muted-foreground">
             <span className="mr-1 hidden sm:inline-block">Don&apos;t have an account?</span>
             <Link
               aria-label="Sign up"
-              href="/signup"
+              href="/sign-up"
               className="text-primary underline-offset-4 transition-colors hover:underline"
             >
               Sign up
