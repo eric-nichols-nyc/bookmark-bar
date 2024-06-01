@@ -27,7 +27,7 @@ export function UserNav() {
 
     signOut()
     startTransition(() => {
-      redirect( "/?redirect_url=/")
+      redirect( "/?redirect=false")
     })
   }
 
