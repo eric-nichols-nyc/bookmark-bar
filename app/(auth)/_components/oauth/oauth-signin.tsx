@@ -25,7 +25,7 @@ export const OauthSignin = () => {
       await signIn.create({
         strategy: "oauth_google",
         redirectUrl: "/sso-callback",
-        
+        actionCompleteRedirectUrl: "/bookmarks",
       })
     }catch(e){
       console.error(e)  
@@ -70,15 +70,6 @@ export const OauthSignin = () => {
           disabled={loading !== null}
           >
             Google
-          </Button>
-          <Button
-          key={"oauth_github"}
-          variant="outline"
-          className="w-full bg-background"
-          onClick={() => void handleSignIn2("oauth_github")}
-          disabled={loading !== null}
-          >
-            github
           </Button>
   </div>
 }

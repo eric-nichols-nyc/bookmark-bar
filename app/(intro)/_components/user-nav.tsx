@@ -1,6 +1,7 @@
 "use client"
-import { SignOutButton } from "@clerk/nextjs/server"
-import { useRouter } from 'next/navigation'
+import { useClerk } from '@clerk/nextjs';
+import { SignInButton, SignOutButton, useAuth } from "@clerk/nextjs";
+import { redirect, useRouter } from 'next/navigation'
 import React, { startTransition } from 'react'
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
@@ -10,17 +11,25 @@ import {
   DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
-  DropdownMenuPortal,
   DropdownMenuSeparator,
   DropdownMenuShortcut,
-  DropdownMenuSub,
-  DropdownMenuSubContent,
-  DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 
+
 export function UserNav() {
+  const { sessionId } = useAuth();
   const router = useRouter()
+  const { signOut } = useClerk()
+
+  const onHandleSignOut = () => {
+    // signout and redirect to home
+
+    signOut()
+    startTransition(() => {
+      redirect( "/?redirect_url=/")
+    })
+  }
 
   return (
     <DropdownMenu>
@@ -48,22 +57,7 @@ export function UserNav() {
         <DropdownMenuItem>GitHub</DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem>
-        <SignOutButton
-          signOutCallback={() =>
-            startTransition(() => {
-              router.push(`${window.location.origin}/?redirect=false`)
-            })
-          }
-        >
-          <Button
-            aria-label="Log out"
-            size="sm"
-            className="w-full flex justify-start text-left"
-          >
-            Log out
-          </Button>
-        </SignOutButton>
-          <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
+          <Button onClick={onHandleSignOut}>Sign out</Button>       
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
