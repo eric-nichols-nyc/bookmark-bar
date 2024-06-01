@@ -1,5 +1,5 @@
 "use client"
-import { SignOutButton } from '@clerk/nextjs/server'
+import { SignOutButton } from '@clerk/nextjs'
 import { useRouter } from 'next/navigation'
 import React, { startTransition } from 'react'
 import { Button } from '@/components/ui/button'
@@ -14,13 +14,7 @@ const AuthDropdown = () => {
       </DropdownMenuTrigger>
       <DropdownMenuContent className='w-[260px]'>
         <DropdownMenuItem>
-        <SignOutButton
-          signOutCallback={() =>
-            startTransition(() => {
-              router.push(`${window.location.origin}/?redirect=false`)
-            })
-          }
-        >
+        <SignOutButton>
           <Button
             aria-label="Log out"
             size="sm"
