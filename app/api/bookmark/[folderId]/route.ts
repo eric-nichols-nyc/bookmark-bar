@@ -13,7 +13,7 @@ export async function POST(req: NextRequest, context: any) {
       // Query DB for user specific information or display assets only to signed in users 
     }
 
-    const { isSignedIn } = await clerkClient.authenticateRequest({ request: req })
+    const { isSignedIn } = await clerkClient.authenticateRequest(req)
     if ( !isSignedIn ) {
       return NextResponse.json({ status: 401 })
     }
