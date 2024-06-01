@@ -5,7 +5,7 @@ import { fetch } from "fetch-opengraph";
 import { revalidatePath } from "next/cache";
 import { prisma } from '@/db/prisma';
 import { addBookmarkSchema, FolderSchema } from "./schemas";
-import { Folder, Url } from "@prisma/client";
+import { Folder, Tag, Url } from "@prisma/client";
 
 
 export const handleFetchOpengraph = async (url: string) => {
@@ -291,15 +291,16 @@ export const deleteBookmark = async (id: string) => {
     }
 }  
 type UrlUpdateProps = {
-    url?: string;
+    _id: string
+    url: string;
     title?: string;
     description?: string;
     imageUrl?: string;
-    folderId?: string;
+    folderId: string;
     icon?: string;
     tags?: string[];
     notes?: string;
-    index?: number;
+    index: number;
 }
 // update a bookmark by id
 export const updateBookmark = async (id: string, data: UrlUpdateProps) => {
@@ -309,11 +310,19 @@ export const updateBookmark = async (id: string, data: UrlUpdateProps) => {
                 id: id,
             },
             data: {
-                ...data
+                url: data.url,
+                title: data.title,
+                description: data.description,
+                imageUrl: data.imageUrl,
+                folderId: data.folderId,
+                icon: data.icon,
+                tags: data.tags,
+                notes: data.notes,
+                index: data.index
             },
         });
         revalidatePath('/')
-        return updatedBookmark;
+        return {data: updatedBookmark};
     } catch (error: any) {
         console.error(`Error: ${error.message}`)
         return {message:error.message}

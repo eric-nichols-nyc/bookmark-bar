@@ -18,7 +18,7 @@ import { Textarea } from "../ui/textarea"
 export function EditSheet() {
   const ref = React.useRef(null);
 
-  const [tags, setTags] = React.useState<Tag[] | undefined>([])
+  const [tags, setTags] = React.useState<string[] | undefined>([])
   const [current, setCurrent] = React.useState<Url | undefined>()
   const [categories, setCategories] = React.useState<Folder[] | undefined>([])
 
@@ -53,7 +53,8 @@ export function EditSheet() {
 
   React.useEffect(() => {
     fetchTags().then((tags) => {
-      setTags(tags)
+      const names = tags?.map((tag) => tag.name)
+      setTags(names)
     })
 
     fetchCategories().then((categories) => {
@@ -71,6 +72,7 @@ export function EditSheet() {
     const obj = {
       _id: current!.id,
       url: current!.url,
+      index: current!.index,
       title: data.get("title") as string,
       notes: data.get("notes") as string,
       description: data.get("description") as string,
@@ -82,10 +84,11 @@ export function EditSheet() {
     console.log(Object.fromEntries(data))
 
     try {
-      const update = (await updateBookmark(currentBookmarkId as string, obj)) as any;
-      if (update.error) {
-        alert(update.error)
-      }
+      const update = (await updateBookmark(currentBookmarkId as string, obj));
+      console.log("update", update)
+      // if (update.error) {
+      //   alert(update.error)
+      // }
     } catch (e) {
       console.error(e)
     }

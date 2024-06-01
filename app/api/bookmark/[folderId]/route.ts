@@ -1,4 +1,4 @@
-import { auth, clerkClient } from "@clerk/nextjs";
+import { auth, clerkClient } from "@clerk/nextjs/server";
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/db/prisma";
 //POST a new url to a folder by folder id and user id with prisma

@@ -1,5 +1,5 @@
 "use client"
-import { SignOutButton } from '@clerk/nextjs'
+import { SignOutButton } from '@clerk/nextjs/server'
 import { useRouter } from 'next/navigation'
 import React, { startTransition } from 'react'
 import { Button } from '@/components/ui/button'

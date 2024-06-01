@@ -1,6 +1,6 @@
 import "server-only"
 
-import { currentUser } from "@clerk/nextjs"
+import { currentUser } from "@clerk/nextjs/server"
 import { unstable_noStore as noStore } from "next/cache"
 import { cache } from "react"
 
