@@ -4,7 +4,7 @@ import { useSortable } from "@dnd-kit/sortable"
 import { CSS } from "@dnd-kit/utilities"
 import { Url } from "@prisma/client"
 import { AspectRatio } from "@radix-ui/react-aspect-ratio"
-import { FileIcon } from "lucide-react"
+import { ExternalLink, FileIcon, GripHorizontal } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
 import React from "react"
@@ -37,16 +37,12 @@ export const BookmarkCard = ({ id, url, title, icon, imageUrl, tags }: BookmarkC
   return (
     <div style={style} ref={setNodeRef} className="relative flex">
       <Card className="relative flex flex-1 cursor-pointer flex-col overflow-hidden px-2 drop-shadow-md">
+        <Button variant="ghost" size="sm" {...attributes} {...listeners}>
+          <GripHorizontal size={16} />
+        </Button>
         <CardHeader className="flex flex-row items-center justify-between p-1">
           {icon ? <Image src={icon} alt="icon" width={20} height={20} /> : <FileIcon />}
-          <Link className="w-full cursor-pointer hover:underline" href={url} rel="noreferrer" target="_blank">
-            <Button variant="ghost" className="w-full">
-              View Post
-            </Button>
-          </Link>
-          <Button variant="ghost" size="sm" {...attributes} {...listeners}>
-            ⣿
-          </Button>
+          <BookmarkCardDropdown _id={id} />
         </CardHeader>
         <CardContent
           onClick={open}
@@ -61,11 +57,14 @@ export const BookmarkCard = ({ id, url, title, icon, imageUrl, tags }: BookmarkC
               className="rounded-md object-cover"
             />
           </AspectRatio>
-    
         </CardContent>
         <div className="flex justify-end">
-            <BookmarkCardDropdown _id={id} />
-          </div>
+        <Link className="cursor-pointer hover:underline" href={url} rel="noreferrer" target="_blank">
+            <Button variant="ghost" size="sm">
+              <ExternalLink />
+            </Button>
+          </Link>
+        </div>
         {tags && tags.length > 0 && (
           <CardFooter className="p1">
             <div className="flex flex-wrap gap-2 p-2">{tags?.map((tag) => <Badge key={tag}>{tag}</Badge>)}</div>

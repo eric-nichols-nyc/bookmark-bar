@@ -99,7 +99,7 @@ export const SortableList = ({ items }: ListProps) => {
       onDragEnd={handleDragEnd}
       onDragCancel={handleDragCancel}
     >
-      <SortableContext items={orderedItems.sort((a, b) => a.index - b.index)} strategy={verticalListSortingStrategy}>
+      <SortableContext items={orderedItems} strategy={verticalListSortingStrategy}>
         <ul className="flex flex-col gap-1">
           {orderedItems.map((item) => (
             <SortableListItem key={item.id} id={item.id}>

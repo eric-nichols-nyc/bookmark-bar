@@ -55,7 +55,7 @@ export const getFolders = async () => {
                 userId: user?.id,
             },
             orderBy: {
-                index: 'asc',
+                name: 'asc',
             },
         });
         return bookmarks;
