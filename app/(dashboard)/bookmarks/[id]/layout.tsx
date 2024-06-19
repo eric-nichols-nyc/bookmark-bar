@@ -22,7 +22,7 @@ export default function BookmarkLayout({
       <div className="flex h-full w-[260px] overflow-auto z-[100]">
         <Sidebar />
       </div>
-      <div className="flex flex-1 overflow-auto">
+      <div id="scroll-container" className="flex flex-1 overflow-auto border-5 border-red">
       {children}
       </div>
     </div>

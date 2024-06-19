@@ -46,7 +46,7 @@ export const BookmarkCard = ({ id, url, title, icon, imageUrl, tags }: BookmarkC
         </CardHeader>
         <CardContent
           onClick={open}
-          className="relative mb-4 flex h-auto w-full flex-1 flex-col justify-between overflow-hidden p-1"
+          className="relative flex h-auto w-full flex-1 flex-col justify-between overflow-hidden p-1"
         >
           <h1 className="mb-2 text-lg font-bold leading-snug">{title}</h1>
           <AspectRatio ratio={16 / 9} className="bg-muted">

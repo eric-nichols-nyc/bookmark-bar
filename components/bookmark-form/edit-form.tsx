@@ -106,16 +106,17 @@ export function EditSheet() {
   }))
 
   useClickAway(ref, () => {
-    setToggle()
+    console.log("click away")
+    //setToggle()
   });
 
   if (!current) return <></>
   return (
     <div className="border">
       <Sheet open={show}>
-        <SheetContent className="border sm:max-w-[400px]" ref={ref}>
+        <SheetContent className="border sm:max-w-[400px]">
           <form data-testid="edit-form" action={handleUpdateBookmark}>
-            <div className="mx-auto flex gap-2 w-full  flex-col">
+            <div className="mx-auto flex gap-2 w-full  flex-col"  ref={ref}>
               <SheetTitle>Edit Bookmark</SheetTitle>
               <SheetHeader>
                 <Label htmlFor="title">Title</Label>
@@ -150,7 +151,7 @@ export function EditSheet() {
                 onChange={() => console.log("change")}
               />
               <Label>Folder</Label>
-              <Select name="category">
+              <Select name="category" onOpenChange={(e)=>{console.log(e)}}>
                 <SelectTrigger>
                   <SelectValue placeholder={getFolderName(current.folderId)} />
                 </SelectTrigger>

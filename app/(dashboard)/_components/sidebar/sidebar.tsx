@@ -11,12 +11,20 @@ export const Sidebar = async () => {
     throw new Error("userId not found")
   }
   const folders = await getFolders()
-  console.log(folders)
+  const groupedItems = folders.reduce((acc:any, item:Folder) => {
+    const firstLetter = item.name[0].toUpperCase();
+    if (!acc[firstLetter]) {
+      acc[firstLetter] = [];
+    }
+    acc[firstLetter].push(item);
+    return acc;
+  }, {});
+  // console.log(groupedItems)
   return (
     <div className="w-[260px]">
       <div>
-        {folders.map((cat: Folder) => (
-          <SidebarItem key={cat.id} category={cat} />
+        {folders.map((fol: Folder) => (
+          <SidebarItem key={fol.id} category={fol} />
         ))}
       </div>
     </div>

@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/alert-dialog"
 
 type HomeCardProps = {
-  folder: Folder
+  folder: Folder,
 }
 
 export const HomeCard = ({ folder }: HomeCardProps) => {
@@ -63,7 +63,7 @@ export const HomeCard = ({ folder }: HomeCardProps) => {
   )
   
   return (
-    <Link href={`/bookmarks/${folder.id}`} className="rounded-lg bg-white p-4 shadow-md h-[125px]">
+    <Link href={`/bookmarks/${folder.id}`} className="w-full rounded-lg bg-white p-4 shadow-md h-[125px] hover:border-2 border-black">
       <div className="flex items-center justify-between">
         <h1 className="text-lg font-bold">{folder.name}</h1>
         <div className="z-10">

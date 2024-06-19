@@ -1,11 +1,11 @@
 "use server";
 import { auth } from "@clerk/nextjs/server";
+// import { Folder, Tag, Url } from "@prisma/client";
 import { v2 as cloudinary } from "cloudinary";
 import { fetch } from "fetch-opengraph";
 import { revalidatePath } from "next/cache";
 import { prisma } from '@/db/prisma';
 import { addBookmarkSchema, FolderSchema } from "./schemas";
-import { Folder, Tag, Url } from "@prisma/client";
 
 
 export const handleFetchOpengraph = async (url: string) => {
@@ -58,7 +58,9 @@ export const getFolders = async () => {
                 name: 'asc',
             },
         });
-        return bookmarks;
+        // return json
+        return JSON.parse(JSON.stringify(bookmarks)) ;
+
 
     } catch (error: any) {
         console.error(`Error getting folders from server: ${error.message}`)

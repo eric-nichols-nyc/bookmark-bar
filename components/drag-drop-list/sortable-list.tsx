@@ -14,33 +14,8 @@ type ListProps = {
   items: Folder[]
 }
 
-const Skeleton = () => {
-  return (
-    <div className="flex flex-col gap-1">
-      <div className="flex items-center justify-between bg-gray-200 px-1 py-2">
-        <div className="flex items-center gap-2">
-          <div className="w-4 h-4 bg-gray-400 rounded-full"></div>
-          <div className="w-20 h-4 bg-gray-400 rounded"></div>
-        </div>
-      </div>
-      <div className="flex items-center justify-between bg-gray-200 px-1 py-2">
-        <div className="flex items-center gap-2">
-          <div className="w-4 h-4 bg-gray-400 rounded-full"></div>
-          <div className="w-20 h-4 bg-gray-400 rounded"></div>
-        </div>
-      </div>
-      <div className="flex items-center justify-between bg-gray-200 px-1 py-2">
-        <div className="flex items-center gap-2">
-          <div className="w-4 h-4 bg-gray-400 rounded-full"></div>
-          <div className="w-20 h-4 bg-gray-400 rounded"></div>
-        </div>
-      </div>
-    </div>
-  )
-}
 
 export const SortableList = ({ items }: ListProps) => {
-  const [active, setActive] = useState<Active | null>(null)
   const [activeItem, setActiveItem] = useState<Folder | undefined>()
   const [orderedItems, setOrderedItems] = useState<Folder[]>(items)
 

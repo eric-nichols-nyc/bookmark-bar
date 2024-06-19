@@ -1,20 +1,19 @@
 "use client"
-import { Folder, Tag, Url } from "@prisma/client";
-import { getLogos } from 'favicons-scraper'
-import { useParams } from "next/navigation";
+import { Folder, Tag, Url } from "@prisma/client"
+import { getLogos } from "favicons-scraper"
+import { useParams } from "next/navigation"
 import { useRef, useState } from "react"
 //import { useFormStatus } from "react-dom";
 import { handleFetchOpengraph, uploadToCloud } from "@/actions/prisma/folders/folder-actions"
-import { addBookmark } from "@/actions/prisma/folders/folder-actions";
+import { addBookmark } from "@/actions/prisma/folders/folder-actions"
 import { addBookmarkSchema } from "@/actions/prisma/folders/schemas"
 import { Input } from "@/components/input/input"
 // import { MultiSelect, MultiSelectOption } from "@/components/multi-select/multi-select"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/select/select"
 import { BookmarkError, FieldErrors } from "@/types"
-import { Button } from "../ui/button";
-import { Textarea } from "../ui/textarea";
+import { Button } from "../ui/button"
+import { Textarea } from "../ui/textarea"
 import { useAddingBookmark } from "@/hooks/store/use-adding-bookmark"
-
 
 type FormProps = {
   id?: string
@@ -24,10 +23,13 @@ type FormProps = {
   defaultValue?: string
 }
 export const BookmarkForm = ({ id, folders, bookmarktags, urls, defaultValue }: FormProps) => {
-  const {startLoading, stopLoading} = useAddingBookmark((state) => ({startLoading: state.startLoading, stopLoading: state.stopLoading}))
+  const { startLoading, stopLoading } = useAddingBookmark((state) => ({
+    startLoading: state.startLoading,
+    stopLoading: state.stopLoading,
+  }))
   const [isSubmitting, setIsSubmitting] = useState(false)
   const params = useParams()
-  const folder = folders?.find((fld) => fld.id === params.id)?.name 
+  const folder = folders?.find((fld) => fld.id === params.id)?.name
   // const { pending } = useFormStatus()
   const ref = useRef<HTMLFormElement>(null)
   const [fieldErrors, setFieldErrors] = useState<FieldErrors<BookmarkError> | undefined>()
@@ -38,23 +40,20 @@ export const BookmarkForm = ({ id, folders, bookmarktags, urls, defaultValue }: 
   //   setTags(selected)
   // }
   const onSubmitAction = async (data: FormData) => {
-
     const url = data.get("url") as string
     const notes = data.get("notes") as string
-    const folderId = data.get("category") as string || params.id as string
-    
-    // if there are urls get the index of the first folder 
-    // and add one to the index
-    const index = urls?.length ? urls[0].index/2 : 65333
+    const folderId = (data.get("category") as string) || (params.id as string)
 
-    
+    // if there are urls get the index of the first folder
+    // and add one to the index
+    const index = urls?.length ? urls[0].index / 2 : 65333
+
     // 1. validate url and category
     const valid = addBookmarkSchema.safeParse({ url, folderId })
     let imageUrl
     let title = "No Title"
 
     if (!valid.success) {
-      console.log(valid.error.flatten().fieldErrors)
       setFieldErrors(valid.error.flatten().fieldErrors)
       setIsSubmitting(false)
       stopLoading()
@@ -62,9 +61,8 @@ export const BookmarkForm = ({ id, folders, bookmarktags, urls, defaultValue }: 
     }
     // start loading actions
 
-
-    let favicon;
-    let icon;
+    let favicon
+    let icon
     try {
       const domain = url
       const domainLogos = await getLogos(domain)
@@ -72,27 +70,26 @@ export const BookmarkForm = ({ id, folders, bookmarktags, urls, defaultValue }: 
     } catch (e: any) {
       console.log(e)
     }
-    if(favicon) {
-      try{
+    if (favicon) {
+      try {
         icon = await uploadToCloud(favicon as string)
-        console.log('Icon was created...', icon)
-      }catch(e){
+        console.log("Icon was created...", icon)
+      } catch (e) {
         console.log(e)
       }
     }
     // // 1. get url and send to opengraph
     try {
-      setIsSubmitting(true)
       startLoading()
-      const response = await handleFetchOpengraph(url as string) as any
+      const response = (await handleFetchOpengraph(url as string)) as any
       //2. load image title and description
       // of image is returned upload to cloudinary
       if (response.message) {
-        console.log('WHOOPS...'+ response.message)
+        console.log("WHOOPS..." + response.message)
         return
       }
       if (response.image) {
-        console.log('image was uploaded',response.image)
+        console.log("image was uploaded", response.image)
         try {
           if (response.image) {
             imageUrl = await uploadToCloud(response.image as string)
@@ -118,15 +115,16 @@ export const BookmarkForm = ({ id, folders, bookmarktags, urls, defaultValue }: 
         icon,
         tags,
         notes,
-        index
+        index,
       }
-       await addBookmark(bm)
+      await addBookmark(bm)
       ref.current?.reset()
       console.log("Bookmark added")
     } catch (e: any) {
       console.error(e.message)
       alert(e.message)
-    }finally{
+    } finally {
+      console.log("finally")
       setIsSubmitting(false)
       stopLoading()
     }
@@ -135,16 +133,22 @@ export const BookmarkForm = ({ id, folders, bookmarktags, urls, defaultValue }: 
   const headerText = defaultValue ? `👋 Add a new bookmark to ${defaultValue}` : "👋 Add a new bookmark"
 
   return (
-    <form ref={ref} data-testid="add-form" className="flex flex-col pt-4" action={onSubmitAction}>
-      <h1 className="mb-2 text-xl font-semibold">{headerText}</h1>
+    <form
+      ref={ref}
+      data-testid="add-form"
+      className="flex flex-col pt-4"
+      onSubmit={() => setIsSubmitting(true)}
+      action={onSubmitAction}
+    >
+      <h1 className="mb-2 text-xl text-[#F1F5F9] font-semibold">{headerText}</h1>
       <Input name="url" placeholder="https://www.example.com" className="mb-2" />
       {fieldErrors?.url && <p className="text-sm text-red-500">{fieldErrors.url}</p>}
       <div>
-          <Textarea name="notes" placeholder="Add notes here" className="mb-2" defaultValue=""/>
-        </div>
-      <div className="flex z-10">
+        <Textarea name="notes" placeholder="Add notes here" className="mb-2" defaultValue="" />
+      </div>
+      <div className="z-10 flex">
         <div className="flex flex-col gap-2">
-          <div className="w-[200px] bg-slate-100 mr-2">
+          <div className="mr-2 w-[200px] bg-slate-100">
             <Select name="category">
               <SelectTrigger>
                 <SelectValue placeholder={folder || "choose a folder"} />
@@ -170,13 +174,12 @@ export const BookmarkForm = ({ id, folders, bookmarktags, urls, defaultValue }: 
             ))}
           </MultiSelect> */}
         </div>
-   
       </div>
-      <div className="flex items-center justify-center w-full p-2">
+      <div className="flex w-full items-center justify-center p-2">
         <Button
           data-testid="addbookmark-button"
           type="submit"
-          className="m-2 border p-2 w-[220px] text-sm"
+          className="m-2 w-[220px] border p-2 text-sm"
           // onClick={() => setTimeout(() => setIsSubmitting(true),0)}
           disabled={isSubmitting}
         >

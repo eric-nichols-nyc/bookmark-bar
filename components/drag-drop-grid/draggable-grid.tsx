@@ -62,7 +62,8 @@ export const DraggableGrid = ({ bookmarks }: DraggableGridProps) => {
     }
 
     setActiveId(null)
-  }, [])
+  }, []);
+  
   const handleDragCancel = useCallback(() => {
     setActiveId(null)
   }, [])

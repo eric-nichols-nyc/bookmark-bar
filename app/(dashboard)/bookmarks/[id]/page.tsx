@@ -1,10 +1,10 @@
-import { getBookmarksByFolderId, getFolders, getTags } from "@/actions/prisma/folders/folder-actions"
+import { Folder } from "@prisma/client"
+import { getBookmarksByFolderId, getFolders } from "@/actions/prisma/folders/folder-actions"
 import BMSection from "@/app/(dashboard)/_components/bookmark-section/bookmark-section"
 import { BookmarkForm } from "@/components/bookmark-form/bookmark-form"
 import { EditSheet } from "@/components/bookmark-form/edit-form"
 import ScrollToTop from "@/components/scroll-to-top"
 import { DetailDrawer } from "../../_components/detail-sheet"
-
 const fetchBookmarks = async (id: string) => {
   try {
     const bookmarks = await getBookmarksByFolderId(id)
@@ -17,7 +17,7 @@ const fetchBookmarks = async (id: string) => {
 // get the current folder from the url param
 const getFolderId = async(id:string) => {
   const folders = await getFolders()
-  const folder = folders.find(folder => folder.id === id)
+  const folder = folders.find((f:Folder) => f.id === id)
   return folder?.name || "No Folder"
 }
 
