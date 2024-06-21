@@ -10,10 +10,10 @@ import { addBookmarkSchema } from "@/actions/prisma/folders/schemas"
 import { Input } from "@/components/input/input"
 // import { MultiSelect, MultiSelectOption } from "@/components/multi-select/multi-select"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/select/select"
+import { useAddingBookmark } from "@/hooks/store/use-adding-bookmark"
 import { BookmarkError, FieldErrors } from "@/types"
 import { Button } from "../ui/button"
 import { Textarea } from "../ui/textarea"
-import { useAddingBookmark } from "@/hooks/store/use-adding-bookmark"
 
 type FormProps = {
   id?: string
@@ -22,7 +22,7 @@ type FormProps = {
   bookmarktags?: Tag[]
   defaultValue?: string
 }
-export const BookmarkForm = ({ id, folders, bookmarktags, urls, defaultValue }: FormProps) => {
+export const BookmarkForm = ({ folders, urls, defaultValue }: FormProps) => {
   const { startLoading, stopLoading } = useAddingBookmark((state) => ({
     startLoading: state.startLoading,
     stopLoading: state.stopLoading,
@@ -34,7 +34,7 @@ export const BookmarkForm = ({ id, folders, bookmarktags, urls, defaultValue }: 
   const ref = useRef<HTMLFormElement>(null)
   const [fieldErrors, setFieldErrors] = useState<FieldErrors<BookmarkError> | undefined>()
 
-  const [tags, setTags] = useState<string[] | undefined>()
+  // const [tags, setTags] = useState<string[] | undefined>()
   // add to tags to send to db
   // const onTagsChange = (selected: string[]) => {
   //   setTags(selected)
@@ -113,7 +113,7 @@ export const BookmarkForm = ({ id, folders, bookmarktags, urls, defaultValue }: 
         description: response.description || "",
         imageUrl,
         icon,
-        tags,
+        //tags,
         notes,
         index,
       }
@@ -144,7 +144,7 @@ export const BookmarkForm = ({ id, folders, bookmarktags, urls, defaultValue }: 
       <Input name="url" placeholder="https://www.example.com" className="mb-2" />
       {fieldErrors?.url && <p className="text-sm text-red-500">{fieldErrors.url}</p>}
       <div>
-        <Textarea name="notes" placeholder="Add notes here" className="mb-2" defaultValue="" />
+        <Textarea name="notes" placeholder="Add notes summary" className="mb-2" defaultValue="" />
       </div>
       <div className="z-10 flex">
         <div className="flex flex-col gap-2">

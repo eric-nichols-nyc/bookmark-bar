@@ -8,8 +8,9 @@ import { DialogHeader } from "@/components/ui/dialog"
 import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-
+import { useMounted } from "@/hooks/useMounted";
 export function AddFolderItem() {
+  const mounted = useMounted()
   const ref = useRef<HTMLFormElement>(null)
   const [open, setOpen] = useState(false)
   const { pending } = useFormStatus()
@@ -21,10 +22,12 @@ export function AddFolderItem() {
 
   const handleSubmit = async (data: FormData) => {
     console.log("submitted", Object.fromEntries(data))
-    const name = data.get("folderName") as string
+    const folderName = data.get("folderName") as string
     const index = 66535
-    if (!name) return console.log("no name")
+    if (!folderName) return console.log("no name")
     // send data to server
+    const name = folderName.toLowerCase()
+
     try {
       await addFolder({ name, index })
       console.log("sucess")
@@ -34,6 +37,8 @@ export function AddFolderItem() {
       console.error(e)
     }
   }
+
+  if (!mounted) return null
 
   return (
     <Dialog>
