@@ -24,7 +24,7 @@ type BookmarkCardType = {
   isDragging?: boolean
 }
 
-export const BookmarkCard = ({ id, url, title, icon, imageUrl, tags }: BookmarkCardType) => {
+export const BookmarkCard = ({ id, index, url, title, icon, imageUrl, tags }: BookmarkCardType) => {
   const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id })
 
   const style = {
@@ -47,7 +47,7 @@ export const BookmarkCard = ({ id, url, title, icon, imageUrl, tags }: BookmarkC
           onClick={open}
           className="relative flex h-auto w-full flex-1 flex-col justify-between overflow-hidden p-1"
         >
-          <h1 className="mb-2 text-lg font-bold leading-snug">{title}</h1>
+          <h1 className="mb-2 text-lg font-bold leading-snug">{title}-{index}</h1>
           <AspectRatio ratio={16 / 9} className="bg-muted">
             <Image
               src={imageUrl || "/images/placeholder.webp"}

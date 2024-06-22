@@ -39,16 +39,16 @@ export const ItemFlyoutMenu = ({ bookmark }: ItemFlyoutMenuProps) => {
         <div  ref={ref} className="flex flex-1">
         <ContextMenu>
             <ContextMenuTrigger className='w-full'>
-                <Button
+                {/* <Button
                     className="flex flex-1 justify-start text-left bg-slate-400 rounded-none w-full"
                     onMouseOver={handleOnHover}
                     onClick={(e) => e.stopPropagation()}
-                >
+                > */}
                     <a href={bookmark.url} rel="noreferrer" target="_blank" className="flex flex-1 gap-2 ">
                         {renderImage()}
                         {bookmark.title}
                     </a>
-                </Button>
+                {/* </Button> */}
             </ContextMenuTrigger>
             <ContextMenuContent>
                 <ContextMenuItem onClick={(e)=> e.stopPropagation()}>Delete</ContextMenuItem>

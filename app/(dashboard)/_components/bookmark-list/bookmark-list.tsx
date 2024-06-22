@@ -17,6 +17,7 @@ const BookmarkList = ({ id }: { id: string }) => {
         }
         getBookmarks();
     }, [id])
+    
     return (
         <div onMouseLeave={() => close()}>
             <ul className="flex flex-col w-auto">

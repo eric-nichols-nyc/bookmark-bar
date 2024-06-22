@@ -9,14 +9,15 @@ import {
   useSensor,
   useSensors,
 } from "@dnd-kit/core"
-import { arrayMove, horizontalListSortingStrategy, SortableContext } from "@dnd-kit/sortable"
+import { horizontalListSortingStrategy, SortableContext } from "@dnd-kit/sortable"
 
 import { Url } from "@prisma/client"
-import React, { useCallback, useState } from "react"
+import React, { useState } from "react"
+import { updateBookmark } from "@/actions/prisma/folders/folder-actions"
 import { BookmarkCard } from "@/app/(dashboard)/_components/bookmark-card/bookmark-card"
 import { useAddingBookmark } from "@/hooks/store/use-adding-bookmark"
+import { calculatePosition } from "@/utils/position"
 import { Skeleton } from "../ui/skeleton"
-
 const BMSkeleton = () => {
   return (
     <div className="flex flex-col items-center justify-between space-x-4 py-2">
@@ -36,37 +37,29 @@ type DraggableGridProps = {
 export const DraggableGrid = ({ bookmarks }: DraggableGridProps) => {
   const { isLoading } = useAddingBookmark((state) => ({ isLoading: state.isLoading }))
 
-  const [items, setItems] = useState(bookmarks)
-  const [activeId, setActiveId] = useState<string | number | null>(null)
+  // const [items, setItems] = useState<Url[]>(bookmarks)
   const [activeItem, setActiveItem] = useState<Url | undefined>()
   const sensors = useSensors(useSensor(MouseSensor), useSensor(TouchSensor))
 
-  const handleDragStart = useCallback((event: DragStartEvent) => {
-    setActiveId(event.active.id)
-    setActiveItem(items.find((item) => item.id === event.active.id))
-  }, [])
+  const handleDragStart = (event: DragStartEvent) => {
+    setActiveItem(bookmarks.find((item) => item.id === event.active.id))
+  }
 
-  const handleDragEnd = useCallback((event: DragEndEvent) => {
+  const handleDragEnd =(event: DragEndEvent) => {
     const { active, over } = event
-
-    if (active.id !== over?.id) {
-      setItems((items) => {
-        const oldIndex = active.data.current?.sortable.index
-        const newIndex = over?.data.current?.sortable.index
-        const movedFrom = items[oldIndex]
-        const movedTo = items[newIndex]
-        movedFrom.index = newIndex
-        movedTo.index = oldIndex
-        return arrayMove(items, items.indexOf(newIndex), items.indexOf(oldIndex))
-      })
+    if (active.id !== over?.id && activeItem) {
+      const newPosition = calculatePosition(over?.data.current?.sortable.index, bookmarks, activeItem)
+      console.log("new position", newPosition)  
+      updateBookmark(activeItem.id, { ...activeItem, index: newPosition })
     }
 
-    setActiveId(null)
-  }, []);
+    setActiveItem(undefined)
+  };
   
-  const handleDragCancel = useCallback(() => {
-    setActiveId(null)
-  }, [])
+  const handleDragCancel = () => {
+    setActiveItem(undefined)
+  }
+
   return (
     <DndContext
       sensors={sensors}

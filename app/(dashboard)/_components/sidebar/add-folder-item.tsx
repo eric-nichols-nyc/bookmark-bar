@@ -42,7 +42,7 @@ export function AddFolderItem() {
 
   return (
     <Dialog>
-      <DialogTrigger>
+      <DialogTrigger asChild>
         <Button variant="outline" className="flex w-full justify-between" onClick={() => setOpen(!open)}>
           <span>New Folder</span>
           <Plus size={16} />

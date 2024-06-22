@@ -14,6 +14,7 @@ import { useAddingBookmark } from "@/hooks/store/use-adding-bookmark"
 import { BookmarkError, FieldErrors } from "@/types"
 import { Button } from "../ui/button"
 import { Textarea } from "../ui/textarea"
+import { Bot } from "lucide-react"
 
 type FormProps = {
   id?: string
@@ -144,6 +145,7 @@ export const BookmarkForm = ({ folders, urls, defaultValue }: FormProps) => {
       <Input name="url" placeholder="https://www.example.com" className="mb-2" />
       {fieldErrors?.url && <p className="text-sm text-red-500">{fieldErrors.url}</p>}
       <div>
+        <Button><Bot />Generate with ai</Button>
         <Textarea name="notes" placeholder="Add notes summary" className="mb-2" defaultValue="" />
       </div>
       <div className="z-10 flex">

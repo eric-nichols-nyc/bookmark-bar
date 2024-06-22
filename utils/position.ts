@@ -1,4 +1,4 @@
-import { Folder } from "@prisma/client";
+import { Folder, Url } from "@prisma/client";
 
 // calculate the position of the element as a number that represents the index of the element in the list
   // the position of the element is first, there are no items before it
@@ -6,7 +6,8 @@ import { Folder } from "@prisma/client";
   // the position of the element is between two other elements and has been moved down for a higher index
   // the position of the element is between two other elements and has been moved up for a lower index
   // return the position of the element
-  export const calculatePosition = (index:number, allItems:Folder[], item:Folder) => {
+
+  export const calculatePosition = (index:number, allItems:Folder[] | Url[], item:Folder | Url) => {
     const indexStep = 65536;
     // Remove the item from the list
     const items = allItems.filter(
