@@ -1,12 +1,12 @@
 "use server";
 import { auth } from "@clerk/nextjs/server";
 // import { Folder, Tag, Url } from "@prisma/client";
+import { Url } from "@prisma/client";
 import { v2 as cloudinary } from "cloudinary";
 import { fetch } from "fetch-opengraph";
 import { revalidatePath } from "next/cache";
 import { prisma } from '@/db/prisma';
-import { addBookmarkSchema, FolderSchema } from "./schemas";
-import { Url } from "@prisma/client";
+import { addBookmarkSchema } from "../folders/schemas";
 
 
 export const handleFetchOpengraph = async (url: string) => {
@@ -40,144 +40,6 @@ export const uploadToCloud = async (url: string) => {
     }
   };
 
-// ======================== FOLDER ACTIONS ========================
-// return all bookmarks
-export const getFolders = async () => {
-    const { userId } = auth();
-    // find the user
-    const user = await prisma.user.findUnique({
-        where: {
-            externalId: userId as string,
-        },
-    });
-    try {
-        const bookmarks = await prisma.folder.findMany({
-            where: {
-                userId: user?.id,
-            },
-            orderBy: {
-                name: 'asc',
-            },
-        });
-        // return json
-        //return JSON.parse(JSON.stringify(bookmarks)) ;
-        if (!bookmarks) return { error: "No posts 😓" }
-        if (bookmarks) return { success: bookmarks }
-
-    } catch (error: any) {
-        console.error(`Error getting folders from server: ${error.message}`)
-        throw new Error(error.message)
-    }
-}
-
-
-
-export const getBookmarksByFolderId = async (id: string) => {
-    try {
-      const bookmarks = await prisma.url.findMany({
-        where: {
-          folderId: id,
-        },
-        orderBy: {
-            index: 'asc',
-        },
-      });
-      if(!bookmarks) {
-        console.log('No bookmarks found')
-      }
-      return bookmarks;
-    } catch (e) {
-      console.log("error with bookmarks action", e)
-    }
-  
-  }
-
-
-type FolderProps = {
-    name: string;
-    index: number;
-}
-// add a new folder
-export const addFolder = async (data: FolderProps) => {
-    const {name, index} = data
-    const { userId } = auth();
-    if (!userId) {
-        throw new Error("userId not found")
-    }
-
-    const currentUser = await prisma.user.findUnique({
-        where: {
-            externalId: userId as string,
-        },
-    });
-
-    if (!currentUser) {
-        throw new Error("User not found")
-    }
-
-    const currentUserId = currentUser?.id;
-
-    // validate data with zod schema
-    const valid = FolderSchema.safeParse(data);
-    // reture message if not valid
-    if (!valid.success) {
-        throw new Error('Validation failed')
-    }
-    try {
-        const newFolder = await prisma.folder.create({
-            data: {
-                userId: currentUserId,
-                name: name,
-                index: index
-            },
-        });
-        revalidatePath('/')
-        return newFolder;
-    } catch (error: any) {
-        console.error(`Error: ${error.message}`)
-        return {message:error.message}
-    }
-}
-
- 
-
-// delete a folder by id
-export const deleteFolder = async (id: string) => {
-    try {
-        const deletedFolder = await prisma.folder.delete({
-            where: {
-                id: id,
-            },
-        });
-        revalidatePath('/')
-        return deletedFolder;
-    } catch (error: any) {
-        console.error(`Error: ${error.message}`)
-        return {message:error.message}
-    }
-}
-type UpdateFolderProps = {
-    name?: string;
-    index?: number;
-}
-// update folder name
-export const updateFolder = async (id: string, data: UpdateFolderProps) => {
-    try {
-        const updatedFolder = await prisma.folder.update({
-            where: {
-                id: id,
-            },
-            data: {
-                ...data
-            },
-        });
-        revalidatePath('/')
-        return updatedFolder;
-    } catch (error: any) {
-        console.error(`Error: ${error.message}`)
-        return {message:error.message}
-    }
-}
 
 //======================== URL ACTIONS ========================
 // get all bookmarks by user id
@@ -316,7 +178,7 @@ export const updateBookmark = async (id: string, data: Url) => {
                 index: data.index
             },
         });
-        revalidatePath(`/bookmarks/${data.folderId}`)
+        revalidatePath('/')
         return {data: updatedBookmark};
     } catch (error: any) {
         console.error(`Error: ${error.message}`)
@@ -384,4 +246,25 @@ export const updateTag = async (id: string, name: string) => {
         return {message:error.message}
     }
 }
+
+
+export const getBookmarksByFolderId = async (id: string) => {
+    try {
+      const bookmarks = await prisma.url.findMany({
+        where: {
+          folderId: id,
+        },
+        orderBy: {
+            index: 'asc',
+        },
+      });
+      revalidatePath('/')
+      if (!bookmarks) return { error: "No posts 😓" }
+      if (bookmarks) return { success: bookmarks }
+      
+    } catch (e) {
+      console.log("error with bookmarks action", e)
+    }
+  
+  }
 

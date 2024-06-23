@@ -1,47 +1,53 @@
 import { Folder } from "@prisma/client"
-import { getBookmarksByFolderId, getFolders } from "@/actions/prisma/folders/folder-actions"
+import { dehydrate, HydrationBoundary, QueryClient } from "@tanstack/react-query"
+import { getBookmarksByFolderId } from "@/actions/prisma/bookmarks/bookmark-actions"
+import { getFolders } from "@/actions/prisma/folders/folder-actions"
+
 import BMSection from "@/app/(dashboard)/_components/bookmark-section/bookmark-section"
 import { BookmarkForm } from "@/components/bookmark-form/bookmark-form"
 import { EditSheet } from "@/components/bookmark-form/edit-form"
 import ScrollToTop from "@/components/scroll-to-top"
 import { DetailDrawer } from "../../_components/detail-sheet"
-const fetchBookmarks = async (id: string) => {
-  try {
-    const bookmarks = await getBookmarksByFolderId(id)
-    return bookmarks
-  } catch (e) {
-    console.log("error with bookmarks", e)
-  }
-}
-
-// get the current folder from the url param
-const getFolderId = async(id:string) => {
-  const folders = await getFolders()
-  const folder = folders.find((f:Folder) => f.id === id)
-  return folder?.name || "No Folder"
-}
 
 // fetch current card item by id
 const BookmarkPage = async (context: { params: { id: string } }) => {
-  const id = context.params.id
-  const urls = await fetchBookmarks(id)
-  const folders = await getFolders()
+  const id = context.params.id as string
+
+  const queryClient = new QueryClient()
+
+  const folders = await queryClient.fetchQuery({
+    queryKey: ["folders"],
+    queryFn: getFolders,
+  })
+
+  const bookmarks = await queryClient.fetchQuery({
+    queryKey: ["bookmarks", id],
+    queryFn: () => getBookmarksByFolderId(id),
+  })
+
+  const getFolderId = async (id: string) => {
+    const folder = folders?.success?.find((f: Folder) => f.id === id)
+    return folder?.name || "No Folder"
+  }
   const folderName = await getFolderId(id)
+
   //const tags = await getTags()
-  
+
   return (
-    <div id="test" className="container size-full flex flex-1 flex-col">
-        <BookmarkForm id={id} folders={folders} urls={urls} defaultValue={folderName}/>
-      <div className="w-full flex container h-auto bg-slate-200 p-2 drop-shadow">
-        <div className="flex gap-2">
-         {folderName} ({urls?.length})
+    <div id="test" className="container flex size-full flex-1 flex-col">
+      <HydrationBoundary state={dehydrate(queryClient)}>
+        <BookmarkForm id={id} defaultValue={folderName} />
+        <div className="container flex h-auto w-full bg-slate-200 p-2 drop-shadow">
+          <div className="flex gap-2">
+            {folderName} ({bookmarks?.success?.length})
+          </div>
         </div>
-      </div>
-      <div className="flex w-full py-2">
-        <BMSection bookmarks={urls} />
-      </div>
-      <EditSheet />
-      <DetailDrawer id={id}/>
+        <div className="flex w-full py-2">
+          <BMSection />
+        </div>
+        {/* <EditSheet /> */}
+        <DetailDrawer id={id} />
+      </HydrationBoundary>
       <ScrollToTop />
     </div>
   )

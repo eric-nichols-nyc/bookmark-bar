@@ -1,6 +1,7 @@
 "use client"
 import { Folder, Tag, Url } from "@prisma/client"
 import { getLogos } from "favicons-scraper"
+import { Bot } from "lucide-react"
 import { useParams } from "next/navigation"
 import { useRef, useState } from "react"
 //import { useFormStatus } from "react-dom";
@@ -11,26 +12,29 @@ import { Input } from "@/components/input/input"
 // import { MultiSelect, MultiSelectOption } from "@/components/multi-select/multi-select"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/select/select"
 import { useAddingBookmark } from "@/hooks/store/use-adding-bookmark"
+import { useGetBookmarks } from "@/hooks/use-get-bookmarks";
+import {useGetFolders} from "@/hooks/use-get-folders"
 import { BookmarkError, FieldErrors } from "@/types"
 import { Button } from "../ui/button"
 import { Textarea } from "../ui/textarea"
-import { Bot } from "lucide-react"
 
 type FormProps = {
   id?: string
-  folders: Folder[] | undefined
+  folders?: Folder[] | undefined
   urls?: Url[] | undefined
   bookmarktags?: Tag[]
   defaultValue?: string
 }
-export const BookmarkForm = ({ folders, urls, defaultValue }: FormProps) => {
+export const BookmarkForm = ({ defaultValue }: FormProps) => {
+  const { data: folders, error: folder_error, fetchStatus:folder_status } = useGetFolders()
+  const {data:urls, error: urls_error, fetchStatus:urls_status } = useGetBookmarks()
   const { startLoading, stopLoading } = useAddingBookmark((state) => ({
     startLoading: state.startLoading,
     stopLoading: state.stopLoading,
   }))
   const [isSubmitting, setIsSubmitting] = useState(false)
   const params = useParams()
-  const folder = folders?.find((fld) => fld.id === params.id)?.name
+  const folder = folders?.success?.find((fld) => fld.id === params.id)?.name
   // const { pending } = useFormStatus()
   const ref = useRef<HTMLFormElement>(null)
   const [fieldErrors, setFieldErrors] = useState<FieldErrors<BookmarkError> | undefined>()
@@ -141,7 +145,7 @@ export const BookmarkForm = ({ folders, urls, defaultValue }: FormProps) => {
       onSubmit={() => setIsSubmitting(true)}
       action={onSubmitAction}
     >
-      <h1 className="mb-2 text-xl text-[#F1F5F9] font-semibold">{headerText}</h1>
+      <h1 className="py-3 text-xl text-[#F1F5F9] font-semibold">{headerText}</h1>
       <Input name="url" placeholder="https://www.example.com" className="mb-2" />
       {fieldErrors?.url && <p className="text-sm text-red-500">{fieldErrors.url}</p>}
       <div>
@@ -156,7 +160,7 @@ export const BookmarkForm = ({ folders, urls, defaultValue }: FormProps) => {
                 <SelectValue placeholder={folder || "choose a folder"} />
               </SelectTrigger>
               <SelectContent>
-                {folders?.map((fld) => (
+                {folders?.success?.map((fld) => (
                   <SelectItem key={fld.id} value={fld.id} className="bg-slate-50 hover:bg-slate-100">
                     {fld.name}
                   </SelectItem>
