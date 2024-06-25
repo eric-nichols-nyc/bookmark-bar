@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react"
 import { HomeCard } from "../_components/home-card"
 
 type GroupedFoldersProps = {
-  folders: Folder[]
+  folders: Folder[] | undefined
 }
 
 const GroupedFolders = ({ folders }: GroupedFoldersProps) => {
@@ -14,9 +14,8 @@ const GroupedFolders = ({ folders }: GroupedFoldersProps) => {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      console.log(search)
+      if(!folders) return
       setFilteredFolders(folders.filter((folder: Folder) => folder.name.toLowerCase().includes(search.toLowerCase())))
-
     }, 500)
     return () => clearTimeout(timer)
   }, [search])

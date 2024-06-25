@@ -35,8 +35,8 @@ const BookMarksPage = async () => {
   return (
     <div className="container flex size-full flex-col justify-center">
       <div className="mx-auto w-full overflow-y-scroll">
-        <BookmarkForm folders={folders} bookmarktags={tags} />
-        <GroupedFolders folders={folders} />
+        <BookmarkForm folders={folders?.success} bookmarktags={tags} />
+        <GroupedFolders folders={folders?.success} />
       </div>
     </div>
   )

@@ -298,7 +298,7 @@ export const deleteBookmark = async (id: string) => {
 }  
 
 // update a bookmark by id
-export const updateBookmark = async (id: string, data: Url) => {
+export const updateBookmark = async (id: string, data: any) => {
     try {
         const updatedBookmark = await prisma.url.update({
             where: {

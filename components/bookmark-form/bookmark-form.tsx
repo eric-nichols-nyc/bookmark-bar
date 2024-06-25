@@ -26,8 +26,12 @@ type FormProps = {
   defaultValue?: string
 }
 export const BookmarkForm = ({ defaultValue }: FormProps) => {
+  const router = useParams();
+  // get the id from the url
+  const id = router.id
+  console.log(id)
   const { data: folders, error: folder_error, fetchStatus:folder_status } = useGetFolders()
-  const {data:urls, error: urls_error, fetchStatus:urls_status } = useGetBookmarks()
+  const {data:urls, error: urls_error, fetchStatus:urls_status } = useGetBookmarks(id as string)
   const { startLoading, stopLoading } = useAddingBookmark((state) => ({
     startLoading: state.startLoading,
     stopLoading: state.stopLoading,
@@ -45,13 +49,16 @@ export const BookmarkForm = ({ defaultValue }: FormProps) => {
   //   setTags(selected)
   // }
   const onSubmitAction = async (data: FormData) => {
+
     const url = data.get("url") as string
     const notes = data.get("notes") as string
     const folderId = (data.get("category") as string) || (params.id as string)
-
     // if there are urls get the index of the first folder
     // and add one to the index
-    const index = urls?.length ? urls[0].index / 2 : 65333
+    if (typeof urls === 'undefined') {
+      throw new Error("Cant get a proper index without urls' is required");
+  }
+    const index = urls?.success?.length ? urls.success[0].index / 2 : 65333
 
     // 1. validate url and category
     const valid = addBookmarkSchema.safeParse({ url, folderId })

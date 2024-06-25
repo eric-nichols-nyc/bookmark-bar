@@ -5,6 +5,8 @@ import Link from 'next/link'
 import React, { lazy, Suspense } from 'react'
 import {useFlyoutStore} from "@/hooks/store/useFlyoutStore";
 import { Button } from '../../../../components/ui/button'
+import { useParams } from 'next/navigation'
+import { cn } from '@/lib/utils'
 
 type SidebarType = {
   category: Folder
@@ -13,14 +15,10 @@ type SidebarType = {
 const BookMarkList = lazy(() => import("@/app/(dashboard)/_components/bookmark-list/bookmark-list"))
 
 const SidebarItem = ({ category }: SidebarType) => {
+  const params = useParams()
   const isOpen = useFlyoutStore((state) => state.isOpen)
   const [open, setOpen] = React.useState(false)
-
-  // useEffect(() => {
-  //   if (isOpen) {
-  //     setOpen(false)
-  //   }
-  // } , [isOpen])
+  const selected = params.id === category.id
 
   const handleMouseOver = () => {
     setOpen(true)
@@ -41,7 +39,15 @@ const SidebarItem = ({ category }: SidebarType) => {
     >
       <Link className="border flex justify-between" id={category.id} href={`/bookmarks/${category.id}`}
       >
-        <Button variant="outline" className="relative w-full h-8 p-0 rounded-none flex justify-between gap-2">
+        <Button 
+        variant="outline" 
+        className={cn("relative w-full h-8 p-0 rounded-none flex justify-between gap-2",
+          {
+            "bg-slate-100": selected
+          }
+        )}
+        disabled={selected}
+        >
           <div className='flex gap-2 pl-2'>
             {/* <FolderIcon size={24} /> */}
             {category.name}
@@ -57,9 +63,6 @@ const SidebarItem = ({ category }: SidebarType) => {
           <div
             onMouseOver={(e) => handleSubMenuOver(e)}
             className="flex w-full border absolute top-0 right-[-255px] bg-slate-100 z-index[10]">
-            <Suspense fallback={<div>Loading...</div>}>
-              <BookMarkList id={category.id} />
-            </Suspense>
           </div>
         }
       </Link>

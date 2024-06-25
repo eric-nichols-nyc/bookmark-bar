@@ -42,26 +42,26 @@ export function EditSheet() {
     }
   }
 
-  const fetchCurrent = React.useCallback(async () => {
-    try {
-      const current = (await getBookmark(currentBookmarkId as string)) as Url
-      setCurrent(current)
-    } catch (e) {
-      console.log("error with current")
-    }
-  }, [currentBookmarkId])
+  // const fetchCurrent = React.useCallback(async () => {
+  //   try {
+  //     const current = (await getBookmark(currentBookmarkId as string)) as Url
+  //     setCurrent(current)
+  //   } catch (e) {
+  //     console.log("error with current")
+  //   }
+  // }, [currentBookmarkId])
 
-  React.useEffect(() => {
-    fetchTags().then((tags) => {
-      const names = tags?.map((tag) => tag.name)
-      setTags(names)
-    })
+  // React.useEffect(() => {
+  //   fetchTags().then((tags) => {
+  //     const names = tags?.map((tag) => tag.name)
+  //     setTags(names)
+  //   })
 
-    fetchCategories().then((categories) => {
-      setCategories(categories)
-    })
-    fetchCurrent()
-  }, [currentBookmarkId, fetchCurrent])
+  //   fetchCategories().then((categories) => {
+  //     setCategories(categories)
+  //   })
+  //   fetchCurrent()
+  // }, [currentBookmarkId, fetchCurrent])
 
   const handleOnFocus = (e: React.FocusEvent<HTMLInputElement>) => {
     e.stopPropagation()

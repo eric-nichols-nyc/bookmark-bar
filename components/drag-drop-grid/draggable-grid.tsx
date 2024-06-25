@@ -125,7 +125,7 @@ export const DraggableGrid = () => {
   }
 
   if (urls_error) return <div>{urls_error.message}</div>
-  if(!bookmarks) return <div>Loading...</div>
+  if(!bookmarks?.success) return <div>Loading...</div>
 
   return (
     <DndContext

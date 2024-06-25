@@ -19,10 +19,9 @@ async function fetchCategories(){
   
 
 export const ServerForm = async () => {
-    const folders = await fetchCategories();
     const tags = await getUserTags();
   return (
-    <BookmarkForm folders={folders} bookmarktags={tags}/>
+    <BookmarkForm bookmarktags={tags}/>
 
   )
 }

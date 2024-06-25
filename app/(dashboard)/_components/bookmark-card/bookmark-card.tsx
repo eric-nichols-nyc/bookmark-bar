@@ -32,10 +32,10 @@ export const BookmarkCard = ({ id, index, url, title, icon, imageUrl, tags }: Bo
     transition: transition || undefined,
   }
 
-  const { open } = useDetailDrawer()
+  // const { open } = useDetailDrawer()
   return (
     <div style={style} ref={setNodeRef} className="relative flex">
-      <Card className="relative flex flex-1 cursor-pointer flex-col overflow-hidden px-2 drop-shadow-md bg-slate-200">
+      <Card className="relative flex flex-1 flex-col overflow-hidden px-2 drop-shadow-md bg-slate-200">
         <Button variant="ghost" size="sm" {...attributes} {...listeners}>
           <GripHorizontal size={16} />
         </Button>
@@ -44,10 +44,11 @@ export const BookmarkCard = ({ id, index, url, title, icon, imageUrl, tags }: Bo
           <BookmarkCardDropdown _id={id} />
         </CardHeader>
         <CardContent
-          onClick={open}
+          // onClick={open}
           className="relative flex h-auto w-full flex-1 flex-col justify-between overflow-hidden p-1"
         >
-          <h1 className="mb-2 text-lg font-bold leading-snug">{title}-{index}</h1>
+          <p className="text-xs">{index}</p>
+          <h1 className="mb-2 text-lg font-bold leading-snug">{title}</h1>
           <AspectRatio ratio={16 / 9} className="bg-muted">
             <Image
               src={imageUrl || "/images/placeholder.webp"}

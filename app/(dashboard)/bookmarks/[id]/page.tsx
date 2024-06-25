@@ -12,7 +12,7 @@ import { DetailDrawer } from "../../_components/detail-sheet"
 // fetch current card item by id
 const BookmarkPage = async (context: { params: { id: string } }) => {
   const id = context.params.id as string
-
+  
   const queryClient = new QueryClient()
 
   const folders = await queryClient.fetchQuery({
