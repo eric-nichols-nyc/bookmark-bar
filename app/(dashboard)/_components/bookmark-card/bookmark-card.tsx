@@ -35,12 +35,19 @@ export const BookmarkCard = ({ id, index, url, title, icon, imageUrl, tags }: Bo
   // const { open } = useDetailDrawer()
   return (
     <div style={style} ref={setNodeRef} className="relative flex">
-      <Card className="relative flex flex-1 flex-col overflow-hidden px-2 drop-shadow-md bg-slate-200">
+      <Card className="relative flex flex-1 flex-col overflow-hidden bg-slate-200 px-2 drop-shadow-md">
         <Button variant="ghost" size="sm" {...attributes} {...listeners}>
           <GripHorizontal size={16} />
         </Button>
         <CardHeader className="flex flex-row items-center justify-between p-1">
           {icon ? <Image src={icon} alt="icon" width={20} height={20} /> : <FileIcon />}
+          <div className="flex justify-end">
+            <Link className="cursor-pointer hover:underline" href={url} rel="noreferrer" target="_blank">
+              <Button variant="ghost" size="sm">
+                <span className="text-md font-bold">Read post</span><ExternalLink />
+              </Button>
+            </Link>
+          </div>
           <BookmarkCardDropdown _id={id} />
         </CardHeader>
         <CardContent
@@ -58,13 +65,6 @@ export const BookmarkCard = ({ id, index, url, title, icon, imageUrl, tags }: Bo
             />
           </AspectRatio>
         </CardContent>
-        <div className="flex justify-end">
-        <Link className="cursor-pointer hover:underline" href={url} rel="noreferrer" target="_blank">
-            <Button variant="ghost" size="sm">
-              <ExternalLink />
-            </Button>
-          </Link>
-        </div>
         {tags && tags.length > 0 && (
           <CardFooter className="p1">
             <div className="flex flex-wrap gap-2 p-2">{tags?.map((tag) => <Badge key={tag}>{tag}</Badge>)}</div>
