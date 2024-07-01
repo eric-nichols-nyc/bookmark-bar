@@ -28,6 +28,13 @@ export const SigninForm = () => {
     console.log('ERR ', errors)
   }, [errors])
 
+  useEffect(() => {
+    // return () => {
+    //     setLoading(false);
+    // }
+    console.log('LOADING ', loading)
+  } , [loading])
+
   const handleSignin = async (formData: FormData) => {
     if (!isLoaded) return
 
@@ -45,18 +52,17 @@ export const SigninForm = () => {
     }
     // call signin function
     // ebn646@gmail.com / pw: 8idLdojfuFqA7Y
-    console.log(email, password)
     try {
       const result = await signIn.create({
         identifier: email,
         password: password,
       })
+      console.log('result ', result)
 
       if (result.status === "complete") {
         console.log("Signin complete")
-        await setActive({ session: result.createdSessionId })
-        await setActive({ session: result.createdSessionId })
-        router.push(`${window.location.origin}/bookmarks`)
+        setActive({ session: result.createdSessionId })
+        router.push('/bookmarks')
       } else {
         /*Investigate why the login hasn't completed */
         console.log(result)
@@ -75,7 +81,7 @@ export const SigninForm = () => {
     <form action={handleSignin}>
       <div>
         <Label htmlFor="email">Email</Label>
-        <Input data-testid="email" type="email" id="email" name="email" />
+        <Input data-testid="email" type="email" id="email" name="email" value="test@test.com" />
         {errors?.email &&
           errors.email.map((error, index) => (
             <div className="text-red-500" key={index}>
@@ -85,7 +91,7 @@ export const SigninForm = () => {
       </div>
       <div>
         <Label htmlFor="password">Password</Label>
-        <Input data-testid="password"  type="password" id="password" name="password" />
+        <Input data-testid="password"  type="password" id="password" name="password" value="12345678"/>
         {errors?.password &&
           errors.password.map((error, index) => (
             <div className="text-red-500" key={index}>
@@ -93,7 +99,7 @@ export const SigninForm = () => {
             </div>
           ))}
       </div>
-      <Button data-testid="login-button" type="submit">Sign In</Button>
+      <Button data-testid="login-button" type="submit" className="mt-2 w-full">Sign In</Button>
       {errors?.notfound && <div className="text-red-500">{errors.notfound}</div>}
     </form>
   )

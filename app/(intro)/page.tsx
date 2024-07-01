@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import { auth } from "@clerk/nextjs/server"
 import { Metadata } from "next"
 import Image from "next/image";
@@ -36,37 +37,42 @@ export default async function IntroPage() {
   if (userId) redirect("/bookmarks");
 
   return (
-    <section className="flex flex-col items-center justify-center container size-full border">
-        <h1 className="text-7xl font-bold">Webmark</h1>
-        <h3 className="text-xl">Effortlessly manage and access all your bookmarks with our intuitive app, keeping your digital world organized and accessible at your fingertips</h3>
-        <h3>Streamline your online research and browsing experience with our app, effortlessly organizing all your bookmarks for easy access and efficient navigation.</h3>
-        <div className="flex">
-        <a href="https://nextjs.org/" target="_blank" rel="noreferrer" className="size-[200px] border">
+    <section className="flex flex-col items-center justify-center size-full">
+      <div className="py-6 w-full border flex flex-col items-center">
+        <h1 className="text-3xl font-bold">Organize Your Bookmarks Effortlessly</h1>
+        <h3 className="text-xl">Boomarks helps you manage your favorite websites with ease.</h3>
+      </div>
+      <div className="pt-9 pb-6 flex flex-col items-center border w-full">
+        <h3 className="text-2xl font-bold">App features</h3>
+        <p className="py-4">Discover the amazing features that make Boomarks yout go-to app for bookmarking.</p>
+      <div className="grid grid-cols-3 gap-2">
             <Image
-              src="/images/home/next.jpeg"
-              width="300"
+              src="/images/image.png"
+              width="200"
               height="300"
               alt="prisma"
               />
-          </a>
-          <a href="https://clerk.com/docs" target="_blank" rel="noreferrer" className="size-[200px] border">
             <Image
-              src="/images/home/clerk.png"
-              width="300"
+              src="/images/image1.png"
+              width="200"
               height="300"
               alt="clerk"
               />
-          </a>
-          <a href="https://www.prisma.io/docs" target="_blank" rel="noreferrer" className="size-[200px] border">
             <Image
-              src="/images/home/prisma.jpg"
-              width="300"
+              src="/images/image2.png"
+              width="200"
               height="300"
               alt="prisma"
               />
-          </a>
-
         </div>
+      </div>
+      <div className="pt-9 flex flex-col items-center border w-full">
+        <h3 className="text-2xl font-bold">Get Started</h3>
+        <p className="py-4">Start managing your bookmarks with ease. Sign in to get started.</p>
+        <Button className="bg-primary text-primary-foreground px-4 py-2 rounded-lg">
+          <a href="sign-in">Sign in</a> 
+        </Button>
+      </div>
     </section>
   )
 }
