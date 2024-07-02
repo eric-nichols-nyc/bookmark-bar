@@ -8,7 +8,7 @@ import { useRef, useState } from "react"
 import { handleFetchOpengraph, uploadToCloud } from "@/actions/prisma/folders/folder-actions"
 import { addBookmark } from "@/actions/prisma/folders/folder-actions"
 import { addBookmarkSchema } from "@/actions/prisma/folders/schemas"
-import {summarizeContent} from "@/actions/summarizeContent"
+// import {summarizeContent} from "@/actions/summarizeContent"
 import { Input } from "@/components/input/input"
 // import { MultiSelect, MultiSelectOption } from "@/components/multi-select/multi-select"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/select/select"
@@ -48,13 +48,13 @@ export const BookmarkForm = ({ defaultValue }: FormProps) => {
   // const onTagsChange = (selected: string[]) => {
   //   setTags(selected)
   // }
-  const getSummary = async (): Promise< string> => {
-    const url = ref.current?.elements.namedItem("url") as HTMLInputElement
-    const summary = await summarizeContent(url.value)
-    const data = await summary
-    console.log(data)
-    return data as string
-  }
+  //const getSummary = async (): Promise< string> => {
+    // const url = ref.current?.elements.namedItem("url") as HTMLInputElement
+    // const summary = await summarizeContent(url.value)
+    // const data = await summary
+    // console.log(data)
+    // return data as string
+ // }
   const onSubmitAction = async (data: FormData) => {
 
     const url = data.get("url") as string
@@ -163,7 +163,7 @@ export const BookmarkForm = ({ defaultValue }: FormProps) => {
       <Input name="url" placeholder="https://www.example.com" className="mb-2" />
       {fieldErrors?.url && <p className="text-sm text-red-500">{fieldErrors.url}</p>}
       <div>
-        <Button onClick={getSummary}><Bot />Generate with ai</Button>
+        <Button><Bot />Generate with ai</Button>
         <Textarea name="notes" placeholder="Add notes summary" className="mb-2" defaultValue="" />
       </div>
       <div className="z-10 flex">

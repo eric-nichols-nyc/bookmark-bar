@@ -69,7 +69,6 @@ export const OauthSignin = () => {
           onClick={() => void handleSignIn1("oauth_google")}
           disabled={loading !== null}
           >
-             <ChromeIcon className="size-5 mr-2" />
             Google
           </Button>
   </div>
