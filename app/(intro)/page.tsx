@@ -11,7 +11,7 @@ export const metadata: Metadata = {
   icons: [
     {
       url: "/images/logo.svg",
-      href: "/images/logo.svg",
+      href: "/Images/logo.svg",
     },
   ],
   openGraph: {
@@ -47,19 +47,19 @@ export default async function IntroPage() {
         <p className="py-4">Discover the amazing features that make Boomarks yout go-to app for bookmarking.</p>
       <div className="grid grid-cols-3 gap-2">
             <Image
-              src="/images/image.png"
+              src="/images/Image.png"
               width="200"
               height="300"
               alt="prisma"
               />
             <Image
-              src="/images/image1.png"
+              src="/images/Image1.png"
               width="200"
               height="300"
               alt="clerk"
               />
             <Image
-              src="/images/image2.png"
+              src="/images/Image2.png"
               width="200"
               height="300"
               alt="prisma"
