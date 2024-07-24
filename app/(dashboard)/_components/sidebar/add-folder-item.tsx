@@ -10,7 +10,7 @@ import { DialogHeader } from "@/components/ui/dialog"
 import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { useMounted } from "@/hooks/useMounted";
+import { useMounted } from "@/hooks/useMounted"
 export function AddFolderItem() {
   const router = useRouter()
   const mounted = useMounted()
@@ -36,7 +36,6 @@ export function AddFolderItem() {
       setOpen(false)
       console.log("sucessuffly added folder")
       router.push(`/bookmarks/${bm?.id}`)
-
     } catch (e) {
       console.error(e)
     }
@@ -45,7 +44,7 @@ export function AddFolderItem() {
   if (!mounted) return null
 
   return (
-    <Dialog>
+    <Dialog open={open}>
       <DialogTrigger asChild>
         <Button variant="outline" className="flex w-full justify-between" onClick={() => setOpen(!open)}>
           <span>New Folder</span>
@@ -57,12 +56,17 @@ export function AddFolderItem() {
           <DialogTitle>Add a new folder</DialogTitle>
         </DialogHeader>
         <form ref={ref} className="flex flex-col gap-3" action={handleSubmit}>
-        <Label htmlFor="folderName">Folder Name</Label>
-        <Input type="text" id="folderName" name="folderName" required/>
-        <Button type="submit" className="w-full" aria-disabled={pending}>
-          Add Folder
-        </Button>
-      </form>
+          <Label htmlFor="folderName">Folder Name</Label>
+          <Input type="text" id="folderName" name="folderName" required />
+          <div className="grid grid-cols-2 gap-5">
+            <Button type="submit" size="sm" className="w-full" aria-disabled={pending}>
+              Add Folder
+            </Button>
+            <Button type="submit" size="sm" className="w-full" onClick={() => setOpen(false)}>
+              cancel
+            </Button>
+          </div>
+        </form>
       </DialogContent>
     </Dialog>
   )
