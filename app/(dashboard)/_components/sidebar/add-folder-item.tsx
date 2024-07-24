@@ -1,5 +1,7 @@
 "use client"
 import { Plus } from "lucide-react"
+import { redirect } from "next/navigation"
+import { useRouter } from "next/navigation"
 import { useRef, useState } from "react"
 import { useFormStatus } from "react-dom"
 import { addFolder } from "@/actions/prisma/folders/folder-actions"
@@ -10,6 +12,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { useMounted } from "@/hooks/useMounted";
 export function AddFolderItem() {
+  const router = useRouter()
   const mounted = useMounted()
   const ref = useRef<HTMLFormElement>(null)
   const [open, setOpen] = useState(false)
@@ -21,7 +24,6 @@ export function AddFolderItem() {
   // }
 
   const handleSubmit = async (data: FormData) => {
-    console.log("submitted", Object.fromEntries(data))
     const folderName = data.get("folderName") as string
     const index = 66535
     if (!folderName) return console.log("no name")
@@ -29,10 +31,12 @@ export function AddFolderItem() {
     const name = folderName.toLowerCase()
 
     try {
-      await addFolder({ name, index })
-      console.log("sucess")
+      const bm = await addFolder({ name, index })
       ref.current?.reset()
       setOpen(false)
+      console.log("sucessuffly added folder")
+      router.push(`/bookmarks/${bm?.id}`)
+
     } catch (e) {
       console.error(e)
     }

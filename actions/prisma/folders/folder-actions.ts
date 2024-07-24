@@ -1,12 +1,13 @@
 "use server";
 import { auth } from "@clerk/nextjs/server";
 // import { Folder, Tag, Url } from "@prisma/client";
+import { Url } from "@prisma/client";
 import { v2 as cloudinary } from "cloudinary";
 import { fetch } from "fetch-opengraph";
 import { revalidatePath } from "next/cache";
+import { redirect } from 'next/navigation'
 import { prisma } from '@/db/prisma';
 import { addBookmarkSchema, FolderSchema } from "./schemas";
-import { Url } from "@prisma/client";
 
 
 export const handleFetchOpengraph = async (url: string) => {
@@ -131,11 +132,11 @@ export const addFolder = async (data: FolderProps) => {
                 index: index
             },
         });
-        revalidatePath('/')
+        revalidatePath('/bookmarks')
         return newFolder;
     } catch (error: any) {
         console.error(`Error: ${error.message}`)
-        return {message:error.message}
+        return {id: null, message:error.message}
     }
 }
 
