@@ -136,7 +136,7 @@ export const DraggableGrid = () => {
       onDragCancel={handleDragCancel}
     >
       <SortableContext items={bookmarks?.success?.sort((a, b) => a.index - b.index)}>
-        <div className="w-full justify-center space-y-8 md:grid md:grid-cols-2 md:gap-2 md:space-y-0 lg:grid-cols-3 xl:grid-cols-4">
+        <div className="w-full justify-center space-y-8 md:grid md:grid-cols-2 md:gap-8 md:space-y-0 lg:grid-cols-3 xl:grid-cols-4 pt-8">
           {!!isLoading && <BMSkeleton />}
 
           {bookmarks?.success?.map((bookmark: Url) => <BookmarkCard key={bookmark.id} {...bookmark} />)}

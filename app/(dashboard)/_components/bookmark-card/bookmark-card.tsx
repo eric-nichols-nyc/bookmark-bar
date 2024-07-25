@@ -3,10 +3,11 @@
 import { useSortable } from "@dnd-kit/sortable"
 import { CSS } from "@dnd-kit/utilities"
 import { AspectRatio } from "@radix-ui/react-aspect-ratio"
-import { ExternalLink, FileIcon, GripHorizontal } from "lucide-react"
+import { ExternalLink, FileIcon, GripHorizontal, Trash2Icon } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
 import React from "react"
+import { deleteBookmark } from "@/actions/prisma/folders/folder-actions"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card"
@@ -32,10 +33,22 @@ export const BookmarkCard = ({ id, index, url, title, icon, imageUrl, tags }: Bo
     transition: transition || undefined,
   }
 
+  const handleDeleteBookmark = async () => {
+    if(!id) return console.error("No id")
+    try {
+      const res = await deleteBookmark(id)
+      if (res) {
+        alert("Deleted")
+      }
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
   // const { open } = useDetailDrawer()
   return (
     <div style={style} ref={setNodeRef} className="relative flex">
-      <Card className="relative flex flex-1 flex-col overflow-hidden bg-slate-200 px-2 drop-shadow-md">
+      <Card className="relative flex flex-1 flex-col overflow-hidden bg-slate-200 px-2 drop-shadow-md pb-2">
         <Button variant="ghost" size="sm" {...attributes} {...listeners}>
           <GripHorizontal size={16} />
         </Button>
@@ -48,7 +61,8 @@ export const BookmarkCard = ({ id, index, url, title, icon, imageUrl, tags }: Bo
               </Button>
             </Link>
           </div>
-          <BookmarkCardDropdown _id={id} />
+          {/* <BookmarkCardDropdown _id={id} /> */}
+          <Trash2Icon className="cursor-pointer" onClick={handleDeleteBookmark}/>
         </CardHeader>
         <CardContent
           // onClick={open}
